@@ -1,0 +1,44 @@
+<div class="contenido-menu">
+<div class="menu-container">
+  <p class="facturacion">Facturación</p>
+  <ul>
+    <details >
+      <summary  >Catálogos</summary>
+      <li>
+        <button
+          routerLinkActive="underline"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLink="/app/cliente" 
+          >
+          📁 Cliente
+        </button>
+      </li>
+      <li>
+        <button routerLink="/app/producto" routerLinkActive="underline">
+          🛒 Producto
+        </button>
+      </li>
+    </details>
+
+    <details >
+      <summary>Documentos</summary>
+        <li>
+          <button routerLink="/app/factura" routerLinkActive="underline">
+          📝 Factura
+          </button>
+        </li>
+        <li>
+          <button routerLink="/app/lista-factura" routerLinkActive="underline">
+          📋 Ver facturas
+          </button>
+        </li>
+    </details>
+
+
+  </ul>
+
+</div>
+<button class="salir" (click)="salir()">✖️ Salir</button>
+
+</div>
+<router-outlet></router-outlet>
