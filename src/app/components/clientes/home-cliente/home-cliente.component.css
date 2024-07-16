@@ -68,7 +68,7 @@ td button.editar, td button.check{
   display: none;
 }
 .buscar input{
-  width: 300px;
+  width: auto;
   height: 40px;
   margin: 10px;
   border: none;
@@ -77,11 +77,11 @@ td button.editar, td button.check{
   padding-left: 10px;
 }
 .buscar{
-  margin: 20px;
+  margin-top: 5px;
+  margin-left: 20px;
 }
 .buscar label{
   font-weight: 600;
-
 }
 
 p.rojo{
@@ -95,6 +95,7 @@ p.rojo{
   justify-content: left;
   align-items: center;
   padding-left: 20px;
+  padding-right: 20px;
   
 }
 
@@ -145,5 +146,8 @@ button#nuevo {
   padding: 5px 30px ;
   border: none;
   cursor: pointer;
+  margin-top: 15px;
   margin-left: 20px;
+  justify-content: right;
+  align-items: right;
 }

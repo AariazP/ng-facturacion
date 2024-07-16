@@ -26,10 +26,11 @@
 app-menu{
   background-color: rgb(235, 235, 235);
   /* border: 10px solid teal; */
-
+/*
   display: grid;
+  
   grid-template-columns: 200px  0  1fr;
   height: 100vh;
-  
+  */
 }
 

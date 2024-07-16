@@ -1,18 +1,25 @@
 
 
-
-<div class="table-container">
-  <p class="rojo">
-    Tabla de clientes
-  </p>
-
-  <div class="buscar">
-    <label for="">Buscar: </label>
-    <input type="text" (keyup)="buscar($event)">
-    
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <p class="rojo">
+        Tabla de clientes
+      </p>
+    </div>
+    <div class="col-lg-8 col-md-6 col-12">
+      <div class="buscar">
+        <label for="buscar">Buscar: </label>
+        <input type="text" id="buscar" (keyup)="buscar($event)">
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-12">
+      <button id="nuevo" class="btn btn-primary" routerLink="/app/cliente/nuevo">Nuevo +</button>
+    </div>
   </div>
 
-  <button id="nuevo" routerLink="/app/cliente/nuevo" >Nuevo +</button>
+
+<div class="table-container">
   
   <div class="separador">
     <div>
@@ -57,5 +64,5 @@
       
     </div>
   </div>
-
+</div>
 </div>
