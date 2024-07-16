@@ -34,6 +34,10 @@ export class LoginComponent {
 
   }
 
+  abrir(){
+    this.router.navigate(['/app/cliente']);
+  }
+
   login(): void {
     if (this.loginForm.invalid) {
       return;
