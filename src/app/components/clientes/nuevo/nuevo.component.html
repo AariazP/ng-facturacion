@@ -5,7 +5,7 @@
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
     <div>
-      <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="rucDni" placeholder="Dni" (keyup)="validarCodigo($event) " >
+      <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="rucDni" placeholder="CC" (keyup)="validarCodigo($event) " >
       <span *ngIf="formulario.get('cantidadProducto')?.hasError('cantidadInvalida')  && formulario.get('rucDni') && formulario.get('rucDni')!.errors && formulario.get('rucDni')!.touched">
         Por favor, ingrese solo números
       </span>

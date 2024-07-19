@@ -1,68 +1,67 @@
-
-
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <p class="rojo">
-        Tabla de clientes
-      </p>
+      <h1 class="rojo">
+        Gestion de Clientes
+      </h1>
     </div>
-    <div class="col-lg-8 col-md-6 col-12">
+    <div class="col-8 col-sm-8 col-md-9 col-lg-10 col-xl-10 col-xxl-10">
       <div class="buscar">
-        <label for="buscar">Buscar: </label>
-        <input type="text" id="buscar" (keyup)="buscar($event)">
+        <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar cliente...">
       </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-12">
-      <button id="nuevo" class="btn btn-primary" routerLink="/app/cliente/nuevo">Nuevo +</button>
-    </div>
-  </div>
-
-
-<div class="table-container">
-  
-  <div class="separador">
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Dni</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Correo</th>
-            <th>Activo</th>
-            <th>FechaCreacion</th>
-            <th class="eliminar">Acciones</th>
-          </tr>
-        </thead>
-        
-
-        <tbody>
-          <tr *ngFor="let cliente of filtroClientes">
-            <td>{{ cliente.idCliente }}</td>
-            <td>{{ cliente.rucDni }}</td>
-            <td >{{ cliente.nombre }}</td>
-            <td>{{ cliente.direccion }}</td>
-            <td>{{ cliente.correo }}</td>
-            <td>{{ cliente.activo }}</td>
-            <td>{{ cliente.fechaCreacion }}</td>
-            <td class="eliminar">
-              <button (click)="eliminarPorId(cliente.idCliente)">❌</button>
-              <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="pup-up" [ngClass]="{ 'oculto': modoOculto }">
-    <div class="pop-up-container">
-      <span class="cerrar" (click)="editarModoOcuto()">❌</span>
-      <app-editar-cliente class="editar" [personaEditar]="personaEditar" (modoOculto)="editarModoOcuto()"></app-editar-cliente>
-      
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+      <button id="nuevo" class="btn btn-primary" routerLink="/app/cliente/nuevo">Nuevo</button>
     </div>
   </div>
 </div>
+
+<div class="container">
+  <div class="table-container">
+    <div class="separador">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="d-none d-md-table-cell">ID</th>
+              <th>CC</th>
+              <th>Nombre</th>
+              <th>Direccion</th>
+              <th class="d-none d-md-table-cell">Correo</th>
+              <th class="d-none d-md-table-cell">Activo</th>
+              <th class="d-none d-md-table-cell">FechaCreacion</th>
+              <th class="eliminar">Acciones</th>
+          </tr>
+          </thead>
+        
+
+          <tbody>
+            <tr *ngFor="let cliente of filtroClientes">
+              <td class="d-none d-md-table-cell">{{ cliente.idCliente }}</td>
+              <td>{{ cliente.rucDni }}</td>
+              <td>{{ cliente.nombre }}</td>
+              <td>{{ cliente.direccion }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.activo }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion }}</td>
+              <td class="eliminar">
+                <button (click)="eliminarPorId(cliente.idCliente)">❌</button>
+                <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pup-up" [ngClass]="{ 'oculto': modoOculto }">
+      <div class="pop-up-container">
+        <span class="cerrar" (click)="editarModoOcuto()">❌</span>
+        <app-editar-cliente class="editar" [personaEditar]="personaEditar" (modoOculto)="editarModoOcuto()"></app-editar-cliente>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="rojo">Se han encontrado {{ totalClientes }} clientes.</p>
+  </div>
 </div>

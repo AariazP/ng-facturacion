@@ -9,19 +9,26 @@ export class HomeClienteComponent {
 
   clientes: any ; 
   personaEditar: any;
-  filtroClientes: any;
+  filtroClientes: any [] = [];
   modoOculto: boolean = true;
+  totalClientes: number = 0;
+
   constructor(private clientesService: ClientesService) {
   }
   ngOnInit() {
    this.getData();
+   this.updateClienteCount();
   }
   
+  updateClienteCount() {
+    this.totalClientes = this.filtroClientes.length;
+  }
+
   getData(){
     this.clientesService.getData().subscribe(data => {
       this.clientes = data;
       this.filtroClientes = data;
-      
+      this.updateClienteCount(); // Actualiza el conteo cuando se obtienen los datos
     })
   }
   
@@ -47,6 +54,7 @@ export class HomeClienteComponent {
       cleinte.correo.toLowerCase().includes(input.value.toLowerCase())
     );
     console.log(this.filtroClientes)
+    this.updateClienteCount(); // Actualiza el conteo después de filtrar
   }
 //
   toggleModoEdicion(persona: any) {
