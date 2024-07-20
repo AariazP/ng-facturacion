@@ -1,22 +1,26 @@
-
-
-
-<div class="table-container">
-  <p class="rojo">
-    Tabla de productos
-  </p>
-
-  <div class="buscar">
-    <label for="">Buscar: </label>
-    <input type="text" (keyup)="buscar($event)">
-    
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="rojo">
+        Gestion de Productos
+      </h1>
+    </div>
+    <div class="col-8 col-sm-8 col-md-9 col-lg-10 col-xl-10 col-xxl-10">
+      <div class="buscar">
+        <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Escanear o escribir código">
+      </div>
+    </div>
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+      <button id="nuevo" class="btn btn-primary" routerLink="/app/producto/nuevo">Nuevo</button>
+    </div>
   </div>
+</div>
 
-  <button id="nuevo" routerLink="/app/producto/nuevo" >Nuevo +</button>
-  
+<div class="container">
+<div class="table-container">
   <div class="separador">
-    <div>
-      <table>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>ID</th>
@@ -25,7 +29,7 @@
             <th>Precio</th>
             <th>Stock</th>
             <th>Activo</th>
-            <th>FechaCreacion</th>
+            <th class="d-none d-md-table-cell">FechaCreacion</th>
             <th class="eliminar">Acciones</th>
           </tr>
         </thead>
@@ -40,7 +44,7 @@
             <td>{{ producto.precio }}</td>
             <td>{{ producto.stock }}</td>
             <td>{{ producto.activo }}</td>
-            <td>{{ producto.fechaCreacion }}</td>
+            <td class="d-none d-md-table-cell">{{ producto.fechaCreacion }}</td>
             <td class="eliminar">
               <button (click)="eliminarPorId(producto.idProducto)">❌</button>
               <button class="editar" (click)="toggleModoEdicion(producto)">✏️</button>
@@ -59,4 +63,8 @@
     </div>
   </div>
 
+  </div>
+  <div>
+    <p class="rojo">Se han encontrado {{ totalProductos }} productos.</p>
+  </div>
 </div>

@@ -10,18 +10,25 @@ export class HomeProductoComponent {
   
   productos: any ; 
   productosEditar: any;
-  filtroProductos: any;
+  filtroProductos: any [] = [];
   modoOculto: boolean = true;
+  totalProductos: number = 0;
   constructor(private productoService: ProductoService) {
   }
   ngOnInit() {
    this.getData();
+   this.updateProductoCount();
+  }
+
+  updateProductoCount() {
+    this.totalProductos = this.filtroProductos.length;
   }
   
   getData(){
     this.productoService.getData().subscribe(data => {
       this.productos = data;
       this.filtroProductos = data;
+      this.updateProductoCount(); // Actualiza el conteo cuando se obtienen los datos
       
     })
   }
@@ -39,15 +46,17 @@ export class HomeProductoComponent {
   buscar(texto: Event) {
     const input = texto.target as HTMLInputElement;
     console.log(this.filtroProductos);
-    this.filtroProductos = this.productos.filter( (persona: any) =>
-      persona.idProducto.toString().includes(input.value.toLowerCase()) ||
-      persona.codigo.toLowerCase().includes(input.value.toLowerCase()) ||
-      persona.nombre.toLowerCase().includes(input.value.toLowerCase()) ||
-      persona.precio.toString().includes(input.value.toLowerCase()) ||
-      persona.stock.toString().includes(input.value.toLowerCase()) ||
-      persona.activo.toString().includes(input.value.toLowerCase())
+    this.filtroProductos = this.productos.filter( (producto: any) =>
+      producto.idProducto.toString().includes(input.value.toLowerCase()) ||
+      producto.codigo.toString().toLowerCase().includes(input.value.toLowerCase()) ||
+      producto.nombre.toLowerCase().includes(input.value.toLowerCase()) ||
+      producto.precio.toString().includes(input.value.toLowerCase()) ||
+      producto.stock.toString().includes(input.value.toLowerCase()) ||
+      producto.activo.toString().includes(input.value.toLowerCase())
     );
     console.log(this.filtroProductos)
+    this.updateProductoCount(); // Actualiza el conteo cuando se obtienen los datos
+
   }
 
   toggleModoEdicion(persona: any) {

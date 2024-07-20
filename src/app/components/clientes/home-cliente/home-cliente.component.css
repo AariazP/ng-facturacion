@@ -10,14 +10,14 @@
 .separador div{
   width: 100%;
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
   /*border: 1px solid rgb(182, 182, 182) ;*/
   border-radius: 10px;
 }
 table {
   background-color: rgb(67, 164, 255);
   width: 100%; 
-  border-collapse: collapse;
+  /*border-collapse: collapse;*/
   border-radius: 10px;
 }
 
