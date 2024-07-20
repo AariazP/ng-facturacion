@@ -1,53 +1,57 @@
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="formulario p-4">
+        <div class="encabezado">
+          <h1 class="nota">Registro de clientes</h1>
+          <p class="text-muted mb-3">Recuerde ingresar todos los campos</p>
+      </div>
+        <p class="datos">Datos:</p>
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+          
+          <div class="form-group mb-3">
+            <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="rucDni" class="form-control" placeholder="CC" (keyup)="validarCodigo($event)">
+            <small *ngIf="formulario.get('rucDni')?.hasError('cantidadInvalida') && formulario.get('rucDni')!.touched" class="text-danger">
+              Por favor, ingrese solo números
+            </small>
+            <small *ngIf="existe" class="text-danger">Cliente ya existe</small>
+          </div>
 
-<div class="formulario">
-  <p class="nota">Registro de clientes: recuerde ingresar todos los campos</p>
-  <p class="datos">Datos:</p>
-  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-3">
+            <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre">
+            <small *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')!.touched" class="text-danger">
+              Por favor, ingrese solo texto
+            </small>
+          </div>
 
-    <div>
-      <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="rucDni" placeholder="CC" (keyup)="validarCodigo($event) " >
-      <span *ngIf="formulario.get('cantidadProducto')?.hasError('cantidadInvalida')  && formulario.get('rucDni') && formulario.get('rucDni')!.errors && formulario.get('rucDni')!.touched">
-        Por favor, ingrese solo números
-      </span>
-      <span *ngIf="existe">Cliente ya existe</span>
+          <div class="form-group mb-3">
+            <input type="text" formControlName="direccion" class="form-control" placeholder="Direccion">
+            <small *ngIf="formulario.get('direccion')!.invalid && (formulario.get('direccion')?.dirty || formulario.get('direccion')?.touched)" class="text-danger">
+              Por favor, ingrese un valor válido.
+            </small>
+          </div>
+
+          <div class="form-group mb-3">
+            <input type="email" formControlName="correo" class="form-control" placeholder="Correo">
+            <small *ngIf="formulario.get('correo')!.invalid && (formulario.get('correo')!.dirty || formulario.get('correo')!.touched)" class="text-danger">
+              Por favor, ingrese un correo válido.
+            </small>
+          </div>
+
+          <div class="form-group mb-3">
+            <p class="datos">Está activo?</p>
+            <select formControlName="activo" class="form-control">
+              <option [selected]="true" value="1">Si</option>
+              <option value="0">No</option>
+            </select>
+            <small *ngIf="formulario.get('activo')!.invalid && (formulario.get('activo')?.dirty || formulario.get('activo')?.touched)" class="text-danger">
+              Por favor, seleccione una opción válida.
+            </small>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block ">Guardar Datos</button>
+        </form>
+      </div>
     </div>
-
-    <div>
-      <input type="text" formControlName="nombre" placeholder="Nombre">
-      <span *ngIf="formulario.get('nombre') && formulario.get('nombre')!.errors && formulario.get('nombre')!.touched">
-        Por favor, ingrese solo texto
-      </span>
-    </div>
-
-    <div>
-      <input type="text" formControlName="direccion" placeholder="Direccion">
-      <span *ngIf="formulario.get('direccion')!.invalid && (formulario.get('direccion')?.dirty || formulario.get('direccion')?.touched)">
-        Por favor, ingrese un valor válido.
-      </span>
-    </div>
-
-    <div>
-      <input type="email" formControlName="correo" placeholder="Correo">
-      <span *ngIf="formulario.get('correo')!.invalid && (formulario.get('correo')!.dirty || formulario.get('correo')!.touched)">
-        Por favor, ingrese un correo válido.
-      </span>
-    </div>
-
-    <div>
-      <!-- <input class="fecha" type="number" formControlName="activo" placeholder="activo"> -->
-
-      <select name="" id="" formControlName="activo">
-        <option [selected]="true" value="1">Si</option>
-        <option value="0">No</option>
-      </select>
-
-      <span *ngIf="formulario.get('activo')!.invalid && (formulario.get('activo')?.dirty || formulario.get('activo')?.touched)">
-        Por favor, ingrese una fecha válida.
-      </span>
-    </div>
-
-
-    
-    <button type="submit">Guardar Datos</button>
-  </form>
+  </div>
 </div>

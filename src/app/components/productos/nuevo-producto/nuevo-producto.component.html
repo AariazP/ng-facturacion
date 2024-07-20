@@ -1,52 +1,97 @@
-<div class="formulario">
-  <p class="nota">Registro de productos: recuerde ingresar todos los campos</p>
-  <p class="datos">Datos:</p>
-  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
-
-    <div>
-      <input type="text" pattern="[a-zA-Z0-9]*" formControlName="codigo" placeholder="Codigo" (keyup)="validarCodigo($event)">
-      <span *ngIf="formulario.get('codigo') && formulario.get('codigo')!.errors && formulario.get('codigo')!.touched">
-        Por favor, ingrese un valor válido.
-      </span>
-      <span *ngIf="existe">Código de producto ya existe</span>
+<div class="container mt-4">
+  <div class="formulario">
+    <div class="encabezado">
+      <h1 class="nota">Registro de productos</h1>
+      <p class="text-muted mb-3">Recuerde ingresar todos los campos</p>
     </div>
-
-    <div>
-      <input type="text" formControlName="nombre" placeholder="Nombre">
-      <span *ngIf="formulario.get('nombre') && formulario.get('nombre')!.errors && formulario.get('nombre')!.touched">
-        Por favor, ingrese solo texto
-      </span>
-    </div>
-
-    <div>
-      <input type="number" formControlName="precio" placeholder="Precio">
-      <span *ngIf="formulario.get('precio')!.invalid && (formulario.get('precio')?.dirty || formulario.get('precio')?.touched)">
-        Por favor, ingrese un valor válido.
-      </span>
-    </div>
-
-    <div>
-      <input type="number" formControlName="stock" placeholder="Stock">
-      <span *ngIf="formulario.get('stock')!.invalid && (formulario.get('stock')!.dirty || formulario.get('stock')!.touched)">
-        Por favor, ingrese un valor válido.
-      </span>
-    </div>
-
-    <div>
-      <!-- <input class="fecha" type="number" formControlName="activo" placeholder="activo"> -->
-
-      <select name="" id="" formControlName="activo">
-        <option [selected]="true" value="1">Si</option>
-        <option value="0">No</option>
-      </select>
-
-      <span *ngIf="formulario.get('activo')!.invalid && (formulario.get('activo')?.dirty || formulario.get('activo')?.touched)">
-        Por favor, ingrese una fecha válida.
-      </span>
-    </div>
-
-
-    
-    <button type="submit">Guardar Datos</button>
-  </form>
+    <p class="datos">Datos:</p>
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          pattern="[a-zA-Z0-9]*" 
+          formControlName="codigo" 
+          placeholder="Codigo" 
+          (keyup)="validarCodigo($event)"
+        >
+        <span 
+          class="text-danger" 
+          *ngIf="formulario.get('codigo') && formulario.get('codigo')!.errors && formulario.get('codigo')!.touched"
+        >
+          Por favor, ingrese un valor válido.
+        </span>
+        <span class="text-warning" *ngIf="existe">
+          Código de producto ya existe
+        </span>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          formControlName="nombre" 
+          placeholder="Nombre"
+        >
+        <span 
+          class="text-danger" 
+          *ngIf="formulario.get('nombre') && formulario.get('nombre')!.errors && formulario.get('nombre')!.touched"
+        >
+          Por favor, ingrese solo texto
+        </span>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="number" 
+          class="form-control" 
+          formControlName="precio" 
+          placeholder="Precio"
+        >
+        <span 
+          class="text-danger" 
+          *ngIf="formulario.get('precio')!.invalid && (formulario.get('precio')?.dirty || formulario.get('precio')?.touched)"
+        >
+          Por favor, ingrese un valor válido.
+        </span>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="number" 
+          class="form-control" 
+          formControlName="stock" 
+          placeholder="Stock"
+        >
+        <span 
+          class="text-danger" 
+          *ngIf="formulario.get('stock')!.invalid && (formulario.get('stock')!.dirty || formulario.get('stock')!.touched)"
+        >
+          Por favor, ingrese un valor válido.
+        </span>
+      </div>
+      
+      <div class="form-group">
+        <p class="datos">Está activo?</p>
+        <select 
+          class="form-control" 
+          formControlName="activo"
+        >
+          <option [selected]="true" value="1">Si</option>
+          <option value="0">No</option>
+        </select>
+        <span 
+          class="text-danger" 
+          *ngIf="formulario.get('activo')!.invalid && (formulario.get('activo')?.dirty || formulario.get('activo')?.touched)"
+        >
+          Por favor, ingrese una fecha válida.
+        </span>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">
+        Guardar Datos
+      </button>
+    </form>
+  </div>
 </div>
