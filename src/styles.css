@@ -18,7 +18,7 @@
 }
 .rutas{
   background-color: #fff;
-  height: calc(100vh - 40px);
+  /*height: calc(100vh - 40px);*/
   margin: 20px 20px;
   border-radius: 20px;
 } 

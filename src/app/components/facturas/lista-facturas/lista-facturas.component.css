@@ -1,29 +1,29 @@
-/* Estilos para hacer que la tabla ocupe toda la pantalla */
 .table-container {
-  width: 97%; 
-  height: 100%; 
-  margin: auto;
-  margin-top: 20px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 20px;
-  padding: 20px;
+  width: 100%; 
+  height: 100%;
+  background-color: rgb(67, 164, 255);
+  border-radius: 10px;
 }
+
+.container{
+  padding: 10px;
+}
+
 .table-container .separador{
   margin-top: 20px;
 }
 .separador div{
-  margin: 20px;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  border: 1px solid rgb(182, 182, 182) ;
-  border-radius: 20px;
+  /*justify-content: center;*/
+  /*border: 1px solid rgb(182, 182, 182) ;*/
+  border-radius: 10px;
 }
 table {
-  width: 95%; 
-  border-collapse: collapse;
-  
-  border-radius: 8px;
- 
+  background-color: rgb(67, 164, 255);
+  width: 100%; 
+  /*border-collapse: collapse;*/
+  border-radius: 10px;
 }
 
 th, td {
@@ -43,13 +43,15 @@ tr:nth-child(odd) {
 }
 
 tr:nth-child(even) {
-  background-color: #ffffff;
+  background-color: #ffffff; 
 }
 
 td.eliminar, th.eliminar{
-  text-align: center;
-  
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
+
 td button{
   background: rgb(255, 255, 255);
   border: 1px solid red;
@@ -65,29 +67,28 @@ td button.editar, td button.check{
   
 }
 
+
 .ocultar{
   display: none;
 }
+
 .buscar input{
-  width: 300px;
-  height: 40px;
-  margin: 10px;
+  width: 100%;
+  height: 30px;
   border: none;
   border: 1px solid rgb(182, 182, 182);
-  border-radius: 20px;
-  padding-left: 10px;
+  border-radius: 10px;
 }
+
 .buscar{
-  margin: 20px;
+  margin-top: 5px;
 }
 .buscar label{
   font-weight: 600;
-
 }
 
 p.rojo{
-  background-color: rgb(226, 68, 68);
-  color: #fff;
+  color: #000000;
   width: 100%;
   height: 50px;
   border-top-left-radius: 10px;
@@ -95,8 +96,6 @@ p.rojo{
   display: flex;
   justify-content: left;
   align-items: center;
-  padding-left: 20px;
-  
 }
 
 
@@ -137,14 +136,25 @@ div.pup-up span{
 }
 
 button#nuevo {
-
-  border-radius: 100px;
+  border-radius: 10px;
+  width: 100%;
+  height: 30px;
   background-color: rgb(67, 164, 255);
   color: #fff;
   font-weight: 600;
   font-size: 16px;
-  padding: 5px 30px ;
+  padding: 5px 30px;
   border: none;
   cursor: pointer;
-  margin-left: 20px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+@media (max-width: 576px) {
+  button#nuevo {
+    font-size: 14px;
+  }
+}
+

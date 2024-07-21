@@ -2,9 +2,9 @@
   <form [formGroup]="personaForm" (ngSubmit)="guardar()">
 
     <div>
-      <label for="rucDni">codigo:</label>
+      <label for="codigo">Código:</label>
       <div>
-        <input type="text" formControlName="codigo" placeholder="codigo">
+        <input type="text" formControlName="codigo" placeholder="Código">
         <span *ngIf="personaForm.get('codigo') && personaForm.get('codigo')!.errors && personaForm.get('codigo')!.touched">
           Por favor, ingrese solo texto.
         </span>
@@ -18,50 +18,45 @@
           Por favor, ingrese solo texto.
         </span>
       </div>
-
     </div>
     <div>
-      <label for="precio">precio:</label>
+      <label for="precio">Precio:</label>
       <div>
-        <input type="number" formControlName="precio" placeholder="precio">
+        <input type="number" formControlName="precio" placeholder="Precio">
         <span *ngIf="personaForm.get('precio')?.invalid && (personaForm.get('precio')?.dirty || personaForm.get('precio')?.touched)">
-          Por favor, ingrese un correo válido.
+          Por favor, ingrese un valor válido.
         </span>
       </div>
     </div>
     <div>
-      <label for="stock">stock:</label>
+      <label for="stock">Stock:</label>
       <div>
-        <input class="fecha" type="number" formControlName="stock" placeholder="stock">
+        <input class="fecha" type="number" formControlName="stock" placeholder="Stock">
         <span *ngIf="personaForm.get('stock')?.invalid && (personaForm.get('stock')?.dirty || personaForm.get('stock')?.touched)">
-          Por favor, ingrese una fecha válida.
+          Por favor, ingrese un valor válido.
         </span>
       </div>
     </div>
-
     <div>
-      <label for="fechaCreacion">CorfechaCreacionreo:</label>
+      <label for="fechaCreacion">Fecha Creación:</label>
       <div>
-        <input class="" type="date" formControlName="fechaCreacion" placeholder="fechaCreacion">
+        <input class="" type="date" formControlName="fechaCreacion" placeholder="Fecha Creación">
         <span *ngIf="personaForm.get('fechaCreacion')?.invalid && (personaForm.get('fechaCreacion')?.dirty || personaForm.get('fechaCreacion')?.touched)">
           Por favor, ingrese una fecha válida.
         </span>
       </div>
     </div>
-
     <div>
       <label for="activo">Activo:</label>
       <div>
         <select name="" id="activo" formControlName="activo">
-          <option [selected]="true" value="1">Si</option>
+          <option [selected]="true" value="1">Sí</option>
           <option value="0">No</option>
         </select>
-
         <span *ngIf="personaForm.get('activo')?.invalid && (personaForm.get('activo')?.dirty || personaForm.get('activo')?.touched)">
-          Por favor, ingrese un valor válido.
+          Por favor, seleccione un valor válido.
         </span>
       </div>
-
     </div>
     <button type="submit">Guardar</button>
   </form>

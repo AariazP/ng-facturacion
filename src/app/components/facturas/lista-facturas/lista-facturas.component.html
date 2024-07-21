@@ -1,24 +1,28 @@
-
-<div class="table-container">
-  <p class="rojo">
-    Tabla de facturas
-  </p>
-
-  <div class="buscar">
-    <label for="">Buscar: </label>
-    <input type="text" (keyup)="buscar($event)">
-    
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="rojo">
+        Historial de ventas
+      </h1>
+    </div>
+    <div class="col-12">
+      <div class="buscar">
+        <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar cliente...">
+      </div>
+    </div>
   </div>
-
+</div>
   
-  <div class="separador">
-    <div>
-      <table>
+<div class="container">
+  <div class="table-container">
+    <div class="separador">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>ID</th>
             <th>Num Factura</th>
-            <th>Ruc</th>
+            <th>Rut</th>
             <th>Subtotal</th>
             <th>Igv</th>
             <th>total</th>
@@ -45,6 +49,5 @@
       </table>
     </div>
   </div>
-
-
+  </div>
 </div>

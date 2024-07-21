@@ -35,6 +35,9 @@ th, td {
 th {
   background-color: #fff;
   color: rgb(97, 97, 97); 
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 
@@ -47,9 +50,10 @@ tr:nth-child(even) {
 }
 
 td.eliminar, th.eliminar{
-  text-align: right;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 td button{

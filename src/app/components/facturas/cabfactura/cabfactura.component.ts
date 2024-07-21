@@ -25,7 +25,7 @@ export class CabfacturaComponent implements DoCheck {
   modoOculto: boolean = true;
 
   subtotal: number = 0;
-  porcentajeIva: number = 12;
+  porcentajeIva: number = 19;
   igv: number = 0;
   total: number = 0;
   stockProducto = '';
