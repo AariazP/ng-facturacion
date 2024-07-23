@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { CrearClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
+import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',
@@ -12,9 +13,11 @@ export class NuevoComponent {
 
   formulario: FormGroup;
   existe: boolean = false;
-  constructor(private formBuilder: FormBuilder, private clientesService: ClientesService) {
+  constructor(private formBuilder: FormBuilder,
+      private clientesService: ClientesService,
+      private alertService: AlertService) {
     this.formulario = this.formBuilder.group({
-      rucDni: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(15)]],
+      cedula: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(15)]],
       nombre: ['', [Validators.required, soloTexto()]],
       direccion: ['', [Validators.required]],
       correo: ['', [Validators.required, validarCorreo()]],
@@ -24,33 +27,33 @@ export class NuevoComponent {
 
   onSubmit() {
 
-    if (this.formulario.valid) {
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
+    if (!this.formulario.valid) {
       Object.values(this.formulario.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
-    }
+    } 
+
     let cliente = new CrearClienteDTO();
-    cliente.cedula = this.formulario.get('rucDni')!.value;
-    this.clientesService.enviarDatos(this.formulario.value).subscribe(response => {
-      console.log('Datos enviados correctamente:', response);
-      alert('Datos registrados correctamente');
-      this.formulario.reset();
+    cliente.cedula = this.formulario.get('cedula')!.value;
+    cliente.nombre = this.formulario.get('nombre')!.value;
+    cliente.direccion = this.formulario.get('direccion')!.value;
+    cliente.correo = this.formulario.get('correo')!.value;
+
+    this.clientesService.enviarDatos(cliente).subscribe(response => {
+
+      this.alertService.simpleSuccessAlert("Cliente guardado correctamente");
+      
     }, error => {
-      console.error('Error al enviar datos:', error);
-      alert('Error al enviar datos: los campos no cumplen con los formatos requeridos');	
+      this.alertService.simpleErrorAlert(error.error.mensaje);
     });
+    this.formulario.reset();
   }
 
   validarCodigo(event: any) {
+
     const input = event.target as HTMLInputElement;
-  
-    // Eliminar cualquier validación anterior
-    //this.formulario.get('codigo')!.setErrors(null);
     this.existe = false;
-  
     const delay = 300;
   
     setTimeout(() => {
@@ -59,9 +62,9 @@ export class NuevoComponent {
           this.existe = true;
           console.log('El código ya existe', data.data);
 
-          this.formulario.get('rucDni')!.setErrors({ 'codigoExistente': true });
+          this.formulario.get('cedula')!.setErrors({ 'codigoExistente': true });
         } else {
-          this.formulario.get('rucDni')!.setErrors(null);
+          this.formulario.get('cedula')!.setErrors(null);
           this.existe = false;
         }
       });

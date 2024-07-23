@@ -37,12 +37,12 @@
 
           <tbody>
             <tr *ngFor="let cliente of filtroClientes">
-              <td class="d-none d-md-table-cell">{{ cliente.idCliente }}</td>
-              <td>{{ cliente.rucDni }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.id }}</td>
+              <td>{{ cliente.cedula }}</td>
               <td>{{ cliente.nombre }}</td>
               <td>{{ cliente.direccion }}</td>
               <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
-              <td class="d-none d-md-table-cell">{{ cliente.activo }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
               <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion }}</td>
               <td class="eliminar">
                 <button (click)="eliminarPorId(cliente.idCliente)">❌</button>

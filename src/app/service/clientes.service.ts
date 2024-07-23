@@ -16,8 +16,8 @@ export class ClientesService {
     return this.http.get<any>(`${this.URL_API}/clientes`);
   }
 
-  enviarDatos(datos: any) {
-    return this.http.post(`${this.URL_API}/clientes/guardar`, datos);
+  enviarDatos(cliente: any) {
+    return this.http.post(`${this.URL_API}/clientes/guardar`, cliente);
   }
 
   eliminarPorId(id: number) {

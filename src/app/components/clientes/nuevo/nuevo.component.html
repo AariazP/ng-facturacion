@@ -10,8 +10,8 @@
         <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
           
           <div class="form-group mb-3">
-            <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="rucDni" class="form-control" placeholder="CC" (keyup)="validarCodigo($event)">
-            <small *ngIf="formulario.get('rucDni')?.hasError('cantidadInvalida') && formulario.get('rucDni')!.touched" class="text-danger">
+            <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="cedula" class="form-control" placeholder="Cedula" (keyup)="validarCodigo($event)">
+            <small *ngIf="formulario.get('cedula')?.hasError('cantidadInvalida') && formulario.get('cedula')!.touched" class="text-danger">
               Por favor, ingrese solo números
             </small>
             <small *ngIf="existe" class="text-danger">Cliente ya existe</small>
