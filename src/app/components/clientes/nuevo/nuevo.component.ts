@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ClientesService } from 'src/app/service/clientes.service';
+import { CrearClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',
@@ -31,7 +32,8 @@ export class NuevoComponent {
       });
       return;
     }
-
+    let cliente = new CrearClienteDTO();
+    cliente.cedula = this.formulario.get('rucDni')!.value;
     this.clientesService.enviarDatos(this.formulario.value).subscribe(response => {
       console.log('Datos enviados correctamente:', response);
       alert('Datos registrados correctamente');

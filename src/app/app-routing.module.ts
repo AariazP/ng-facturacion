@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: 'app',
     component: MenuComponent,
-    canActivate: [AuthGuard],
+    
     loadChildren: () => import('./page/page.module').then(m => m.PageModule)
   },
   

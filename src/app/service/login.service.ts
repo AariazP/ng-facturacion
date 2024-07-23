@@ -1,40 +1,24 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../env/env';
 import { Observable, tap } from 'rxjs';
+import { AlertService } from '../utils/alert.service';
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private URL_API: string = environment.ApiUrl + '/facturacion/login';
+  private URL_API: string = environment.ApiUrl;
 
   constructor(private http: HttpClient) { }
 
   
 
   login(username: string, password: string): Observable<any> {
+    let params = new HttpParams()
+      .set('username', username)
+      .set('password', password);
 
-    const params = { username: username, password: password };
-
-     return this.http.get<any>(this.URL_API, { 
-      params: params 
-    }).pipe(
-        tap( response => {
-          if(response.code == 200){
-            localStorage.setItem('token', response.data);
-          }
-          
-        }
-      )
-     );
-     
+    return this.http.get<any>(this.URL_API+"/usuarios/login", { params });
   }
-
-  // isLoggedIn(): boolean {
-  //   // return !!localStorage.getItem('token');
-  //   return false
-  // }
-
-  
 
 }

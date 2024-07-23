@@ -30,7 +30,6 @@ export class EditarClienteComponent {
   
     });
 
-    console.log("constructor");
     
   }
 
@@ -38,7 +37,6 @@ export class EditarClienteComponent {
     if (changes['personaEditar'] && this.personaEditar) {
       this.personaForm.patchValue(this.personaEditar);
     }
-    console.log("onchange");
   }
   
 
