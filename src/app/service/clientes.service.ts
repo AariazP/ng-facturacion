@@ -25,8 +25,8 @@ export class ClientesService {
     return this.http.delete(url);
   }
 
-  actualizar(datos: any) {
-    return this.http.put(`${this.URL_API}/clientes/actualizar`, datos);
+  actualizar(datos: any, id: number) {
+    return this.http.put(`${this.URL_API}/clientes/actualizar/${id}`, datos);
   }
   verificarExistencia(cod: string) {
     return this.http.get<ResponseData>(`${this.URL_API}/clientes/verificar-cliente/${cod}`);

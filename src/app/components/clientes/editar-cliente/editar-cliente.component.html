@@ -2,17 +2,17 @@
   <form [formGroup]="personaForm" (ngSubmit)="guardar()">
     
     <div class="form-group">
-      <label for="rucDni">CC:</label>
+      <label for="Cedula">Cedula:</label>
       <input 
         maxlength="15" 
         type="text" 
         class="form-control" 
-        formControlName="rucDni" 
-        placeholder="Dni"
+        formControlName="cedula" 
+        placeholder="Cedula"
       >
       <span 
         class="text-danger" 
-        *ngIf="personaForm.get('rucDni') && personaForm.get('rucDni')!.errors && personaForm.get('rucDni')!.touched"
+        *ngIf="personaForm.get('cedula') && personaForm.get('cedula')!.errors && personaForm.get('cedula')!.touched"
       >
         Por favor, ingrese solo números
       </span>
@@ -51,22 +51,6 @@
     </div>
 
     <div class="form-group">
-      <label for="fechaCreacion">Fecha Creacion:</label>
-      <input 
-        class="form-control" 
-        type="date" 
-        formControlName="fechaCreacion" 
-        placeholder="Fecha Creacion"
-      >
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('fechaCreacion')?.invalid && (personaForm.get('fechaCreacion')?.dirty || personaForm.get('fechaCreacion')?.touched)"
-      >
-        Por favor, ingrese una fecha válida.
-      </span>
-    </div>
-
-    <div class="form-group">
       <label for="correo">Correo:</label>
       <input 
         type="email" 
@@ -89,8 +73,8 @@
         id="activo" 
         formControlName="activo"
       >
-        <option [selected]="true" value="1">Si</option>
-        <option value="0">No</option>
+        <option [selected]="true" value=true>Si</option>
+        <option value=false>No</option>
       </select>
       <span 
         class="text-danger" 

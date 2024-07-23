@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class AlertService {
+  
 
   constructor() { }
 
@@ -25,6 +26,29 @@ export class AlertService {
       text: message,
       icon: "error"
     });
+  }
+
+  confirmAlert(title:string,message: string): Promise<boolean> {
+    return Swal.fire({
+      title: title,
+      text: message,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, estoy seguro",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+  }
+
+  simpleInfoAlert(message: string) {
+    Swal.fire({
+      title: "Remates la 7ma",
+      text: message,
+      icon: "info"
+    }); 
   }
 
 }

@@ -17,6 +17,9 @@
 </div>
 
 <div class="container">
+  <div>
+    <p class="rojo">Se han encontrado {{ totalClientes }} clientes.</p>
+  </div>
   <div class="table-container">
     <div class="separador">
       <div class="table-responsive">
@@ -43,9 +46,9 @@
               <td>{{ cliente.direccion }}</td>
               <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
               <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
-              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
               <td class="eliminar">
-                <button (click)="eliminarPorId(cliente.idCliente)">❌</button>
+                <button (click)="eliminarPorId(cliente.id)">❌</button>
                 <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
               </td>
             </tr>
@@ -61,7 +64,5 @@
       </div>
     </div>
   </div>
-  <div>
-    <p class="rojo">Se han encontrado {{ totalClientes }} clientes.</p>
-  </div>
+  
 </div>

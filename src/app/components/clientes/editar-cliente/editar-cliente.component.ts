@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { Router } from '@angular/router';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { ActualizarClienteDTO } from 'src/app/DTO/cliente/ActualizarClienteDTO';
+import { AlertService } from 'src/app/utils/alert.service';
 
 
 @Component({
@@ -14,14 +16,18 @@ export class EditarClienteComponent {
 
   
   @Input() personaEditar: any = {};
+  idCliente!: number;
   @Output() modoOculto = new EventEmitter();
   personaForm: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private clienteService: ClientesService) {
+  constructor(private fb: FormBuilder, private clienteService: ClientesService, 
+    private alert: AlertService
+  ) {
+    this.idCliente = this.personaEditar.id;
     this.personaForm = this.fb.group({
       idCliente: '',
-      rucDni: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(15)]],
+      cedula: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(15)]],
       nombre: ['', [Validators.required, soloTexto()]],
       direccion: ['', [Validators.required,]],
       correo: ['', [Validators.required, validarCorreo()]],
@@ -42,31 +48,28 @@ export class EditarClienteComponent {
 
   guardar(): void {
 
-    const valoresFormulario = this.personaForm.value;
-    console.log("Persona ", this.personaEditar?.nombre);
-    console.log("Persona editada", valoresFormulario);
-    
-    if (this.personaForm.valid) {
-      
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
+    if (!this.personaForm.valid) {
       
       Object.values(this.personaForm.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
-    }
+    } 
+
+    let cliente = new ActualizarClienteDTO();
+    cliente.cedula = this.personaForm.get('cedula')!.value;
+    cliente.nombre = this.personaForm.get('nombre')!.value;
+    cliente.direccion = this.personaForm.get('direccion')!.value;
+    cliente.correo = this.personaForm.get('correo')!.value;
+    cliente.activo = this.personaForm.get('activo')!.value; 
     
-    this.clienteService.actualizar(valoresFormulario).subscribe(
+    this.clienteService.actualizar(cliente, this.personaEditar.id).subscribe(
       response => {
-        console.log('Persona editada correctamente:', response);
-        alert('Cliente editado correctamente');
-        // window.location.reload();
+        this.alert.simpleSuccessAlert('Cliente editado correctamente');
         this.modoOculto.emit();
       },
       error => {
-        console.error('Error al editar persona:', error);
-        alert('Error al editar cliente: los campos no cumplen con los formatos requeridos');	
+        this.alert.simpleErrorAlert(error.error.mensaje);
       }
     )
   }

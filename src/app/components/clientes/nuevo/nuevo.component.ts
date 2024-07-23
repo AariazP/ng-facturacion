@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ClientesService } from 'src/app/service/clientes.service';
-import { CrearClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
+import { CrearClienteDTO } from 'src/app/DTO/cliente/CrearClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-nuevo',
@@ -52,20 +52,23 @@ export class NuevoComponent {
 
   validarCodigo(event: any) {
 
-    const input = event.target as HTMLInputElement;
+    const input = this.formulario.get('cedula')!.value
     this.existe = false;
     const delay = 300;
   
+    if(input == null || input=='') return;
     setTimeout(() => {
-      this.clientesService.verificarExistencia(input.value).subscribe(data => {
-        if ( parseInt(data.data) > 0 ) {	
+      this.clientesService.verificarExistencia(input).subscribe(data => {
+        if ( data ) {	
+          
           this.existe = true;
-          console.log('El código ya existe', data.data);
-
           this.formulario.get('cedula')!.setErrors({ 'codigoExistente': true });
+
         } else {
+
           this.formulario.get('cedula')!.setErrors(null);
           this.existe = false;
+
         }
       });
     }, delay);

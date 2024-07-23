@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ClientesService } from 'src/app/service/clientes.service';
+import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-home-cliente',
   templateUrl: './home-cliente.component.html',
@@ -13,7 +14,9 @@ export class HomeClienteComponent {
   modoOculto: boolean = true;
   totalClientes: number = 0;
 
-  constructor(private clientesService: ClientesService) {
+  constructor(private clientesService: ClientesService,
+    private alert: AlertService
+  ) {
   }
   ngOnInit() {
    this.getData();
@@ -33,34 +36,42 @@ export class HomeClienteComponent {
   }
   
   eliminarPorId(id: number) {
-    console.log(id)
-    this.clientesService.eliminarPorId(id).subscribe(
-      (response) => {
-      console.log('Persona eliminada correctamente');
-      this.getData();
-    }, error => {
-      console.error('Error al eliminar persona:', error);
+
+    
+    this.alert.confirmAlert('¿Está seguro de eliminar este cliente?', 'Este cambio no se puede revertir').then((result) => {
+
+      if(result){
+        this.clientesService.eliminarPorId(id).subscribe(
+          (response) => {
+            if(response){
+              this.alert.simpleSuccessAlert('Cliente eliminado correctamente');
+            }
+          this.getData();
+        }, error => {
+          this.alert.simpleErrorAlert(error.error.mensaje);
+        });
+      }else{
+        this.alert.simpleInfoAlert('Operación cancelada');3
+      }
+
     });
+
+    
   }
+
   buscar(texto: Event) {
     const input = texto.target as HTMLInputElement;
-    console.log(input.value);
-    console.log(this.clientes);
     this.filtroClientes = this.clientes.filter( (cleinte: any) =>
-      cleinte.idCliente.toString().includes(input.value.toLowerCase()) ||
-      cleinte.rucDni.toLowerCase().includes(input.value.toLowerCase()) ||
-      cleinte.nombre.toLowerCase().includes(input.value.toLowerCase()) ||
-      cleinte.direccion.toLowerCase().includes(input.value.toLowerCase()) ||
-      cleinte.correo.toLowerCase().includes(input.value.toLowerCase())
+      cleinte.id.toString().includes(input.value.toLowerCase()) ||
+      cleinte.cedula.toLowerCase().includes(input.value.toLowerCase()) ||
+      cleinte.nombre.toLowerCase().includes(input.value.toLowerCase())
     );
-    console.log(this.filtroClientes)
-    this.updateClienteCount(); // Actualiza el conteo después de filtrar
+    this.updateClienteCount(); 
   }
 //
   toggleModoEdicion(persona: any) {
     this.personaEditar = persona;
-    this.editarModoOcuto()
-    console.log("algoooo*", this.personaEditar);
+    this.editarModoOcuto();
   }
 
   editarModoOcuto(){
