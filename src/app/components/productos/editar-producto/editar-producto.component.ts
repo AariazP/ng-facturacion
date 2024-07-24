@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductoService } from 'src/app/service/productos.service';
 import { Router } from '@angular/router';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { ActualizarProductoDTO } from 'src/app/DTO/producto/ActualizarProductoDTO';
+import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-editar-producto',
   templateUrl: './editar-producto.component.html',
@@ -17,58 +19,54 @@ export class EditarProductoComponent {
   personaForm: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private productoService: ProductoService) {
+  constructor(private fb: FormBuilder,
+     private productoService: ProductoService, 
+    private alert: AlertService) {
     this.personaForm = this.fb.group({
       idProducto: '',
       codigo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
-      nombre: ['', [Validators.required, soloTexto()]],
+      nombre: ['', [Validators.required]],
       precio: ['', [Validators.required, validarDecimalConDosDecimales()]],
-      stock: ['', [Validators.required, validarDecimalConDosDecimales()]],
+      cantidad: ['', [Validators.required, validarDecimalConDosDecimales()]],
       activo: [1],
       fechaCreacion: ['', [Validators.required]],
     });
 
-    console.log("constructor", this.productosEditar);
-    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productosEditar'] && this.productosEditar) {
       this.personaForm.patchValue(this.productosEditar);
     }
-    console.log("onchange", this.productosEditar);
   }
   
 
   guardar(): void {
-
-    const valoresFormulario = this.personaForm.value;
-    console.log("Persona ", this.productosEditar?.nombre);
-    console.log("Persona editada", valoresFormulario);
     
-    if (this.personaForm.valid) {
-      
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
-      
+    let productoActualizar = new ActualizarProductoDTO();
+    productoActualizar.codigo = this.productosEditar.codigo;
+    productoActualizar.nombre = this.personaForm.get('nombre')!.value;
+    productoActualizar.precio = this.personaForm.get('precio')!.value;
+    productoActualizar.cantidad = this.personaForm.get('cantidad')!.value;
+    productoActualizar.activo = this.personaForm.get('activo')!.value == 1;
+
+    if (!this.personaForm.valid) {
       Object.values(this.personaForm.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
-    }
-    
-    this.productoService.actualizar(valoresFormulario).subscribe(
+    } 
+    this.productoService.actualizar(productoActualizar).subscribe(
       response => {
-        console.log('Persona editada correctamente:', response);
-        alert('Producto editado correctamente');
+        
+        this.alert.simpleSuccessAlert('Producto actualizado correctamente');
         this.modoOculto.emit();
-        // window.location.reload();
       
       },
       error => {
-        console.error('Error al editar producto:', error);
-        alert('Error al editar producto: los campos no cumplen con los formatos requeridos');	
+        this.alert.simpleErrorAlert(error.error.mensaje);	
       }
+
     )
   }
 

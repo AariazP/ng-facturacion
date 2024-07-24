@@ -27,7 +27,7 @@
             <th>Código</th>
             <th>Nombre</th>
             <th>Precio</th>
-            <th>Stock</th>
+            <th>Cantidad</th>
             <th>Activo</th>
             <th class="d-none d-md-table-cell">FechaCreacion</th>
             <th class="eliminar">Acciones</th>
@@ -37,16 +37,16 @@
 
         <tbody>
           <!-- <tr *ngFor="let persona of personas"> -->
-          <tr *ngFor="let producto of filtroProductos">
-            <td>{{ producto.idProducto }}</td>
+          <tr *ngFor="let producto of filtroProductos; let i=index">
+            <td>{{ i+1 }}</td>
             <td>{{ producto.codigo }}</td>
             <td >{{ producto.nombre }}</td>
-            <td>{{ producto.precio }}</td>
-            <td>{{ producto.stock }}</td>
-            <td>{{ producto.activo }}</td>
-            <td class="d-none d-md-table-cell">{{ producto.fechaCreacion }}</td>
+            <td>{{ producto.precio}}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>{{ producto.activo == true ? "Sí": "No" }}</td>
+            <td class="d-none d-md-table-cell">{{ producto.fechaCreacion | date }}</td>
             <td class="eliminar">
-              <button (click)="eliminarPorId(producto.idProducto)">❌</button>
+              <button (click)="eliminarPorId(producto.codigo)">❌</button>
               <button class="editar" (click)="toggleModoEdicion(producto)">✏️</button>
             </td>
           </tr>

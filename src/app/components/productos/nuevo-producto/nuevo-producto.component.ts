@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ProductoService } from 'src/app/service/productos.service';
+import { CrearProductoDTO } from 'src/app/DTO/producto/CrearProductoDTO';
+import { AlertService } from 'src/app/utils/alert.service';
 
 @Component({
   selector: 'app-nuevo-producto',
@@ -13,7 +15,9 @@ export class NuevoProductoComponent {
   formulario: FormGroup;
   existe: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private productoService: ProductoService) {
+  constructor(private formBuilder: FormBuilder, private productoService: ProductoService, 
+    private alert: AlertService
+  ) {
     this.formulario = this.formBuilder.group({
       codigo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
       nombre: ['', [Validators.required]],
@@ -25,23 +29,29 @@ export class NuevoProductoComponent {
 
   onSubmit() {
 
-    if (this.formulario.valid) {
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
+    if (!this.formulario.valid) {
       Object.values(this.formulario.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
     }
 
-    this.productoService.enviarDatos(this.formulario.value).subscribe(response => {
-      console.log('Datos enviados correctamente:', response);
-      alert('Datos registrados correctamente');
-      this.formulario.reset();
-    }, error => {
-      console.error('Error al enviar datos:', error);
-      alert('Error al enviar datos: los campos no cumplen con los formatos requeridos');	
-    });
+    let producto = new CrearProductoDTO();
+    producto.codigo = this.formulario.get('codigo')!.value;
+    producto.nombre = this.formulario.get('nombre')!.value;
+    producto.precio = this.formulario.get('precio')!.value;
+    producto.cantidad = this.formulario.get('stock')!.value;
+    producto.activo = this.formulario.get('activo')!.value;
+
+    console.log(producto);
+
+    this.productoService.enviarDatos(producto).subscribe(
+      response => {
+        this.alert.simpleSuccessAlert('Producto guardado correctamente');
+        this.formulario.reset();
+      }, error => {
+        this.alert.simpleErrorAlert(error.error.mensaje);
+      });
   }
 
   validarCodigo(event: any) {
