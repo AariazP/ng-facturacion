@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ProductoService } from 'src/app/service/productos.service';
@@ -10,10 +10,11 @@ import { AlertService } from 'src/app/utils/alert.service';
   templateUrl: './nuevo-producto.component.html',
   styleUrls: ['./nuevo-producto.component.css']
 })
-export class NuevoProductoComponent {
+export class NuevoProductoComponent implements OnInit {
 
   formulario: FormGroup;
   existe: boolean = false;
+  tipoImpuesto!: string[];
 
   constructor(private formBuilder: FormBuilder, private productoService: ProductoService, 
     private alert: AlertService
@@ -23,8 +24,18 @@ export class NuevoProductoComponent {
       nombre: ['', [Validators.required]],
       precio: [''],
       stock: [''],
+      impuesto: [''],
       activo: [1],
     });
+  }
+  ngOnInit(): void {
+    this.productoService.getTipoImpuesto().subscribe(
+      data => {
+        this.tipoImpuesto = data;
+      }, 
+      error => {
+        console.error(error);
+      });
   }
 
   onSubmit() {
@@ -42,8 +53,7 @@ export class NuevoProductoComponent {
     producto.precio = this.formulario.get('precio')!.value;
     producto.cantidad = this.formulario.get('stock')!.value;
     producto.activo = this.formulario.get('activo')!.value;
-
-    console.log(producto);
+    producto.impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
 
     this.productoService.enviarDatos(producto).subscribe(
       response => {

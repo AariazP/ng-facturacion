@@ -4,4 +4,5 @@ export class CrearProductoDTO {
     precio!: number;
     cantidad!: number;
     activo!: boolean;
+    impuesto!: string;
 }

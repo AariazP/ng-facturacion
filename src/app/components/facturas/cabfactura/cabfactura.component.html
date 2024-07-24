@@ -4,19 +4,12 @@
     <label for="">Productos</label>
   
   <div [formGroup]="productosForm">
-      <!-- <div>
-        <input type="number" formControlName="codProducto" placeholder="Código del producto">
-        <span *ngIf="productosForm.get('codProducto')!.invalid && (productosForm.get('codProducto')!.dirty || productosForm.get('codProducto')!.touched)">
-          Por favor, ingrese un valor válido.
-        </span>
-      </div> -->
-
     <div class="row">
           <div class="col-lg-3">
             <p>Id producto:</p>
             <input (focus)="listarProductos()" 
             type="text" list="productos" 
-            (change)="seleccionarProdcuto($event.target)" 
+            (input)="seleccionarProducto()" 
             formControlName="codProducto" 
             placeholder="productos"
             >
@@ -68,10 +61,6 @@
           </div>
       </div>
   </div>
-
-
-
-
 
   <div class="separador">
         <div class="table-responsive">

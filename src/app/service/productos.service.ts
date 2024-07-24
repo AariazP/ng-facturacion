@@ -7,6 +7,7 @@ import { ResponseData } from '../interface/interfaces';
   providedIn: 'root'
 })
 export class ProductoService {
+  
 
   private URL_API: string = environment.ApiUrl;
 
@@ -14,6 +15,10 @@ export class ProductoService {
 
   getData(): Observable<any> {
     return this.http.get<any>(`${this.URL_API}/productos`);
+  }
+
+  getTipoImpuesto(): Observable<string[]>  {
+    return this.http.get<string[]>(`${this.URL_API}/productos/tipos-impuestos`);
   }
 
   enviarDatos(datos: any) {

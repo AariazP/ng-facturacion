@@ -209,8 +209,9 @@ export class CabfacturaComponent implements DoCheck {
       this.productos = data;
     })
   }
-  seleccionarProdcuto(idProducto: any): void{
-    this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto.value);
+  seleccionarProducto(): void{
+    let idProducto = this.productosForm.get('codProducto')?.value
+    this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
     this.stockProducto = this.productoSeleccionado.stock;
     this.productosForm.patchValue({
       nombreProducto: this.productoSeleccionado.nombre
@@ -239,8 +240,6 @@ export class CabfacturaComponent implements DoCheck {
       this.formulario.get('razonSocial')?.setValidators(Validators.required);
       this.formulario.get('correo')?.setValidators(Validators.required);
     }
-
-    console.log("----prod select", this.productoSeleccionado)
 
     if (this.productoSeleccionado) {
       this.productosForm.patchValue({
