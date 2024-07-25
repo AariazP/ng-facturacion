@@ -9,8 +9,6 @@ import { ResponseData } from '../interface/interfaces';
 export class ProductoService {
   
   
-  
-
   private URL_API: string = environment.ApiUrl;
 
   constructor(private http: HttpClient) { }
@@ -49,5 +47,12 @@ export class ProductoService {
 
   verificarActivo(codigo: any) {
     return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-activo/${codigo}`); 
+  }
+
+  fueEliminado(value: string) {
+    return this.http.get<any>(`${this.URL_API}/productos/fue-eliminado/${value}`);
+  }
+  recuperarProducto(input: string) {
+    return this.http.get<any>(`${this.URL_API}/productos/recuperar-producto/${input}`);
   }
 }

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../env/env';
 import { HttpClient } from '@angular/common/http';
+import { CrearFacturaDTO } from '../DTO/factura/CrearFacturaDTO';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturasService {
+  
 
   private URL_API: string = environment.ApiUrl;
 
@@ -29,5 +31,8 @@ export class FacturasService {
     return this.http.delete(`${this.URL_API}/factura/${id}`);
   }
 
+  guardarFactura(factura: CrearFacturaDTO) {
+    return this.http.post(`${this.URL_API}/factura/guardar`, factura);
+  }
 
 }

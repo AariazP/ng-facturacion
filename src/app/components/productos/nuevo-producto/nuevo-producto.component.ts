@@ -4,6 +4,7 @@ import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app
 import { ProductoService } from 'src/app/service/productos.service';
 import { CrearProductoDTO } from 'src/app/DTO/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-nuevo-producto',
@@ -66,9 +67,6 @@ export class NuevoProductoComponent implements OnInit {
 
   validarCodigo(event: any) {
     const input = event.target as HTMLInputElement;
-  
-    // Eliminar cualquier validación anterior
-    //this.formulario.get('codigo')!.setErrors(null);
     this.existe = false;
   
     const delay = 300;
@@ -76,8 +74,37 @@ export class NuevoProductoComponent implements OnInit {
     setTimeout(() => {
       this.productoService.verificarExistencia(input.value).subscribe(data => {
         if (data) {
-          this.existe = true;
 
+          this.productoService.fueEliminado(input.value).subscribe(
+            response => {
+              if (response) {
+                Swal.fire({
+                  title: "Este producto fue eliminado antes",
+                  text: "¿Te gustaría recuperarlo?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Sí, recuperar", 
+                  cancelButtonText: "No, cancelar"
+                }).then((result) => {
+                  if (result.isConfirmed) {
+  
+                    this.productoService.recuperarProducto(input.value).subscribe(response => {
+                      Swal.fire({
+                        title: "Recuperado!",
+                        text: "El producto ha sido recuperado.",
+                        icon: "success"
+                      });
+                    });
+                  }
+                });
+              }
+            });
+
+
+
+          this.existe = true;
           this.formulario.get('codigo')!.setErrors({ 'codigoExistente': true });
         } else {
           //this.formulario.get('codigo')!.setErrors(null);

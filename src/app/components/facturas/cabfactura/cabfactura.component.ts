@@ -1,6 +1,8 @@
 import { Component, DoCheck, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs';
+import { CrearFacturaDTO } from 'src/app/DTO/factura/CrearFacturaDTO';
+import { DetalleFacturaDTO } from 'src/app/DTO/factura/DetalleFacturaDTO';
 import { ClienteComponent } from 'src/app/page/cliente/cliente.component';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
@@ -67,67 +69,48 @@ export class CabfacturaComponent implements DoCheck {
 
   onSubmit() {
 
-    if (this.formulario.valid ) {
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
+    if (!this.formulario.valid ) {
       this.formulario.markAllAsTouched();
       return;
-    }
- 
+    } 
 
-    console.log('Etrasssx...');
+    let factura = new CrearFacturaDTO();
+    factura.cliente = this.formulario.get('cliente')!.value;
 
-    this.formulario.patchValue({
-      ruc: this.clienteSeleccionado.rucDni,
-      razonSocial: this.clienteSeleccionado.nombre,
-      correo: this.clienteSeleccionado.correo
-    });
-
-    const datosEnviar = {
-      "numeroFactura": this.formulario.value.numFactura,
-      "rucCliente": this.formulario.value.ruc,
-      "subtotal": this.subtotal,
-      "igv": this.igv,
-      "total": this.total
-    };
-    console.log("Datos a enviar", datosEnviar)
-
-    this.facturasService.guardarCabecera(datosEnviar)
-    .pipe(
-      switchMap( (respuesta: any) => {
-      console.log(this.listProductos)
-      const productosParaGuardar = this.listProductos.map(producto => {
-        return {
-          codigoProducto: producto.codProducto,
-          cantidad: producto.cantidadProducto,
-          pkCabFactura: respuesta.idFcatura,
-        };
+    this.clienteService.verificarExistencia(factura.cliente).subscribe(
+      response => {
+        if(!response){
+          this.alert.simpleErrorAlert('El cliente con esa cedula no se ha encontrado');
+          return;
+        }
       });
-      return this.facturasService.guardarDetalles(productosParaGuardar);
-      }),
-      switchMap((responseDetalles: any) => {
-        const productosDisminuirStock = this.listProductos.map(producto => {
-          return {
-            "codigoProducto": producto.codProducto,
-            "cantidad": producto.cantidadProducto
-          };
-        });
-        console.log("stock a disminuir", productosDisminuirStock)
-        return this.productoService.disminuirStock(productosDisminuirStock);
-      })
-      
-      )
-    .subscribe(response => {
-      console.log('Datos enviados correctamente:', response);
-      alert('Datos registrados correctamente');
-      this.formulario.reset();
-      this.generarFactura();
-      this.clienteSeleccionado = null;
-      this.resetListProductos();
-    }, error => {
-      console.error('Error al enviar datos:', error);
-      alert('Error al enviar datos: los campos no cumplen con los formatos requeridos');	
+
+
+    factura.usuario = Number(localStorage.getItem('id'));
+    
+    this.listProductos.map(producto => {
+      let detalleFactura =  new DetalleFacturaDTO();
+      detalleFactura.cantidad = producto.cantidadProducto;
+      detalleFactura.codigoProducto = producto.codProducto
+      factura.agregarDetalle(detalleFactura);
     });
+
+    
+    this.facturasService.guardarFactura(factura).subscribe(
+      (resp: any) => {
+        this.alert.simpleSuccessAlert('Factura guardada correctamente');
+      },
+      error => {
+        this.alert.simpleErrorAlert(error.error.mensaje);
+      }
+    )
+
+
+    
+    this.formulario.reset();
+    this.generarFactura();
+    this.clienteSeleccionado = null;
+    this.resetListProductos();
   }
 
   resetListProductos(): void {
