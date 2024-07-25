@@ -1,14 +1,11 @@
-<div class="container mt-3">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-      <div class="formulario p-4">
-        <div class="encabezado">
+<div class="container">
+  <div class="formulario">
+    <div class="encabezado">
           <h1 class="nota">Registro de clientes</h1>
-          <p class="text-muted mb-3">Recuerde ingresar todos los campos</p>
+          <p class="text-muted mb-2">Recuerde ingresar todos los campos</p>
       </div>
-        <p class="datos">Datos:</p>
         <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
-          
+          <p class="datos">Cédula:</p>
           <div class="form-group mb-3">
             <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="cedula" class="form-control" placeholder="Cedula" (keyup)="validarCodigo($event)">
             <small *ngIf="formulario.get('cedula')?.hasError('cantidadInvalida') && formulario.get('cedula')!.touched" class="text-danger">
@@ -16,21 +13,22 @@
             </small>
             <small *ngIf="existe" class="text-danger">Cliente ya existe</small>
           </div>
-
+          <p class="datos">Nombre:</p>
           <div class="form-group mb-3">
             <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre">
             <small *ngIf="formulario.get('nombre')?.invalid && formulario.get('nombre')!.touched" class="text-danger">
               Por favor, ingrese solo texto
             </small>
           </div>
-
+          <p class="datos">Dirección:</p>
           <div class="form-group mb-3">
             <input type="text" formControlName="direccion" class="form-control" placeholder="Direccion">
             <small *ngIf="formulario.get('direccion')!.invalid && (formulario.get('direccion')?.dirty || formulario.get('direccion')?.touched)" class="text-danger">
               Por favor, ingrese un valor válido.
             </small>
           </div>
-
+          <p class="datos">Correo:</p>
+          <p class="datos"></p>
           <div class="form-group mb-3">
             <input type="email" formControlName="correo" class="form-control" placeholder="Correo">
             <small *ngIf="formulario.get('correo')!.invalid && (formulario.get('correo')!.dirty || formulario.get('correo')!.touched)" class="text-danger">
@@ -51,7 +49,5 @@
 
           <button type="submit" class="btn btn-primary btn-block ">Guardar Datos</button>
         </form>
-      </div>
-    </div>
   </div>
 </div>

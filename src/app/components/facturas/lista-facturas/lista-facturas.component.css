@@ -4,11 +4,6 @@
   background-color: rgb(67, 164, 255);
   border-radius: 10px;
 }
-
-.container{
-  padding: 10px;
-}
-
 .table-container .separador{
   margin-top: 20px;
 }
@@ -130,6 +125,9 @@ div.pup-up span{
   cursor: pointer;
 }
 
+.temporal{
+  padding: 20px;
+}
 
 .table-container .pup-up.oculto{
   display: none;
