@@ -1,0 +1,61 @@
+import { Component } from '@angular/core';
+import { CardComponent } from 'src/app/components/card/card.component'; 
+
+@Component({
+  selector: 'app-principal',
+  templateUrl: './principal.component.html',
+  styleUrls: ['./principal.component.css']
+})
+export class PrincipalComponent {
+  cards = [
+    {
+      title: 'Vender',
+      description: 'Aquí puede realizar una venta directa, relacionando un cliente con un producto específico.',
+      imageSrc: 'https://img.icons8.com/3d-fluency/94/receive-cash.png',
+      imageAlt: 'receive-cash',
+      link: '/app/factura'
+    },
+    {
+      title: 'Ver inventario',
+      description: 'Aquí puede gestionar a detalle toda la informacion relacionada con los productos.',
+      imageSrc: 'https://img.icons8.com/fluency/96/warehouse-1.png',
+      imageAlt: 'warehouse-1',
+      link: '/app/producto'
+    },
+    {
+      title: 'Mis clientes',
+      description: 'Aquí puede gestionar y ver a detalle toda la informacion relacionada con los clientes.',
+      imageSrc: 'https://img.icons8.com/3d-fluency/94/conference-call--v2.png',
+      imageAlt: 'conference-call--v2',
+      link: '/app/cliente'
+    },
+    {
+      title: 'Historial de ventas',
+      description: 'Aquí puede gestionar y ver un historial detallado de todas las ventas que ha realizado.',
+      imageSrc: 'https://img.icons8.com/fluency/96/financial-tasks.png',
+      imageAlt: 'financial-tasks',
+      link: '/app/lista-factura'
+    },
+    {
+      title: 'Caja',
+      description: 'Tomar el controlo de los ingresos y egresos de la caja menor.',
+      imageSrc: 'https://img.icons8.com/3d-fluency/94/cash-register.png',
+      imageAlt: 'cash-register',
+      link: '/app/cliente'
+    },
+    {
+      title: 'Facturación',
+      description: 'Aquí podrá ver las facturas que se han generado.',
+      imageSrc: 'https://img.icons8.com/fluency/96/cash-receipt.png',
+      imageAlt: 'cash-receipt',
+      link: '/app/cliente'
+    },
+    {
+      title: 'Facturación Electrónica',
+      description: 'Aquí podrá ver las facturas electrónicas que se han generado.',
+      imageSrc: 'https://img.icons8.com/3d-fluency/94/receipt.png',
+      imageAlt: 'receipt',
+      link: '/app/cliente'
+    }
+  ];
+}

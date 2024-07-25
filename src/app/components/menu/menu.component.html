@@ -19,57 +19,46 @@
                   Funciones del sistema
               </li>
               <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">
-                      📊 Principal
-                  </a>
-              </li>
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/principal" class="sidebar-link">
+                    <img src="https://img.icons8.com/3d-fluency/94/shop.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                    Principal
+                </a>
+            </li>
+            
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/cliente" class="sidebar-link">
-                  📁 Clientes</a>
+                  <img src="https://img.icons8.com/?size=100&id=qDNClnB7Z4Ky&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Clientes</a>
               </li>
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/producto" class="sidebar-link">
-                  🛒 Productos</a>
+                  <img src="https://img.icons8.com/?size=100&id=8chNl15hy6jY&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Inventario de productos</a>
               </li>
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/factura" class="sidebar-link">
-                  📝 Factura</a>
+                  <img src="https://img.icons8.com/?size=100&id=MnYyIWSrPXYw&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Vender</a>
               </li>
               <li class="sidebar-item">
               <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/lista-factura" class="sidebar-link">
-                📋 Ver facturas</a>
+                <img src="https://img.icons8.com/?size=100&id=MoTw0quaSX5m&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                Historial Ventas</a>
               </li>
               <li class="sidebar-item">
-                  <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#pages"
-                      aria-expanded="false" aria-controls="pages">
-                      <i class="fa-regular fa-file-lines pe-2"></i>
-                      Catálogos
-                  </a>
-                  <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                      <li class="sidebar-item">
-                          <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/cliente" class="sidebar-link">
-                            📁 Clientes</a>
-                      </li>
-                      <li class="sidebar-item">
-                          <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/producto" class="sidebar-link">
-                            🛒 Productos</a>
-                      </li>
-                  </ul>
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/factura" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=EP15mgi56L3K&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Facturación</a>
               </li>
               <li class="sidebar-item">
-                  <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard"
-                      aria-expanded="false" aria-controls="dashboard">
-                      <i class="fa-solid fa-sliders pe-2"></i>
-                      Documentos
-                  </a>
-                  <ul id="dashboard" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                      <li class="sidebar-item">
-                          <a href="#" class="sidebar-link">📝 Factura</a>
-                      </li>
-                      <li class="sidebar-item">
-                          <a href="#" class="sidebar-link">📋 Ver facturas</a>
-                      </li>
-                  </ul>
+              <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/lista-factura" class="sidebar-link">
+                <img src="https://img.icons8.com/?size=100&id=hu1lFtHTQdQV&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                Facturación Electrónica</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/factura" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=xemEUfeHCaTj&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Caja</a>
               </li>
               <li class="sidebar-header">
                   Desarrollado por
@@ -78,22 +67,26 @@
                   <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#about"
                       aria-expanded="false" aria-controls="pages">
                       <i class="fa-regular fa-file-lines pe-2"></i>
+                      <img src="https://img.icons8.com/?size=100&id=N5H8YRvduAGy&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
                       Sobre Nosotros
                   </a>
                   <ul id="about" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                       <li class="sidebar-item">
                           <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/cliente" class="sidebar-link">
-                            🧑🏻 Daniel</a>
+                          <img src="https://img.icons8.com/3d-fluency/94/hard-working.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                            Daniel</a>
                       </li>
                       <li class="sidebar-item">
                           <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/producto" class="sidebar-link">
-                            🧔🏼 Alejandro</a>
+                            <img src="https://img.icons8.com/3d-fluency/94/hard-working.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                            Alejandro</a>
                       </li>
                   </ul>
               </li>
               <li class="sidebar-item">
                 <a (click)="salir()" class="sidebar-link">
-                  ✖️ Salir</a>
+                  <img src="https://img.icons8.com/?size=100&id=QCDCTmelsd7x&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Salir</a>
               </li>
           </ul>
       </div>
@@ -108,8 +101,8 @@
         </button>
           <h2 class="empresa">Remates la 7ma</h2>
         </nav>
-      <main class="content px-3 py-2">
-          <div class="container-fluid">
+      <main>
+          <div>
             <router-outlet></router-outlet>
           </div>
       </main>

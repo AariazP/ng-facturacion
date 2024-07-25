@@ -20,6 +20,8 @@ import { LoginComponent } from './page/login/login.component';
 import { PageModule } from './page/page.module';
 import { CabfacturaComponent } from './components/facturas/cabfactura/cabfactura.component';
 import { ListaFacturasComponent } from './components/facturas/lista-facturas/lista-facturas.component';
+import { CardComponent } from './components/card/card.component';
+import { PrincipalComponent } from './page/principal/principal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { ListaFacturasComponent } from './components/facturas/lista-facturas/lis
     LoginComponent,
     CabfacturaComponent,
     ListaFacturasComponent,
+    CardComponent,
+    PrincipalComponent,
    
 
     
@@ -51,6 +55,7 @@ import { ListaFacturasComponent } from './components/facturas/lista-facturas/lis
     // PageModule
   ],
   providers: [],
+  exports:[CardComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
