@@ -7,6 +7,8 @@ import { NuevoProductoComponent } from '../components/productos/nuevo-producto/n
 import { Cod404Component } from '../components/cod404/cod404.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { PrincipalComponent } from './principal/principal.component';
+import { CajaComponent } from './caja/caja.component';
+import { FacturacionComponent } from './facturacion/facturacion.component';
 import { ListaFacturasComponent } from '../components/facturas/lista-facturas/lista-facturas.component';
 
 const routes: Routes = [
@@ -38,6 +40,14 @@ const routes: Routes = [
     {
       path: 'principal',
       component: PrincipalComponent
+    },
+    {
+      path: 'caja',
+      component: CajaComponent
+    },
+    {
+      path: 'facturacion',
+      component: FacturacionComponent
     }
 
     

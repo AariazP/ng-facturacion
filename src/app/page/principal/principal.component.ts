@@ -41,21 +41,21 @@ export class PrincipalComponent {
       description: 'Tomar el controlo de los ingresos y egresos de la caja menor.',
       imageSrc: 'https://img.icons8.com/3d-fluency/94/cash-register.png',
       imageAlt: 'cash-register',
-      link: '/app/cliente'
+      link: '/app/caja'
     },
     {
       title: 'Facturación',
       description: 'Aquí podrá ver las facturas que se han generado.',
       imageSrc: 'https://img.icons8.com/fluency/96/cash-receipt.png',
       imageAlt: 'cash-receipt',
-      link: '/app/cliente'
+      link: '/app/facturacion'
     },
     {
       title: 'Facturación Electrónica',
       description: 'Aquí podrá ver las facturas electrónicas que se han generado.',
       imageSrc: 'https://img.icons8.com/3d-fluency/94/receipt.png',
       imageAlt: 'receipt',
-      link: '/app/cliente'
+      link: '/app/facturacion'
     }
   ];
 }
