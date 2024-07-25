@@ -22,7 +22,6 @@ import { CabfacturaComponent } from './components/facturas/cabfactura/cabfactura
 import { ListaFacturasComponent } from './components/facturas/lista-facturas/lista-facturas.component';
 import { CardComponent } from './components/card/card.component';
 import { PrincipalComponent } from './page/principal/principal.component';
-import { CajaComponent } from './page/caja/caja.component';
 
 @NgModule({
   declarations: [
