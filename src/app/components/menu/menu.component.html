@@ -1,19 +1,9 @@
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
-  <title>Sidebar With Bootstrap</title>
-</head>
-
 <div class="wrapper">
-  <!-- Sidebar -->
   <aside id="sidebar">
       <div class="h-100">
           <div class="sidebar-logo">
               <a href="#">Facturación</a>
           </div>
-          <!-- Sidebar de navegación -->
           <ul class="sidebar-nav">
               <li class="sidebar-header">
                   Funciones del sistema
@@ -33,7 +23,7 @@
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/producto" class="sidebar-link">
                   <img src="https://img.icons8.com/?size=100&id=8chNl15hy6jY&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
-                  Inventario de productos</a>
+                  Productos</a>
               </li>
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/factura" class="sidebar-link">
@@ -53,7 +43,7 @@
               <li class="sidebar-item">
               <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/lista-factura" class="sidebar-link">
                 <img src="https://img.icons8.com/?size=100&id=hu1lFtHTQdQV&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
-                Facturación Electrónica</a>
+                Factura electrónica</a>
               </li>
               <li class="sidebar-item">
                 <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/factura" class="sidebar-link">
@@ -84,7 +74,7 @@
                   </ul>
               </li>
               <li class="sidebar-item">
-                <a (click)="salir()" class="sidebar-link">
+                <a (click)="salir()" class="sidebar-link sidebar-item-red">
                   <img src="https://img.icons8.com/?size=100&id=QCDCTmelsd7x&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
                   Salir</a>
               </li>
@@ -92,7 +82,6 @@
       </div>
   </aside>
   
-  <!-- Main Component -->
   <div class="main">
     <div>
       <nav class="navbar navbar-expand px-3 border-bottom">
@@ -108,53 +97,3 @@
       </main>
   </div>
 </div>
-
-
-
-<!--
-<div class="contenido-menu">
-<div class="menu-container">
-  <p class="facturacion">Facturación</p>
-  <ul>
-    <details >
-      <summary  >Catálogos</summary>
-      <li>
-        <button
-          routerLinkActive="underline"
-          [routerLinkActiveOptions]="{ exact: true }"
-          routerLink="/app/cliente" 
-          >
-          📁 Cliente
-        </button>
-      </li>
-      <li>
-        <button routerLink="/app/producto" routerLinkActive="underline">
-          🛒 Producto
-        </button>
-      </li>
-    </details>
-
-    <details >
-      <summary>Documentos</summary>
-        <li>
-          <button routerLink="/app/factura" routerLinkActive="underline">
-          📝 Factura
-          </button>
-        </li>
-        <li>
-          <button routerLink="/app/lista-factura" routerLinkActive="underline">
-          📋 Ver facturas
-          </button>
-        </li>
-    </details>
-
-
-  </ul>
-
-</div>
-<button class="salir" (click)="salir()">✖️ Salir</button>
-</div>
-
-<router-outlet></router-outlet>
-
--->
