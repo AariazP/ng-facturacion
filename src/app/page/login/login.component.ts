@@ -48,7 +48,7 @@ export class LoginComponent {
     this.loginService.login(username, password).subscribe(
       Response => {
         localStorage.setItem('id', Response.id);
-        this.router.navigate(['/app/cliente']);
+        this.router.navigate(['/app/principal']);
       },
       Error => {
         this.alert.simpleErrorAlert(Error.error.mensaje);
