@@ -75,9 +75,8 @@ export class NuevoProductoComponent implements OnInit {
   
     setTimeout(() => {
       this.productoService.verificarExistencia(input.value).subscribe(data => {
-        if (data.data) {
+        if (data) {
           this.existe = true;
-          console.log('El código ya existe');
 
           this.formulario.get('codigo')!.setErrors({ 'codigoExistente': true });
         } else {

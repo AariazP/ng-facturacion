@@ -7,6 +7,8 @@ import { ResponseData } from 'src/app/interface/interfaces';
   providedIn: 'root'
 })
 export class ClientesService {
+ 
+  
 
   private URL_API: string = environment.ApiUrl;
 
@@ -30,6 +32,18 @@ export class ClientesService {
   }
   verificarExistencia(cod: string) {
     return this.http.get<ResponseData>(`${this.URL_API}/clientes/verificar-cliente/${cod}`);
+  }
+
+  obtenerCliente(cedula:string){
+    return this.http.get<any>(`${this.URL_API}/clientes/${cedula}`);
+  }
+
+  fueEliminado(input: any) {
+    return this.http.get<ResponseData>(`${this.URL_API}/clientes/verificar-eliminado/${input}`);
+  }
+
+  recuperarCliente(input: any) {
+    return this.http.get<ResponseData>(`${this.URL_API}/clientes/recuperar-cliente/${input}`);
   }
 
 }

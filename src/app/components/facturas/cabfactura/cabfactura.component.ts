@@ -5,6 +5,7 @@ import { ClienteComponent } from 'src/app/page/cliente/cliente.component';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
 import { ProductoService } from 'src/app/service/productos.service';
+import { AlertService } from 'src/app/utils/alert.service';
 import { cantidadMayorQueCero, soloTexto, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 
 @Component({
@@ -34,21 +35,23 @@ export class CabfacturaComponent implements DoCheck {
               private formBuilder: FormBuilder, 
               private clienteComponent: ClientesService, 
               private facturasService: FacturasService, 
-              private productoService: ProductoService
+              private productoService: ProductoService,
+              private alert : AlertService,
+              private clienteService: ClientesService
               ) {
+
     this.formulario = this.formBuilder.group({
       numFactura: ['', [Validators.required]],
-      cliente: ['', [Validators.required, ]],
-      ruc: ['', [Validators.required ]],
-      razonSocial: ['', [Validators.required, ]],
-      correo: ['', [Validators.required, ]],
+      cliente: ['', [Validators.required]],
+      nombre: ['', [Validators.required ]],
+      direccion: ['', [Validators.required]]
       
     });
 
     this.productosForm = this.formBuilder.group({
       codProducto: ['', [Validators.required]],
       nombreProducto: ['', [Validators.required]],
-      precioProducto: ['', [Validators.required, ]],
+      precioProducto: ['', [Validators.required]],
       cantidadProducto: [1, [Validators.required, cantidadMayorQueCero() ]],
     });
   }
@@ -137,9 +140,8 @@ export class CabfacturaComponent implements DoCheck {
   generarFactura(){
     this.facturasService.generaFactura().subscribe(
       (resp: any) => {
-        console.log(resp.data)
         this.formulario.patchValue({
-          numFactura: resp.data
+          numFactura: resp
         })
       }
     )
@@ -155,41 +157,79 @@ export class CabfacturaComponent implements DoCheck {
     })
   }
 
-  seleccionarCliente(idCliente: any): void{
-    
-    this.clienteSeleccionado = this.clientes.find(cliente => cliente.idCliente == idCliente.value);
+  seleccionarCliente(): void{
+    let cedula = this.formulario.get('cliente')!.value;
+
+    if(cedula == ''){ 
+      this.formulario.reset();
+      this.generarFactura();
+    }
+
+
+    this.clienteService.obtenerCliente(cedula).subscribe(
+      response => {
+        this.formulario.patchValue({
+          nombre: response.nombre,
+          direccion: response.direccion,
+          correo: response.correo
+        });
+      }, 
+      error => {
+      }
+    )
   }
 
   cambiarModoOculto(){
     this.modoOculto = !this.modoOculto;
   }
 
-  agregarProducto(){   
-    if (this.productosForm.valid) {
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
+  agregarProducto(){  
+
+    if (!this.productosForm.valid) {
       Object.values(this.productosForm.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
-    }
+    } 
 
-    this.listProductos.push(this.productosForm.value);
-    this.productosForm.reset();
-    this.productoSeleccionado = null;
-    this.productosForm.get('cantidadProducto')?.setValue(1);
-    console.log("prod select ",this.productoSeleccionado);
-    console.log("lista de prod ",this.listProductos);
+    let cantidad = +this.productosForm.get('cantidadProducto')?.value;
+    let codigo = this.productosForm.get('codProducto')?.value;
 
-    this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precioProducto, 0);
+    this.productoService.verificarActivo(codigo).subscribe(
+      (response) => {
+        if (!response) {
+          this.alert.simpleErrorAlert('El producto no está activo');
+          return;
+        }
+      }
+    )
 
-    this.calcularValores(this.listProductos);
+    this.productoService.verificarCantidad(cantidad, codigo).subscribe(
+      (response) => {
+        if (!response) {
+        this.alert.simpleErrorAlert('La cantidad de productos supera el stock disponible');
+          return;
+        }else{
+          this.listProductos.push(this.productosForm.value);
+          this.productosForm.reset();
+          this.productoSeleccionado = null;
+          this.productosForm.get('cantidadProducto')?.setValue(1);
+
+          this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precioProducto, 0);
+
+          this.calcularValores(this.listProductos);
+        }
+      }
+    );
+
+
+    
   }
 
   calcularValores( list: any){
     this.subtotal = list.reduce((total: any, producto: any) => total + (producto.precioProducto * producto.cantidadProducto), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
-    this.total = this.subtotal + this.igv;
+    this.total = this.subtotal;
   }
   
   eliminarPorId(producto: any) {
@@ -212,11 +252,12 @@ export class CabfacturaComponent implements DoCheck {
   seleccionarProducto(): void{
     let idProducto = this.productosForm.get('codProducto')?.value
     this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
-    this.stockProducto = this.productoSeleccionado.stock;
-    this.productosForm.patchValue({
+    if(this.productoSeleccionado != null && this.productoSeleccionado != undefined){
+      this.stockProducto = this.productoSeleccionado.stock;
+      this.productosForm.patchValue({
       nombreProducto: this.productoSeleccionado.nombre
-
-    });
+      });
+    }
     
   }
 
@@ -284,6 +325,10 @@ export class CabfacturaComponent implements DoCheck {
       this.hayStock = true;
 
     }
+
+  }
+
+  buscarCliente(){
 
   }
 

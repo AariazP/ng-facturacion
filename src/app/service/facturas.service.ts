@@ -12,21 +12,21 @@ export class FacturasService {
   constructor(private http: HttpClient) { }
 
   getData(){
-    return this.http.get(`${this.URL_API}/cab-factura`);
+    return this.http.get(`${this.URL_API}/factura`);
   }
   guardarCabecera(cabecera: any) {
-    return this.http.post(`${this.URL_API}/cab-factura`, cabecera);
+    return this.http.post(`${this.URL_API}/factura`, cabecera);
   }
 
   guardarDetalles(detalles: any) {
-    return this.http.post(`${this.URL_API}/det-factura/guardar`, detalles);
+    return this.http.post(`${this.URL_API}/factura/guardar`, detalles);
   }
   generaFactura(){
-    return this.http.get(`${this.URL_API}/cab-factura/genera-factura`);
+    return this.http.get(`${this.URL_API}/factura/siguiente-id`);
   }
 
   eliminarPorId(id: number) {
-    return this.http.delete(`${this.URL_API}/cab-factura/${id}`);
+    return this.http.delete(`${this.URL_API}/factura/${id}`);
   }
 
 

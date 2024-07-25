@@ -4,6 +4,7 @@ import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app
 import { ClientesService } from 'src/app/service/clientes.service';
 import { CrearClienteDTO } from 'src/app/DTO/cliente/CrearClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',
@@ -58,9 +59,37 @@ export class NuevoComponent {
   
     if(input == null || input=='') return;
     setTimeout(() => {
-      this.clientesService.verificarExistencia(input).subscribe(data => {
-        if ( data ) {	
-          
+      this.clientesService.obtenerCliente(input).subscribe(data => {
+        if ( data != null) {	
+
+          this.clientesService.fueEliminado(input).subscribe(response => {
+
+            if(response){
+              Swal.fire({
+                title: "Este cliente fue eliminado antes",
+                text: "¿Te gustaría recuperarlo?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, recuperar", 
+                cancelButtonText: "No, cancelar"
+              }).then((result) => {
+                if (result.isConfirmed) {
+
+                  this.clientesService.recuperarCliente(input).subscribe(response => {
+                    Swal.fire({
+                      title: "Recuperado!",
+                      text: "El cliente ha sido recuperado.",
+                      icon: "success"
+                    });
+                  });
+                }
+              });
+            }
+
+          });
+
           this.existe = true;
           this.formulario.get('cedula')!.setErrors({ 'codigoExistente': true });
 
@@ -70,7 +99,11 @@ export class NuevoComponent {
           this.existe = false;
 
         }
-      });
+      }, 
+      error => {
+
+      }
+    );
     }, delay);
   }
 

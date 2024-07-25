@@ -8,6 +8,8 @@ import { ResponseData } from '../interface/interfaces';
 })
 export class ProductoService {
   
+  
+  
 
   private URL_API: string = environment.ApiUrl;
 
@@ -41,4 +43,11 @@ export class ProductoService {
     return this.http.post(`${this.URL_API}/productos/disminuir-stock`, detalles);
   }
 
+  verificarCantidad(cantidad: number, codigo: string) {
+    return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-cantidad/${cantidad}/${codigo}`);
+  }
+
+  verificarActivo(codigo: any) {
+    return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-activo/${codigo}`); 
+  }
 }
