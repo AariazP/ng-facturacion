@@ -8,10 +8,12 @@ import { FacturasService } from 'src/app/service/facturas.service';
 })
 export class ListaFacturasComponent {
 
-  facturas: any ; 
+  facturas: any; 
   personaEditar: any;
   facturasFiltradas: any;
   modoOculto: boolean = true;
+  sumaTotal: number = 0;
+
   constructor(private facturasService: FacturasService) {
   }
   ngOnInit() {
@@ -22,8 +24,12 @@ export class ListaFacturasComponent {
     this.facturasService.getData().subscribe(data => {
       this.facturas = data;
       this.facturasFiltradas = data;
-      
+      this.calcularSumaTotal();
     })
+  }
+
+  calcularSumaTotal(){
+    this.sumaTotal = this.facturas.reduce((sum: number, factura: any) => sum + factura.total, 0);
   }
   
   eliminarPorId(id: number) {

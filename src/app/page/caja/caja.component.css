@@ -1,0 +1,29 @@
+button {
+    border-radius: 10px;
+    width: 100%;
+    height: 30px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 5px 30px;
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button#ingreso {
+    background-color: rgb(14, 146, 23);
+}
+
+button#egreso {
+    background-color: rgb(235, 106, 1);
+}
+
+.alin-der{
+    display: flex;
+    justify-content: right;
+    margin: 0;
+}
