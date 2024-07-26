@@ -10,7 +10,7 @@ import { FacturacionComponent } from './facturacion/facturacion.component';
   declarations: [
   
     CajaComponent,
-    FacturacionComponent
+       FacturacionComponent
   ],
   imports: [
     CommonModule,

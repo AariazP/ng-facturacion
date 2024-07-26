@@ -32,7 +32,7 @@ export class CabfacturaComponent implements DoCheck {
   hayStock = true;
   constructor(
               private formBuilder: FormBuilder, 
-              private clienteComponent: ClientesService, 
+              private clienteComponent: ClientesService,
               private facturasService: FacturasService, 
               private productoService: ProductoService
               ) {
