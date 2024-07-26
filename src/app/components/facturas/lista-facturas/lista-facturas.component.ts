@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FacturaItemDTO } from 'src/app/DTO/factura/FacturaItemDTO';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
 @Component({
@@ -10,7 +11,7 @@ export class ListaFacturasComponent {
 
   facturas: any ; 
   personaEditar: any;
-  facturasFiltradas: any;
+  facturasFiltradas!: FacturaItemDTO[];
   modoOculto: boolean = true;
   constructor(private facturasService: FacturasService) {
   }
@@ -21,8 +22,7 @@ export class ListaFacturasComponent {
   getData(){
     this.facturasService.getData().subscribe(data => {
       this.facturas = data;
-      this.facturasFiltradas = data;
-      
+      this.facturasFiltradas = this.facturas;
     })
   }
   

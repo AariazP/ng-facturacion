@@ -14,7 +14,7 @@ export class FacturasService {
   constructor(private http: HttpClient) { }
 
   getData(){
-    return this.http.get(`${this.URL_API}/factura`);
+    return this.http.get(`${this.URL_API}/factura/obtener-facturas`);
   }
   guardarCabecera(cabecera: any) {
     return this.http.post(`${this.URL_API}/factura`, cabecera);

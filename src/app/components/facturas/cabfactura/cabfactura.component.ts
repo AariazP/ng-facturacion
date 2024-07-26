@@ -87,7 +87,12 @@ export class CabfacturaComponent implements DoCheck {
 
 
     factura.usuario = Number(localStorage.getItem('id'));
-    
+   
+    if(this.listProductos.length == 0){
+      this.alert.simpleErrorAlert('No se ha agregado ningun producto a la factura');
+      return;
+    }
+
     this.listProductos.map(producto => {
       let detalleFactura =  new DetalleFacturaDTO();
       detalleFactura.cantidad = producto.cantidadProducto;

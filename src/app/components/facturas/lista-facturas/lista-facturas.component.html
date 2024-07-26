@@ -22,12 +22,10 @@
         <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Num Factura</th>
-            <th>Rut</th>
-            <th>Subtotal</th>
-            <th>IVA</th>
-            <th>total</th>
+            <th>Numero de Factura</th>
+            <th>Cedula cliente</th>
+            <th>Fecha y hora</th>
+            <th>Total</th>
             <th class="eliminar">Acciones</th>
           </tr>
         </thead>
@@ -36,15 +34,12 @@
         <tbody>
 
           <tr *ngFor="let factura of facturasFiltradas">
-            <td>{{ factura.idFcatura }}</td>
-            <td>{{ factura.numeroFactura }}</td>
-            <td >{{ factura.rucCliente }}</td>
-            <td>{{ factura.subtotal }}</td>
-            <td>{{ factura.igv }}</td>
-            <td>{{ factura.total }}</td>
+            <td class="text-left">{{ factura.idFactura }}</td>
+            <td class="text-left">{{ factura.cedulaCliente }}</td>
+            <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td class="text-left">{{ factura.total }}</td>
             <td class="eliminar">
-              <button (click)="eliminarPorId(factura.idFcatura)">❌</button>
-
+              <button>Generar factura</button>
             </td>
           </tr>
         </tbody>

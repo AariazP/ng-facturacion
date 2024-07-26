@@ -48,12 +48,14 @@ td.eliminar, th.eliminar{
 }
 
 td button{
-  background: rgb(255, 255, 255);
-  border: 1px solid red;
+  background: rgb(195, 193, 255);
+  border: 1px solid rgb(197, 193, 255);
   border-radius: 2px;
   text-align: center;
   cursor: pointer;
   margin: 0 5px;
+  color: black;
+  padding: 2px;
 }
 
 td button.editar, td button.check{
