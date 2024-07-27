@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FacturaItemDTO } from 'src/app/DTO/factura/FacturaItemDTO';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
 @Component({
@@ -9,23 +8,30 @@ import { FacturasService } from 'src/app/service/facturas.service';
 })
 export class ListaFacturasComponent {
 
-  facturas: any ; 
+  facturas: any ;
   personaEditar: any;
   facturasFiltradas!: FacturaItemDTO[];
   modoOculto: boolean = true;
+  sumaTotal: number = 0;
+
   constructor(private facturasService: FacturasService) {
   }
   ngOnInit() {
    this.getData();
   }
-  
+
   getData(){
     this.facturasService.getData().subscribe(data => {
       this.facturas = data;
-      this.facturasFiltradas = this.facturas;
+      this.facturasFiltradas = data;
+
     })
   }
-  
+
+  calcularSumaTotal(){
+    this.sumaTotal = this.facturas.reduce((sum: number, factura: any) => sum + factura.total, 0);
+  }
+
   eliminarPorId(id: number) {
     console.log(id)
     this.facturasService.eliminarPorId(id).subscribe(

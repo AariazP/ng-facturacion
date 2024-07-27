@@ -18,12 +18,9 @@
         <input type="password" id="password" formControlName="password" placeholder="Contraseña">
       </div>
       <p *ngIf="mensajeLogin">{{mensajeLogin}}*</p>
-      <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+      <button type="submit" [disabled]="loginForm.invalid" (click)="abrir()">Iniciar Sesión</button>
     </form>
   </div>
+
+  </div>
 </div>
-</div>
-
-
-
-
