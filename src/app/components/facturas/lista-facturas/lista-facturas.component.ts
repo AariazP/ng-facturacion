@@ -10,7 +10,7 @@ export class ListaFacturasComponent {
 
   facturas: any ;
   personaEditar: any;
-  facturasFiltradas!: FacturaItemDTO[];
+  facturasFiltradas!: any;
   modoOculto: boolean = true;
   sumaTotal: number = 0;
 

@@ -10,43 +10,53 @@ import { PrincipalComponent } from './principal/principal.component';
 import { CajaComponent } from './caja/caja.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
 import { ListaFacturasComponent } from '../components/facturas/lista-facturas/lista-facturas.component';
+import { AuthGuard } from '../guards/guard.guard';
 
 const routes: Routes = [
 
     {
       path: 'cliente',
+      canActivate: [AuthGuard],
       component: ClienteComponent
     },
     {
       path: 'cliente/nuevo',
+      canActivate: [AuthGuard],
       component: NuevoComponent
     },
     {
       path: 'producto',
+      canActivate: [AuthGuard],
       component: ProductoComponent
     },
     {
       path: 'producto/nuevo',
+      canActivate: [AuthGuard],
       component: NuevoProductoComponent
     },
     {
       path: 'factura',
+      canActivate: [AuthGuard],
       component: FacturaComponent
     },
     {
       path: 'lista-factura',
+      canActivate: [AuthGuard],
       component: ListaFacturasComponent
     },
     {
       path: 'principal',
+      canActivate: [AuthGuard],
       component: PrincipalComponent
     },
     {
       path: 'caja',
+      canActivate: [AuthGuard],
       component: CajaComponent
     },
     {
       path: 'facturacion',
+      canActivate: [AuthGuard],
       component: FacturacionComponent
     }
 

@@ -11,19 +11,19 @@ import { AlertService } from 'src/app/utils/alert.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  mensajeLogin: string = '';
 
   loginForm!: FormGroup ;
-  mensajeLogin = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private router : Router,
-    private alert:AlertService
+    private router : Router, 
+    private alert: AlertService
   ) {
 
-    if(localStorage.getItem('token')){
-      this.router.navigate(['/app/cliente']);
+    if(localStorage.getItem('id') != null){
+      this.router.navigate(['/app/principal']);
     }
   }
 
@@ -36,24 +36,30 @@ export class LoginComponent {
 
   }
 
+  abrir(){
+    this.router.navigate(['/app/principal']);
+  }
 
   login(): void {
-
     if (this.loginForm.invalid) {
       return;
     }
 
     const { username, password } = this.loginForm.value;
     
-    this.loginService.login(username, password).subscribe(
-      Response => {
-        localStorage.setItem('id', Response.id);
-        this.router.navigate(['/app/principal']);
-      },
-      Error => {
-        this.alert.simpleErrorAlert(Error.error.mensaje);
-      }
-    );
+    this.loginService.login(username, password)
+      .subscribe(
+        response => {
+          const { code, data } = response;
+          localStorage.setItem('id', data); 
+          console.log(code, data, response.data);
+              this.mensajeLogin = response.data;
+              this.router.navigate(['/app/principal']);
+             
+          },
+        error => {
+          this.alert.simpleErrorAlert('Usuario o contraseña incorrectos');
+        });
 
 
 

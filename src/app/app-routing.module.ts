@@ -12,7 +12,6 @@ import { AuthGuard } from './guards/guard.guard';
 import { loginGuard } from './guards/login.guard';
 
 const routes: Routes = [
-
   {
     path: '',
     component: MenuComponent,
@@ -21,14 +20,12 @@ const routes: Routes = [
   {
     path: 'app',
     component: MenuComponent,
-    
     loadChildren: () => import('./page/page.module').then(m => m.PageModule)
   },
-  
   {
     path: 'login',
     component: LoginComponent,
-    // canActivate: [loginGuard],
+    canActivate: [loginGuard],
   },
   {
     path: '**',
