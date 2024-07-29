@@ -8,12 +8,14 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent {
 
+  estadoMenu: boolean = false;
+
   toggleCollapse(): void {
     const sidebar = document.querySelector("#sidebar") as HTMLElement;
     sidebar.classList.toggle("collapsed");
+    this.estadoMenu = !this.estadoMenu
 }
 
-  
 constructor(private router: Router){}	
 
 salir(){

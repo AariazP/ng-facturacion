@@ -75,6 +75,12 @@ td button.editar, td button.check{
   border: none;
   border: 1px solid rgb(182, 182, 182);
   border-radius: 10px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.buscar input:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .buscar{

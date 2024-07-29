@@ -33,6 +33,29 @@
   border-radius: 5px;
 }
 
+button {
+  border-radius: 10px;
+  width: 100%;
+  height: 30px;
+  background-color: rgb(67, 164, 255);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #007bff;
+  transform: scale(1.05); /* Pequeña animación de escala */
+}
+
 @media (max-width: 576px) {
   .formulario {
     padding: 15px;

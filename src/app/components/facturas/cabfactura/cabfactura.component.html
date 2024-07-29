@@ -58,6 +58,8 @@
           <div class="col-lg-3">
             <p *ngIf="this.productosForm.get('nombreProducto')?.value" ></p>
             <button (click)="agregarProducto()">➕ Agregar producto</button>
+            <p *ngIf="this.productosForm.get('nombreProducto')?.value" > *Tiene en stock: {{stockProducto}}</p>
+            <button id="azul" (click)="agregarProducto()">Agregar producto</button>
           </div>
       </div>
   </div>

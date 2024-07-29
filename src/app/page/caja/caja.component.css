@@ -1,76 +1,232 @@
-button {
-    border-radius: 10px;
-    width: 100%;
-    height: 30px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 5px 30px;
-    border: none;
-    cursor: pointer;
-    margin-top: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.contenedor{
+  padding-top: 5%;
+  padding-right: 20%;
+  padding-left: 20%;
 }
 
-button#ingreso {
-    background-color: rgb(14, 146, 23);
-}
-
-button#egreso {
-    background-color: rgb(235, 106, 1);
-}
-
-.alin-der{
+@media (min-width: 768px) {
+  .align-right{
     display: flex;
     justify-content: right;
     margin: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .contenedor{
+    padding-right: 10%;
+    padding-left: 10%;
+  }
+}
+
+button {
+  border-radius: 10px;
+  width: 100%;
+  height: 30px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button#ingreso {
+  background-color: #28a745;
+}
+
+button#egreso {
+  background-color: rgb(255, 140, 0);
+}
+
+button#limpiar:hover {
+  background-color: #b30000;
+  transform: scale(1.05); /* Pequeña animación de escala */
+}
+
+button#ingreso:hover {
+  background-color: #17d641;
+  transform: scale(1.05); /* Pequeña animación de escala */
+}
+
+button#egreso:hover {
+  background-color: rgb(235, 106, 1);
+  transform: scale(1.05); /* Pequeña animación de escala */
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05); /* Pequeña animación de escala */
+}
+
+.align-left {
+  text-align: left;
 }
 
 /* Estilos para el modal */
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-  }
-  
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 5% auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+  color: #aaa;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+}
+
+.modal-body {
+  padding: 20px 0;
+}
+
+.modal-body form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body label {
+  margin-bottom: 8px;
+}
+
+.modal-body input[type="text"],
+.modal-body input[type="number"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.modal-body button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.modal-body button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
   .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 30%;
+    margin: 10% auto;
+    padding: 15px;
+    max-width: 350px;
   }
-  
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+  .modal-header h2 {
+    margin-bottom: 10px;
   }
-  
-  .close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+
+  .modal-body input[type="text"],
+  .modal-body input[type="number"] {
+    font-size: 14px;
   }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+
+  .modal-body button {
+    font-size: 14px;
   }
-  
-  .modal-body {
-    margin-top: 20px;
-  }
-  
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-body {
+  margin-top: 20px;
+}
+
+.table-container {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(67, 164, 255);
+  border-radius: 10px;
+}
+
+.table-container .separador {
+  margin-top: 20px;
+}
+
+.separador div {
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-radius: 10px;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  text-align: left;
+}
+
+table tr:hover {
+  background-color: #e0f7fa; /* Efecto hover para filas de la tabla */
+}
+
+td {
+  border-top: 1px solid #ddd;
+}
+
+/* Efectos hover para los botones dentro del modal */
+.modal-body button:hover {
+  background-color: #0056b3;
+}
+

@@ -38,7 +38,7 @@ export class PrincipalComponent {
     },
     {
       title: 'Caja',
-      description: 'Tomar el controlo de los ingresos y egresos de la caja menor.',
+      description: 'Tomar el control de los ingresos y egresos de la caja menor.',
       imageSrc: 'https://img.icons8.com/3d-fluency/94/cash-register.png',
       imageAlt: 'cash-register',
       link: '/app/caja'
