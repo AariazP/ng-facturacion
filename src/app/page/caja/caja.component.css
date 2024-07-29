@@ -37,7 +37,7 @@ button {
 }
 
 button#ingreso {
-  background-color: rgb(9, 176, 20);
+  background-color: #28a745;
 }
 
 button#egreso {
@@ -50,7 +50,7 @@ button#limpiar:hover {
 }
 
 button#ingreso:hover {
-  background-color: rgb(14, 146, 23);
+  background-color: #17d641;
   transform: scale(1.05); /* Pequeña animación de escala */
 }
 

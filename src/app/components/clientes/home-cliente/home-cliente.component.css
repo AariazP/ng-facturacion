@@ -153,6 +153,12 @@ button#nuevo {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button#nuevo:hover {
+  background-color: #007bff;
+  transform: scale(1.05); /* Pequeña animación de escala */
 }
 
 @media (max-width: 576px) {
