@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MenuComponent } from 'src/app/components/menu/menu.component';
+import { ListaFacturasComponent } from 'src/app/components/facturas/lista-facturas/lista-facturas.component';
 
 @Component({
   selector: 'app-caja',
@@ -16,15 +18,26 @@ export class CajaComponent {
   actionButtonText: string = '';
   currentAction: 'ingreso' | 'egreso' = 'ingreso';
 
+  constructor(private menuComponent: MenuComponent, private listaFacturasComponent: ListaFacturasComponent) {}
+
+  triggerToggleCollapse() {
+    if (!this.menuComponent.estadoMenu){
+      this.menuComponent.toggleCollapse();
+    }
+    console.log('el menu esta', this.menuComponent.estadoMenu);
+  }
+
   ngOnInit() {
     this.cargarDatos();
     this.actualizarTotalEfectivo();
+    this.listaFacturasComponent.ngOnInit();
+    console.log(this.listaFacturasComponent.sumaTotal);
   }
 
   mostrarModal(action: 'ingreso' | 'egreso') {
     this.currentAction = action;
     this.modalTitle = action === 'ingreso' ? 'Ingreso de Valor' : 'Egreso de Valor';
-    this.actionButtonText = action === 'ingreso' ? 'Guardar' : 'Registrar Egreso';
+    this.actionButtonText = action === 'ingreso' ? 'Registrar Ingreso' : 'Registrar Egreso';
     const modal = document.getElementById('ingresoModal');
     if (modal) {
       modal.style.display = 'block';
@@ -62,6 +75,7 @@ export class CajaComponent {
 
   actualizarTotalEfectivo() {
     this.totalEfectivo = this.totalVentas + this.ingresos - this.egresos;
+    this.totalExterno = this.ingresos - this.egresos;
   }
 
   guardarDatos() {
@@ -80,5 +94,22 @@ export class CajaComponent {
     this.ingresos = parseFloat(localStorage.getItem('ingresos') || '0');
     this.egresos = parseFloat(localStorage.getItem('egresos') || '0');
     this.movimientos = JSON.parse(localStorage.getItem('movimientos') || '[]');
+    this.totalVentas = this.listaFacturasComponent.sumaTotal;
+  }
+
+  limpiarDatos() {
+    localStorage.removeItem('totalVentas');
+    localStorage.removeItem('totalExterno');
+    localStorage.removeItem('totalEfectivo');
+    localStorage.removeItem('ingresos');
+    localStorage.removeItem('egresos');
+    localStorage.removeItem('movimientos');
+    this.totalVentas = 0;
+    this.totalExterno = 0;
+    this.totalEfectivo = 0;
+    this.ingresos = 0;
+    this.egresos = 0;
+    this.movimientos = [];
+    console.log('Datos limpiados');
   }
 }

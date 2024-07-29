@@ -42,7 +42,7 @@ import { PrincipalComponent } from './page/principal/principal.component';
     ListaFacturasComponent,
     CardComponent,
     PrincipalComponent,
-
+    ListaFacturasComponent, 
    
 
     
@@ -55,7 +55,7 @@ import { PrincipalComponent } from './page/principal/principal.component';
     ReactiveFormsModule,
     // PageModule
   ],
-  providers: [],
+  providers: [ListaFacturasComponent],
   exports:[CardComponent],
   bootstrap: [AppComponent]
 })
