@@ -1,3 +1,4 @@
+/* Estilos generales */
 #img {
   height: 100vh;
   width: 100%;
@@ -10,94 +11,91 @@
 
 #container {
   height: 100%;
-  
 }
 
-.datos{
-  margin-top: 10rem;
+.datos {
+  margin-top: 1rem;
   padding-right: 70px;
   padding-left: 70px;
 }
 
-#btn-crear-cuenta{
-background: 
-  linear-gradient(#fff, #fff) padding-box,
-  linear-gradient(120deg, rgb(67, 164, 255), rgb(34, 86, 134)) border-box;
-color: #313149;
-padding: 10px;
-border: 2px solid transparent;
-border-radius: 10px;
-display: inline-block;
-font-size: 12px;
-
+#btn-crear-cuenta {
+  background: linear-gradient(#fff, #fff) padding-box,
+              linear-gradient(120deg, rgb(67, 164, 255), rgb(34, 86, 134)) border-box;
+  color: #313149;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 12px;
 }
 
-.block-info{
+.block-info {
   display: flex;
   justify-content: center;
-  align-items:safe center; 
+  align-items: center;
   flex-direction: column;
-  
 }
 
-.col-left{
+.col-left {
   margin-top: 2%;
 }
 
-
-.label{
+.label {
   text-align: left;
 }
 
 .center-form {
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-top: 25%;
   margin-left: 10%;
   margin-right: 10%;
-  
 }
 
-#bienvenido{
+#bienvenido {
   font-size: 15px;
   font-weight: extra-light;
   color: #313149;
   margin-bottom: 10px;
 }
 
-#iniciar-sesion{
+#iniciar-sesion {
   font-size: 40px;
   font-weight: bold;
   color: #313149;
   margin-bottom: 40px;
 }
 
-label{
+label {
   font-size: 15px;
   color: #313149;
   margin-bottom: 10px;
-
 }
 
-input{
+input {
   padding: 10px;
   border: 2px solid #d6d6d6;
   border-radius: 10px;
   margin-bottom: 20px;
   min-height: 50px;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input:focus{
+input:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input:focus {
   border: 2px solid #313149;
   outline: none;
 }
 
 .btn-grad {
   background-image: linear-gradient(to right, rgb(67, 164, 255) 0%, rgb(34, 86, 134)  51%, rgb(67, 164, 255)  100%);
-  margin: 10px;
-  padding: 15px 45px;
+  margin: 20px;
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
@@ -108,7 +106,6 @@ input:focus{
   border-color: transparent;
   display: block;
   margin-top: 15%;
-  min-width: 60%;
 }
 
 .btn-grad:hover {
@@ -117,7 +114,7 @@ input:focus{
   text-decoration: none;
 }
 
-#titulo{
+#titulo {
   font-size: 20px;
   font-weight: bold;
   background: linear-gradient(to right, #ff0000, #00ff00);
@@ -125,37 +122,62 @@ input:focus{
   margin-bottom: 10px;
 }
 
-#subtitulo{
-  
+#subtitulo {
   font-size: 15px;
   font-weight: extra-light;
   color: #313149;
   margin-bottom: 10px;
-
 }
 
+.head{
+  padding-bottom: 100px;
+}
 
-@media screen and (max-width: 992px) {
+.card {
+  border-radius: 10px;
+  border-color: transparent;
+  margin: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .btn-grad {
+    padding: 15px 45px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #container {
+    position: relative;
+  }
+
+  .btn-grad {
+    padding: 10px 20px;
+  }
 
   #img {
-      margin-top: 30px;
-      height: 70vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 0.5;
   }
-  .block-info{
-      display: flex;
-      justify-content: center;
-      align-items:safe center; 
-      flex-direction: column;
-      
+  
+  .col-left {
+    z-index: 1;
+    padding: 20px;
+    border-radius: 10px;
   }
 
-  .center-form {
-  
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-top: 4cqb;
-      
+  .datos {
+    padding-right: 20px;
+    padding-left: 20px;
   }
-  
+
+  #titulo, #subtitulo {
+    text-align: center;
+  }
 }

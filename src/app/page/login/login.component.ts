@@ -50,11 +50,9 @@ export class LoginComponent {
     this.loginService.login(username, password)
       .subscribe(
         response => {
-          const { code, data } = response;
-          localStorage.setItem('id', data); 
-          console.log(code, data, response.data);
-              this.mensajeLogin = response.data;
-              this.router.navigate(['/app/principal']);
+          localStorage.setItem('id', response.id); 
+          this.mensajeLogin = response;
+          this.router.navigate(['/app/principal']);
              
           },
         error => {

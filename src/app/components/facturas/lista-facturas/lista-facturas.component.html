@@ -1,52 +1,54 @@
 <div class="temporal">
 
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="rojo">
-        Historial de ventas
-      </h1>
-    </div>
-    <div class="col-12">
-      <div class="buscar">
-        <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar factura de venta">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="rojo">
+          Historial de ventas
+        </h1>
+      </div>
+      <div class="col-8 col-sm-8 col-md-9 col-lg-10 col-xl-10 col-xxl-10">
+        <div class="buscar">
+          <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar factura de venta">
+        </div>
+      </div>
+      <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+        <div class="buscar">
+          <input id="dateInput" class="date-input form-control" type="date">
+        </div>
       </div>
     </div>
   </div>
-</div>
+    
+  <div class="container">
+    <div class="table-container">
+      <div class="separador">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Numero de Factura</th>
+              <th>Cedula cliente</th>
+              <th>Fecha y hora</th>
+              <th>Total</th>
+              <th class="eliminar">Acciones</th>
+            </tr>
+          </thead>
+          
   
-<div class="container">
-  <div class="table-container">
-    <div class="separador">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Numero de Factura</th>
-            <th>Cedula cliente</th>
-            <th>Fecha y hora</th>
-            <th>Total</th>
-            <th class="eliminar">Acciones</th>
-          </tr>
-        </thead>
-        
-
-        <tbody>
-
-          <tr *ngFor="let factura of facturasFiltradas">
-            <td class="text-left">{{ factura.idFactura }}</td>
-            <td class="text-left">{{ factura.cedulaCliente }}</td>
-            <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-            <td class="text-left">{{ factura.total }}</td>
-            <td class="eliminar">
-              <button>Generar factura</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+  
+            <tr *ngFor="let factura of facturasFiltradas">
+              <td class="text-left">{{ factura.idFactura }}</td>
+              <td class="text-left">{{ factura.cedulaCliente }}</td>
+              <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td class="text-left">{{ factura.total }}</td>
+              <td class="eliminar">
+                <button>Generar factura</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  </div>
-  <p class="rojo">La suma es: {{ sumaTotal }}</p>
-</div>
-</div>
