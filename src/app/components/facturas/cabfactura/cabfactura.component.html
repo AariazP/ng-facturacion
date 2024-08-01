@@ -55,9 +55,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3">
-            <p *ngIf="this.productosForm.get('nombreProducto')?.value" ></p>
-            <button (click)="agregarProducto()">➕ Agregar producto</button>
+          <div class="col-lg-3 mt-4">
             <p *ngIf="this.productosForm.get('nombreProducto')?.value" > *Tiene en stock: {{stockProducto}}</p>
             <button id="azul" (click)="agregarProducto()">Agregar producto</button>
           </div>
@@ -146,17 +144,13 @@
         Por favor, ingrese un valor válido.
       </span>
     </div>
-
-    <div class="col-lg-3 btn-nuevo-cont">
-      <button routerLink="/app/cliente/nuevo" class="btn-nuevo">➕ Nuevo usuario</button>
-    </div>
   </div>
 
   <div class="row">
     <div class="col-lg-9">
     </div>
     <div class="col-lg-3 text-right">
-      <button type="submit" class="btn btn-primary">Vender</button>
+      <button type="submit" class="btn btn-primary" id="btn-vender">Vender</button>
     </div>
   </div>
 

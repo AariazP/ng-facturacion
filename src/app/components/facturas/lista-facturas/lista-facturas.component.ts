@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Form, FormBuilder, FormGroup } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
 @Component({
@@ -8,13 +9,19 @@ import { FacturasService } from 'src/app/service/facturas.service';
 })
 export class ListaFacturasComponent {
 
+
   facturas: any ;
   personaEditar: any;
   facturasFiltradas!: any;
   modoOculto: boolean = true;
   sumaTotal: number = 0;
+  formFacturas: FormGroup;
 
-  constructor(private facturasService: FacturasService) {
+  constructor(private facturasService: FacturasService, private fb: FormBuilder) {
+
+    this.formFacturas = this.fb.group({
+      fecha: ['']
+    });
   }
   ngOnInit() {
    this.getData();
@@ -55,6 +62,15 @@ export class ListaFacturasComponent {
     );
   }
 
-
+  filtrarFecha() {
+    let fecha = this.formFacturas.get('fecha')?.value;
+    this.facturasFiltradas = this.facturas.filter( (factura: any) =>
+      factura.fechaHora.includes(fecha)
+    );
+  }
+    
+  reset() {
+    this.getData();
+  }
 
 }

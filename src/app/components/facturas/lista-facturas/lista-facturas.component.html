@@ -7,19 +7,28 @@
           Historial de ventas
         </h1>
       </div>
-      <div class="col-8 col-sm-8 col-md-9 col-lg-10 col-xl-10 col-xxl-10">
-        <div class="buscar">
-          <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar factura de venta">
+      <form [formGroup]="formFacturas">
+        <div class="row mt-4"> 
+          <p>Buscar factura con fecha</p>
+        <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+          <div class="row buscar">
+            <input id="dateInput" class="date-input form-control col-6" formControlName="fecha" (change)="filtrarFecha()" type="date">
+            <div class="col-6 mt-4" id="div-svg">
+              <svg (click)="reset()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-counterclockwise col-6" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+              </svg>
+            </div>
+            
+          </div>
+          
         </div>
+        
       </div>
-      <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
-        <div class="buscar">
-          <input id="dateInput" class="date-input form-control" type="date">
-        </div>
+      </form>
+      
       </div>
-    </div>
   </div>
-    
   <div class="container">
     <div class="table-container">
       <div class="separador">

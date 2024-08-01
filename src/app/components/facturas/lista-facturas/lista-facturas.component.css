@@ -181,3 +181,9 @@ button#nuevo {
     font-size: 14px;
   }
 }
+
+#dateInput{
+  background-color: #fff;
+  color: #000000;
+  display: inline-block;
+}

@@ -186,3 +186,7 @@ p.impuesto-usado {
 .alinear-derecha {
   text-align: right;
 }
+
+#btn-vender{
+  background-color: #66b877;
+}
