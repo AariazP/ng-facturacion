@@ -42,7 +42,7 @@
             <td>{{ producto.codigo }}</td>
             <td >{{ producto.nombre }}</td>
             <td>{{ producto.precio}}</td>
-            <td>{{ producto.cantidad }}</td>
+            <td [ngClass]="{'red': producto.cantidad < 5}">{{ producto.cantidad }}</td>
             <td>{{ producto.activo == true ? "Sí": "No" }}</td>
             <td class="d-none d-md-table-cell">{{ producto.fechaCreacion | date }}</td>
             <td class="eliminar">

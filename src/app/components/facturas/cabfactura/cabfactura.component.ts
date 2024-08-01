@@ -67,15 +67,40 @@ export class CabfacturaComponent implements DoCheck {
     this.generarFactura();
   }
 
-  onSubmit() {
+  async onSubmit() {
 
     if (!this.formulario.valid ) {
       this.formulario.markAllAsTouched();
       return;
-    } 
+    }
+    
+    let totalPagar = this.total;
+    console.log('total' + totalPagar );
+    
+    await this.alert.simpleInputAlert().then((result) => {
+      let dinero = 0;
+      
+      if(result == null || result == undefined){
+        this.alert.simpleErrorAlert('No se ha ingresado un valor');
+        return;
+      }
 
-    let factura = new CrearFacturaDTO();
-    factura.cliente = this.formulario.get('cliente')!.value;
+
+      if (isNaN(Number(result))) {
+        this.alert.simpleErrorAlert('El valor ingresado no es un número');
+        return;
+      }
+      console.log('result' + result);
+      if (result) {
+        dinero = Number(result);
+      }
+      if (dinero < this.total) {
+        this.alert.simpleErrorAlert('El dinero ingresado es menor al total de la factura');
+        return;
+      }
+
+      let factura = new CrearFacturaDTO();
+     factura.cliente = this.formulario.get('cliente')!.value;
 
     this.clienteService.verificarExistencia(factura.cliente).subscribe(
       response => {
@@ -100,10 +125,16 @@ export class CabfacturaComponent implements DoCheck {
       factura.agregarDetalle(detalleFactura);
     });
 
+  
     
     this.facturasService.guardarFactura(factura).subscribe(
       (resp: any) => {
+        setTimeout(() => {
+          console.log(dinero);
+          this.alert.simpleSuccessAlert('El cambio es: ' + (dinero-totalPagar));
+        }, 300);
         this.alert.simpleSuccessAlert('Factura guardada correctamente');
+        
       },
       error => {
         this.alert.simpleErrorAlert(error.error.mensaje);
@@ -116,6 +147,9 @@ export class CabfacturaComponent implements DoCheck {
     this.generarFactura();
     this.clienteSeleccionado = null;
     this.resetListProductos();
+
+    });
+     
   }
 
   resetListProductos(): void {

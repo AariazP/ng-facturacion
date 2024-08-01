@@ -1,0 +1,28 @@
+[debug] [2024-08-01T18:02:07.127Z] ----------------------------------------------------------------------
+[debug] [2024-08-01T18:02:07.128Z] Command:       /opt/homebrew/Cellar/node/22.5.1/bin/node /Users/aariaz/Desktop/ng-facturacion/node_modules/.bin/firebase init
+[debug] [2024-08-01T18:02:07.128Z] CLI Version:   13.14.2
+[debug] [2024-08-01T18:02:07.128Z] Platform:      darwin
+[debug] [2024-08-01T18:02:07.128Z] Node Version:  v22.5.1
+[debug] [2024-08-01T18:02:07.129Z] Time:          Thu Aug 01 2024 13:02:07 GMT-0500 (Colombia Standard Time)
+[debug] [2024-08-01T18:02:07.129Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-01T18:02:07.133Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-01T18:02:07.133Z] > authorizing via signed-in user (alejo17ariazpzn@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/aariaz/Desktop/ng-facturacion
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
