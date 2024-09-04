@@ -10,9 +10,7 @@ export class LoginService {
   private URL_API: string = environment.ApiUrl;
 
   constructor(private http: HttpClient) { }
-
   
-
   login(username: string, password: string): Observable<any> {
     let params = new HttpParams()
       .set('username', username)
