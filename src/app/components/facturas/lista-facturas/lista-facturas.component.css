@@ -47,10 +47,6 @@ td.eliminar, th.eliminar{
   justify-content: flex-end;
 }
 
-td button{
-  
-}
-
 td button.editar, td button.check{
   background: none;
   border: none;
