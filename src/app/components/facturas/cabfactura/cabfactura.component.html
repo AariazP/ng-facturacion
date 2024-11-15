@@ -54,7 +54,6 @@
               <span *ngIf="!hayStock">*Valor mayor al stock disponible</span>
             </div>
           </div>
-
           <div class="col-lg-3 mt-4">
             <p *ngIf="this.productosForm.get('nombreProducto')?.value" > *Tiene en stock: {{stockProducto}}</p>
             <button id="azul" (click)="agregarProducto()">Agregar producto</button>
@@ -74,11 +73,10 @@
                 <th class="eliminar">Acciones</th>
               </tr>
             </thead>
-
             <tbody>
               <tr *ngFor="let listProducto of listProductos">
                 <td>{{ listProducto.codProducto }}</td>
-                <td >{{ listProducto.nombreProducto }}</td>
+                <td>{{ listProducto.nombreProducto }}</td>
                 <td>{{ listProducto.precioProducto }}</td>
                 <td>{{ listProducto.cantidadProducto }}</td>
                 <td id="eliminar" class="eliminar">
@@ -94,7 +92,7 @@
 
   <div class="alinear-derecha">
   <div class="valores-a-pagar">
-    <p><span>Subtotal: </span> {{subtotal | currency }}  </p>
+    <!-- <p><span>Subtotal: </span> {{subtotal | currency }}  </p> -->
     <p><span>IVA ({{porcentajeIva}}%):</span> ${{igv | number: '1.2-2' }}</p>
     <p><span>Total a pagar:</span> ${{total | number: '1.2-2'  }}</p>
 
@@ -150,7 +148,7 @@
     <div class="col-lg-9">
     </div>
     <div class="col-lg-3 text-right">
-      <button type="submit" class="btn btn-primary" id="btn-vender">Vender</button>
+      <button type="submit" class="btn btn-primary" id="verde">Vender</button>
     </div>
   </div>
 

@@ -8,56 +8,77 @@
         </h1>
       </div>
       <form [formGroup]="formFacturas">
-        <div class="row mt-4"> 
+        <div class="row mt-4">
           <p>Buscar factura con fecha</p>
-        <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
-          <div class="row buscar">
-            <input id="dateInput" class="date-input form-control col-6" formControlName="fecha" (change)="filtrarFecha()" type="date">
-            <div class="col-6 mt-4" id="div-svg">
-              <svg (click)="reset()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-counterclockwise col-6" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
-                <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
-              </svg>
+          <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+            <div class="row buscar">
+              <input id="dateInput" class="date-input form-control col-6" formControlName="fecha" (change)="filtrarFecha()" type="date">
+              <div class="col-6 mt-4" id="div-svg">
+                <svg (click)="reset()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-counterclockwise col-6" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                  <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+                </svg>
+              </div>
             </div>
-            
           </div>
-          
         </div>
-        
-      </div>
       </form>
-      
-      </div>
+    </div>
   </div>
+
   <div class="container">
     <div class="table-container">
       <div class="separador">
         <div class="table-responsive">
           <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Numero de Factura</th>
-              <th>Cedula cliente</th>
-              <th>Fecha y hora</th>
-              <th>Total</th>
-              <th class="eliminar">Acciones</th>
-            </tr>
-          </thead>
-          
-  
-          <tbody>
-  
-            <tr *ngFor="let factura of facturasFiltradas">
-              <td class="text-left">{{ factura.idFactura }}</td>
-              <td class="text-left">{{ factura.cedulaCliente }}</td>
-              <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-              <td class="text-left">{{ factura.total }}</td>
-              <td class="eliminar">
-                <button>Generar factura</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <thead>
+              <tr>
+                <th>Numero de Factura</th>
+                <th>Cedula cliente</th>
+                <th>Fecha y hora</th>
+                <th>Total</th>
+                <th class="eliminar">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let factura of facturasFiltradas">
+                <td class="text-left">{{ factura.idFactura }}</td>
+                <td class="text-left">{{ factura.cedulaCliente }}</td>
+                <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="text-left">{{ factura.total }}</td>
+                <td class="eliminar">
+                  <button type="button" class="btn btn-primary" (click)="mostrarPrevisualizacion(factura)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
+                    Previsualizar Factura
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Modal de previsualización de factura -->
+  <div class="modal fade" id="previsualizacionFacturaModal" tabindex="-1" aria-labelledby="previsualizacionFacturaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="previsualizacionFacturaLabel">Previsualización de Factura</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Número de Factura:</strong> {{ facturaSeleccionada?.idFactura }}</p>
+          <p><strong>Cédula Cliente:</strong> {{ facturaSeleccionada?.cedulaCliente }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ facturaSeleccionada?.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+          <p><strong>Total:</strong> {{ facturaSeleccionada?.total }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="confirmarGenerarFactura()" data-bs-dismiss="modal">Generar Factura</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

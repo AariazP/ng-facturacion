@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Form, FormBuilder, FormGroup } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
+import { jsPDF } from 'jspdf';
+
 @Component({
   selector: 'app-lista-facturas',
   templateUrl: './lista-facturas.component.html',
@@ -16,6 +18,8 @@ export class ListaFacturasComponent {
   modoOculto: boolean = true;
   sumaTotal: number = 0;
   formFacturas: FormGroup;
+  facturaSeleccionada: any = null;
+
 
   constructor(private facturasService: FacturasService, private fb: FormBuilder) {
 
@@ -33,6 +37,38 @@ export class ListaFacturasComponent {
       this.facturasFiltradas = data;
 
     })
+  }
+
+  generarFactura(factura: any) {
+    const doc = new jsPDF();
+
+    // Añadir contenido al PDF
+    doc.setFontSize(12);
+    doc.text('Factura de Venta', 10, 10);
+    doc.text('Número de Factura: ' + factura.idFactura, 10, 20);
+    doc.text('Cédula Cliente: ' + factura.cedulaCliente, 10, 30);
+    doc.text('Fecha y Hora: ' + factura.fechaHora, 10, 40);
+    doc.text('Total: ' + factura.total + ' USD', 10, 50);
+
+    // Descargar el PDF
+    doc.save(`Factura_${factura.idFactura}.pdf`);
+  }
+
+  confirmarGenerarFactura() {
+    if (this.facturaSeleccionada) {
+      this.generarFactura(this.facturaSeleccionada);
+
+    }
+  }
+  
+  // Método para cerrar la previsualización
+  cerrarPrevisualizacion() {
+    this.facturaSeleccionada = null;
+  }
+
+  // Método para mostrar la previsualización de una factura
+  mostrarPrevisualizacion(factura: any) {
+    this.facturaSeleccionada = factura;
   }
 
   calcularSumaTotal(){
