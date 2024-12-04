@@ -14,16 +14,15 @@
       <button id="nuevo" class="btn btn-primary" routerLink="/app/producto/nuevo">Nuevo</button>
     </div>
   </div>
-</div>
 
-<div class="container">
+<h6 class="totalProductos">Se han encontrado {{ totalProductos }} productos.</h6>
+
 <div class="table-container">
   <div class="separador">
     <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Código</th>
             <th>Nombre</th>
             <th>Precio</th>
@@ -38,10 +37,9 @@
         <tbody>
           <!-- <tr *ngFor="let persona of personas"> -->
           <tr *ngFor="let producto of filtroProductos; let i=index">
-            <td>{{ i+1 }}</td>
             <td>{{ producto.codigo }}</td>
             <td >{{ producto.nombre }}</td>
-            <td>{{ producto.precio}}</td>
+            <td>$ {{ producto.precio | number:'1.0-0' }}</td>
             <td [ngClass]="{'red': producto.cantidad < 5}">{{ producto.cantidad }}</td>
             <td>{{ producto.activo == true ? "Sí": "No" }}</td>
             <td class="d-none d-md-table-cell">{{ producto.fechaCreacion | date }}</td>
@@ -63,8 +61,5 @@
     </div>
   </div>
 
-  </div>
-  <div>
-    <p class="rojo">Se han encontrado {{ totalProductos }} productos.</p>
   </div>
 </div>

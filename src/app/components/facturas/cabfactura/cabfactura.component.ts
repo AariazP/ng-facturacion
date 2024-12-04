@@ -301,13 +301,12 @@ export class CabfacturaComponent implements DoCheck {
   seleccionarProducto(): void{
     let idProducto = this.productosForm.get('codProducto')?.value
     this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
+    this.stockProducto = this.productoSeleccionado.cantidad;
     if(this.productoSeleccionado != null && this.productoSeleccionado != undefined){
-      this.stockProducto = this.productoSeleccionado.stock;
       this.productosForm.patchValue({
       nombreProducto: this.productoSeleccionado.nombre
       });
     }
-    
   }
 
 

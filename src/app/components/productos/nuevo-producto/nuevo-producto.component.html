@@ -2,9 +2,9 @@
   <div class="formulario">
     <div class="encabezado">
       <h1 class="nota">Registro de productos</h1>
-      <p class="text-muted mb-3">Recuerde ingresar todos los campos</p>
+      <p class="text-muted mb-2">Recuerde ingresar todos los campos</p>
     </div>
-    <p class="datos">Datos:</p>
+    <p class="datos">Código:</p>
     <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
       <div class="form-group">
@@ -13,7 +13,7 @@
           class="form-control"
           pattern="[a-zA-Z0-9]*"
           formControlName="codigo"
-          placeholder="Codigo"
+          placeholder="Código"
           (input)="validarCodigo($event)"
         >
         <span
@@ -27,6 +27,7 @@
         </span>
       </div>
 
+      <p class="datos">Nombre:</p>
       <div class="form-group">
         <input
           type="text"
@@ -42,6 +43,8 @@
         </span>
       </div>
 
+      <p class="datos">Precio:</p>
+
       <div class="form-group">
         <input
           type="number"
@@ -56,6 +59,8 @@
           Por favor, ingrese un valor válido.
         </span>
       </div>
+
+      <p class="datos">Stock:</p>
 
       <div class="form-group">
         <input
