@@ -1,85 +1,50 @@
 <div class="container mt-4 pop-up">
   <form [formGroup]="personaForm" (ngSubmit)="guardar()">
-    
+
     <div class="form-group">
       <label for="Cedula">Cedula:</label>
-      <input 
-        maxlength="15" 
-        type="text" 
-        class="form-control" 
-        formControlName="cedula" 
-        placeholder="Cedula"
-      >
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('cedula') && personaForm.get('cedula')!.errors && personaForm.get('cedula')!.touched"
-      >
+      <input maxlength="15" type="text" class="form-control" formControlName="cedula" placeholder="Cedula">
+      <span class="text-danger"
+        *ngIf="personaForm.get('cedula') && personaForm.get('cedula')!.errors && personaForm.get('cedula')!.touched">
         Por favor, ingrese solo números
       </span>
     </div>
 
     <div class="form-group">
       <label for="nombre">Nombre:</label>
-      <input 
-        type="text" 
-        class="form-control" 
-        formControlName="nombre" 
-        placeholder="Nombre"
-      >
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('nombre') && personaForm.get('nombre')!.errors && personaForm.get('nombre')!.touched"
-      >
+      <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+      <span class="text-danger"
+        *ngIf="personaForm.get('nombre') && personaForm.get('nombre')!.errors && personaForm.get('nombre')!.touched">
         Por favor, ingrese solo texto.
       </span>
     </div>
 
     <div class="form-group">
       <label for="direccion">Direccion:</label>
-      <input 
-        type="text" 
-        class="form-control" 
-        formControlName="direccion" 
-        placeholder="Direccion"
-      >
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('direccion')?.invalid && (personaForm.get('direccion')?.dirty || personaForm.get('direccion')?.touched)"
-      >
+      <input type="text" class="form-control" formControlName="direccion" placeholder="Direccion">
+      <span class="text-danger"
+        *ngIf="personaForm.get('direccion')?.invalid && (personaForm.get('direccion')?.dirty || personaForm.get('direccion')?.touched)">
         Por favor, ingrese un valor válido.
       </span>
     </div>
 
     <div class="form-group">
       <label for="correo">Correo:</label>
-      <input 
-        type="email" 
-        class="form-control" 
-        formControlName="correo" 
-        placeholder="Correo"
-      >
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('correo')?.invalid && (personaForm.get('correo')?.dirty || personaForm.get('correo')?.touched)"
-      >
+      <input type="email" class="form-control" formControlName="correo" placeholder="Correo">
+      <span class="text-danger"
+        *ngIf="personaForm.get('correo')?.invalid && (personaForm.get('correo')?.dirty || personaForm.get('correo')?.touched)">
         Por favor, ingrese un correo válido.
       </span>
     </div>
 
     <div class="form-group">
       <label for="activo">Activo:</label>
-      <select 
-        class="form-control" 
-        id="activo" 
-        formControlName="activo"
-      >
+      <select class="form-control" id="activo" formControlName="activo">
         <option [selected]="true" value=true>Si</option>
         <option value=false>No</option>
       </select>
-      <span 
-        class="text-danger" 
-        *ngIf="personaForm.get('activo')?.invalid && (personaForm.get('activo')?.dirty || personaForm.get('activo')?.touched)"
-      >
+      <span class="text-danger"
+        *ngIf="personaForm.get('activo')?.invalid && (personaForm.get('activo')?.dirty || personaForm.get('activo')?.touched)">
         Por favor, ingrese un valor válido.
       </span>
     </div>

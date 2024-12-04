@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes.service';
-import { Router } from '@angular/router';
-import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
 import { ActualizarClienteDTO } from 'src/app/DTO/cliente/ActualizarClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 
@@ -14,12 +13,11 @@ import { AlertService } from 'src/app/utils/alert.service';
 })
 export class EditarClienteComponent {
 
-  
+  //TODO: Implementar la edición de un cliente 
   @Input() personaEditar: any = {};
   idCliente!: number;
   @Output() modoOculto = new EventEmitter();
   personaForm: FormGroup;
-
 
   constructor(private fb: FormBuilder, private clienteService: ClientesService, 
     private alert: AlertService
