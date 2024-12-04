@@ -14,25 +14,29 @@ export class FacturasService {
   constructor(private http: HttpClient) { }
 
   getData(){
-    return this.http.get(`${this.URL_API}/factura/obtener-facturas`);
+    return this.http.get(`${this.URL_API}/venta/obtener-ventas-completadas`); 
   }
   guardarCabecera(cabecera: any) {
-    return this.http.post(`${this.URL_API}/factura`, cabecera);
+    return this.http.post(`${this.URL_API}/venta`, cabecera);
   }
 
   guardarDetalles(detalles: any) {
-    return this.http.post(`${this.URL_API}/factura/guardar`, detalles);
+    return this.http.post(`${this.URL_API}/venta/guardar`, detalles);
   }
   generaFactura(){
-    return this.http.get(`${this.URL_API}/factura/siguiente-id`);
+    return this.http.get(`${this.URL_API}/venta/siguiente-id`);
   }
 
   eliminarPorId(id: number) {
-    return this.http.delete(`${this.URL_API}/factura/${id}`);
+    return this.http.get(`${this.URL_API}/venta/${id}`);
   }
 
   guardarFactura(factura: CrearFacturaDTO) {
-    return this.http.post(`${this.URL_API}/factura/guardar`, factura);
+    return this.http.post(`${this.URL_API}/venta/guardar`, factura);
+  }
+
+  obtenerDetalleVenta(id: any) {
+    return this.http.get(`${this.URL_API}/venta/${id}`);
   }
 
 }

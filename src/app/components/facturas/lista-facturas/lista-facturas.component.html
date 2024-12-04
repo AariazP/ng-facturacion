@@ -38,7 +38,7 @@
             <thead>
               <tr>
                 <th>Numero de Factura</th>
-                <th>Cedula cliente</th>
+                <th>Nombre cliente</th>
                 <th>Fecha y hora</th>
                 <th>Total</th>
                 <th class="eliminar">Acciones</th>
@@ -46,10 +46,10 @@
             </thead>
             <tbody>
               <tr *ngFor="let factura of facturasFiltradas">
-                <td class="text-left">{{ factura.idFactura }}</td>
-                <td class="text-left">{{ factura.cedulaCliente }}</td>
-                <td class="text-left">{{ factura.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="text-left">{{ factura.total  | number:'1.0-0' }}</td>
+                <td class="text-left">{{ factura.id }}</td>
+                <td class="text-left">{{ factura.cliente }}</td>
+                <td class="text-left">{{ factura.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="text-left">$ {{ factura.total  | number:'1.0-0' }}</td>
                 <td class="eliminar">
                   <button type="button" class="btn btn-primary" (click)="mostrarPrevisualizacion(factura)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
                     Previsualizar Factura
@@ -72,10 +72,33 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p><strong>Número de Factura:</strong> {{ facturaSeleccionada?.idFactura }}</p>
-          <p><strong>Cédula Cliente:</strong> {{ facturaSeleccionada?.cedulaCliente }}</p>
-          <p><strong>Fecha y Hora:</strong> {{ facturaSeleccionada?.fechaHora | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+          <p><strong>Número de Factura:</strong> {{ facturaSeleccionada?.id }}</p>
+          <p><strong>Cédula Cliente:</strong> {{ facturaSeleccionada?.cliente }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ facturaSeleccionada?.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</p>
           <p><strong>Total:</strong> {{ facturaSeleccionada?.total }}</p>
+          <p><strong>Productos:</strong></p>
+          <div class="container">
+            <div class="table-container">
+              <div class="separador">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let producto of carritoComprado.detalleVentaList">
+                        <td class="text-left">{{ producto.producto }}</td>
+                        <td class="text-left">{{ producto.cantidad }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" (click)="confirmarGenerarFactura()" data-bs-dismiss="modal">Generar Factura</button>
