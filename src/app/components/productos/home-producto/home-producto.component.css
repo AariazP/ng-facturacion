@@ -5,8 +5,13 @@
   border-radius: 10px;
 }
 .table-container .separador{
-  margin-top: 20px;
+  margin-top: 10px;
 }
+
+.totalProductos{
+  margin-top: 10px;
+}
+
 .table-responsive {
   overflow-x: auto;
 }

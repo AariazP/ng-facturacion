@@ -56,6 +56,7 @@ button:hover {
   transform: scale(1.05); /* Pequeña animación de escala */
 }
 
+
 @media (max-width: 576px) {
   .formulario {
     padding: 15px;

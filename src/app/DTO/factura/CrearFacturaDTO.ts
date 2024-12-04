@@ -3,17 +3,17 @@ import { DetalleFacturaDTO } from "./DetalleFacturaDTO";
 export class CrearFacturaDTO {
 
     cliente!: string;
-    listDetalleFactura!: DetalleFacturaDTO[];
+    listDetalleVenta!: DetalleFacturaDTO[];
     usuario!: number;
 
     constructor() {
-        this.listDetalleFactura = [];
+        this.listDetalleVenta = [];
     }
 
 
     agregarDetalle(detalleFactura: DetalleFacturaDTO) {
         let productoExistente = false;
-        this.listDetalleFactura.forEach(detalle => {
+        this.listDetalleVenta.forEach(detalle => {
             if (detalle.codigoProducto === detalleFactura.codigoProducto) {
                 detalle.cantidad += detalleFactura.cantidad;
                 productoExistente = true;
@@ -21,7 +21,7 @@ export class CrearFacturaDTO {
         });
 
         if (!productoExistente) {
-            this.listDetalleFactura.push(detalleFactura);
+            this.listDetalleVenta.push(detalleFactura);
         }
     }
 }

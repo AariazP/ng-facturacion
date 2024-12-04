@@ -9,7 +9,7 @@
           <p>Ventas:</p>
         </div>
         <div class="col-12 col-md-6 col-lg-6">
-          <h3>{{ totalVentas | currency : "USD" : "symbol" : "1.2-2" }}</h3>
+          <h3>{{ totalVentas | currency : "USD" : "symbol" : "1.0-0" }}</h3>
         </div>
       </div>
       <div class="row">
@@ -17,7 +17,7 @@
           <p>Externo:</p>
         </div>
         <div class="col-12 col-md-6 col-lg-6">
-          <h3>{{ totalExterno | currency : "USD" : "symbol" : "1.2-2" }}</h3>
+          <h3>{{ totalExterno | currency : "USD" : "symbol" : "1.0-0" }}</h3>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
           <p>Efectivo:</p>
         </div>
         <div class="col-12 col-md-6 col-lg-6">
-          <h3>{{ totalEfectivo | currency : "USD" : "symbol" : "1.2-2" }}</h3>
+          <h3>{{ totalEfectivo | currency : "USD" : "symbol" : "1.0-0" }}</h3>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
               }">
               <td>{{ movimiento.motivo }}</td>
               <td>
-                $ {{ movimiento.valor | currency : "  " : "symbol" : "1.2-2" }}
+                $ {{ movimiento.valor | currency : "  " : "symbol" : "1.0-0" }}
               </td>
               <td>{{ movimiento.tipo }}</td>
             </tr>
@@ -101,8 +101,15 @@
       <form>
         <div class="form-group">
           <label for="valor">Valor:</label>
-          <input type="number" class="form-control" id="valor" />
+          <input
+            type="text"
+            class="form-control"
+            id="valor"
+            [value]="valorFormateado"
+            (input)="formatearValor($event)"
+          />
         </div>
+        
         <div class="form-group">
           <label for="motivo">Motivo:</label>
           <textarea class="form-control" id="motivo"></textarea>

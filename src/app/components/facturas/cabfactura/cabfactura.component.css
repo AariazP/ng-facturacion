@@ -85,25 +85,47 @@ button:disabled {
 }
 
 /* Estilo de la tabla */
-.table-responsive {
-  margin: 20px 0;
-  height: 250px;
+.table-container {
+  width: 100%; 
+  height: 100%;
+  background-color: rgb(67, 164, 255);
+  border-radius: 10px;
 }
-
-table {
+.table-container .separador{
+  margin-top: 20px;
+}
+.separador div{
   width: 100%;
-  border-collapse: collapse;
+  display: flex;
+  /*justify-content: center;*/
+  /*border: 1px solid rgb(182, 182, 182) ;*/
+  border-radius: 10px;
+}
+table {
+  background-color: #ffffff;
+  width: 100%; 
+  /*border-collapse: collapse;*/
+  border-radius: 10px;
 }
 
-th,
-td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+th, td {
+  border: none; 
+  padding: 8px; 
+  text-align: left; 
 }
 
 th {
-  background-color: #f4f4f9;
+  background-color: #fff;
+  color: rgb(97, 97, 97); 
+}
+
+
+tr:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff; 
 }
 
 .eliminar button {
@@ -121,8 +143,26 @@ td.eliminar, th.eliminar{
 }
 
 .sin-datos-tabla {
+  height: 250px;
   text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
   color: #666;
+  background-color: #f9f9f9;
+}
+
+.sin-datos-tabla td {
+  padding: 0;
+}
+
+.sin-datos-mensaje {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-weight: bold;
+  color: #666;
+  font-size: 1.2rem;
 }
 
 /* Estilo de las notificaciones y mensajes */
@@ -136,6 +176,7 @@ p.impuesto-usado {
 }
 
 .valores-a-pagar p {
+  margin-top: 25px;
   font-size: 1.2em;
 }
 

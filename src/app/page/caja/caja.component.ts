@@ -18,7 +18,22 @@ export class CajaComponent {
   actionButtonText: string = '';
   currentAction: 'ingreso' | 'egreso' = 'ingreso';
 
+  valorFormateado: string = ''; // Para almacenar el valor con formato
+
   constructor(private menuComponent: MenuComponent, private listaFacturasComponent: ListaFacturasComponent) {}
+
+  formatearValor(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const valorSinFormato = input.value.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
+    const valorNumerico = parseInt(valorSinFormato, 10);
+
+    if (!isNaN(valorNumerico)) {
+      this.valorFormateado = valorNumerico.toLocaleString('en-US'); // Formato con comas
+      input.value = this.valorFormateado;
+    } else {
+      this.valorFormateado = '';
+    }
+  }
 
   triggerToggleCollapse() {
     if (!this.menuComponent.estadoMenu){
@@ -35,12 +50,21 @@ export class CajaComponent {
   }
 
   mostrarModal(action: 'ingreso' | 'egreso') {
+    this.limpiarCampos(); // Limpia los campos antes de mostrar el modal
     this.currentAction = action;
     this.modalTitle = action === 'ingreso' ? 'Ingreso de Valor' : 'Egreso de Valor';
     this.actionButtonText = action === 'ingreso' ? 'Registrar Ingreso' : 'Registrar Egreso';
     const modal = document.getElementById('ingresoModal');
     if (modal) {
       modal.style.display = 'block';
+    }
+  }
+
+  limpiarCampos() {
+    this.valorFormateado = ''; // Resetea el valor formateado
+    const motivoInput = <HTMLTextAreaElement>document.getElementById('motivo');
+    if (motivoInput) {
+      motivoInput.value = ''; // Resetea el valor del textarea
     }
   }
 
@@ -52,21 +76,20 @@ export class CajaComponent {
   }
 
   procesarTransaccion() {
-    const valorInput = (<HTMLInputElement>document.getElementById('valor')).value;
+    const valorNumerico = parseFloat(this.valorFormateado.replace(/,/g, '')); // Convierte a número real
     const motivoInput = (<HTMLTextAreaElement>document.getElementById('motivo')).value;
-    const valor = parseFloat(valorInput);
 
-    if (!isNaN(valor)) {
+    if (!isNaN(valorNumerico)) {
       if (this.currentAction === 'ingreso') {
-        this.ingresos += valor;
-        this.movimientos.push({ motivo: motivoInput, valor, tipo: 'Ingreso' });
+        this.ingresos += valorNumerico;
+        this.movimientos.push({ motivo: motivoInput, valor: valorNumerico, tipo: 'Ingreso' });
       } else {
-        this.egresos += valor;
-        this.movimientos.push({ motivo: motivoInput, valor, tipo: 'Egreso' });
+        this.egresos += valorNumerico;
+        this.movimientos.push({ motivo: motivoInput, valor: valorNumerico, tipo: 'Egreso' });
       }
       this.actualizarTotalEfectivo();
       this.guardarDatos();
-      console.log(`Valor ${this.currentAction === 'ingreso' ? 'ingresado' : 'egresado'}: ${valor}, Motivo: ${motivoInput}`);
+      console.log(`Valor ${this.currentAction === 'ingreso' ? 'ingresado' : 'egresado'}: ${valorNumerico}, Motivo: ${motivoInput}`);
       this.ocultarModal(); // Oculta el modal después de guardar
     } else {
       alert('Por favor, ingrese un valor válido.');

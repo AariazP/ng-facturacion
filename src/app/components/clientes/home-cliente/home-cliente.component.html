@@ -14,16 +14,17 @@
       <button id="nuevo" class="btn btn-primary" routerLink="/app/cliente/nuevo">Nuevo</button>
     </div>
   </div>
-</div>
 
-<div class="container">
+
+<h6 class="totalClientes">Se han encontrado {{ totalClientes }} clientes.</h6>
+
+
   <div class="table-container">
     <div class="separador">
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
-              <th class="d-none d-md-table-cell">ID</th>
               <th>CC</th>
               <th>Nombre</th>
               <th>Direccion</th>
@@ -37,7 +38,6 @@
 
           <tbody>
             <tr *ngFor="let cliente of filtroClientes">
-              <td class="d-none d-md-table-cell">{{ cliente.id }}</td>
               <td>{{ cliente.cedula }}</td>
               <td>{{ cliente.nombre }}</td>
               <td>{{ cliente.direccion }}</td>
@@ -60,8 +60,5 @@
         <app-editar-cliente class="editar" [personaEditar]="personaEditar" (modoOculto)="editarModoOcuto()"></app-editar-cliente>
       </div>
     </div>
-  </div>
-  <div>
-    <p class="rojo">Se han encontrado {{ totalClientes }} clientes.</p>
   </div>
 </div>

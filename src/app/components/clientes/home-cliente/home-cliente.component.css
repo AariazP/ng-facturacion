@@ -5,8 +5,13 @@
   border-radius: 10px;
 }
 .table-container .separador{
-  margin-top: 20px;
+  margin-top: 10px;
 }
+
+.totalClientes{
+  margin-top: 10px;
+}
+
 .separador div{
   width: 100%;
   display: flex;
