@@ -37,21 +37,13 @@ export class ListaFacturasComponent {
   }
   ngOnInit() {
    this.getData();
-   this.establecerFecha(this.getFechaActual());
+   //this.establecerFecha(this.getFechaActual());
   }
 
   getData(){
     this.facturasService.getData().subscribe(data => {
       this.facturas = data;
       this.facturasFiltradas = data;
-
-    })
-  }
-
-  cargarCarrito(){
-    this.facturasService.obtenerDetalleVenta(this.idFacturaSeleccionada).subscribe(data => {
-      this.carritoComprado = data;
-      console.log(this.carritoComprado);
     })
   }
 
@@ -87,7 +79,6 @@ export class ListaFacturasComponent {
   confirmarGenerarFactura() {
     if (this.facturaSeleccionada) {
       this.generarFactura(this.facturaSeleccionada);
-
     }
   }
   
@@ -99,7 +90,9 @@ export class ListaFacturasComponent {
   // Método para mostrar la previsualización de una factura
   mostrarPrevisualizacion(factura: any) {
     this.facturaSeleccionada = factura;
-    this.idFacturaSeleccionada= factura.id;
+    this.facturasService.obtenerDetalleVenta(factura.id).subscribe(data => {
+      this.carritoComprado = data;
+    })
   }
 
   calcularSumaTotal(){
@@ -137,8 +130,11 @@ export class ListaFacturasComponent {
   }
 
   establecerFecha(fecha : string) {
-    this.facturasFiltradas = this.facturas.filter( (factura: any) =>
+    console.log(fecha);
+    console.log(this.facturas);
+    this.facturasFiltradas = this.facturas.filter( (factura: any) =>{
       factura.fecha.includes(fecha)
+    }
     );
   }
 

@@ -89,7 +89,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let producto of carritoComprado.detalleVentaList">
+                      <tr *ngFor="let producto of carritoComprado?.detalleVentaList">
                         <td class="text-left">{{ producto.producto }}</td>
                         <td class="text-left">{{ producto.cantidad }}</td>
                       </tr>
