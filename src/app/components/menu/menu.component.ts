@@ -14,9 +14,11 @@ export class MenuComponent {
     const sidebar = document.querySelector("#sidebar") as HTMLElement;
     sidebar.classList.toggle("collapsed");
     this.estadoMenu = !this.estadoMenu
-}
+  }
 
-constructor(private router: Router){}	
+constructor(private router: Router){
+  this.router.navigate(['/app/principal']);
+}	
 
 salir(){
   localStorage.removeItem('id');

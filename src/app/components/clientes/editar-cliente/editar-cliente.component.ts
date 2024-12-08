@@ -4,6 +4,7 @@ import { ClientesService } from 'src/app/service/clientes.service';
 import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
 import { ActualizarClienteDTO } from 'src/app/DTO/cliente/ActualizarClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
+import { ClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
 
 
 @Component({
@@ -13,16 +14,18 @@ import { AlertService } from 'src/app/utils/alert.service';
 })
 export class EditarClienteComponent {
 
-  //TODO: Implementar la edición de un cliente 
-  @Input() personaEditar: any = {};
-  idCliente!: number;
+
+  @Input() personaEditar!: ClienteDTO;
   @Output() modoOculto = new EventEmitter();
-  personaForm: FormGroup;
+  personaForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private clienteService: ClientesService, 
     private alert: AlertService
   ) {
-    this.idCliente = this.personaEditar.id;
+    this.formBuild(fb);
+  }
+  
+  formBuild(fb: FormBuilder){
     this.personaForm = this.fb.group({
       idCliente: '',
       cedula: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(15)]],
@@ -34,8 +37,9 @@ export class EditarClienteComponent {
   
     });
 
-    
   }
+
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['personaEditar'] && this.personaEditar) {
