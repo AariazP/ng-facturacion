@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["raf", "core-js", "dompurify", "html2canvas", "rgbcolor", "sweetalert2", "numeral"],
             "outputPath": "dist/facturacion",
             "index": "src/index.html",
             "main": "src/main.ts",
