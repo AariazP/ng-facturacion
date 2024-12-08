@@ -1,7 +1,7 @@
-export class EFacturaDTO {
+export class VentaDTO{
     id!: number;
     fecha!: string;
     total!: number;
     cliente!: string;
-    usuario!: string;
+    usuario!: number;
 }

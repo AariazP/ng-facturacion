@@ -1,4 +1,4 @@
-import { DetalleVentaDTO } from "./DetalleVentaDTO";
+import { DetalleVentaDTO } from "../detalleVenta/DetalleVentaDTO";
 
 export class CrearVentaDTO {
 
@@ -14,7 +14,7 @@ export class CrearVentaDTO {
     agregarDetalle(detalleFactura: DetalleVentaDTO) {
         let productoExistente = false;
         this.listDetalleVenta.forEach(detalle => {
-            if (detalle.codigoProducto === detalleFactura.codigoProducto) {
+            if (detalle.codProducto === detalleFactura.codProducto) {
                 detalle.cantidad += detalleFactura.cantidad;
                 productoExistente = true;
             }
