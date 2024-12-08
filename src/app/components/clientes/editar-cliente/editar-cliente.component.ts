@@ -60,11 +60,7 @@ export class EditarClienteComponent {
     } 
 
     let cliente = new ActualizarClienteDTO();
-    cliente.cedula = this.personaForm.get('cedula')!.value;
-    cliente.nombre = this.personaForm.get('nombre')!.value;
-    cliente.direccion = this.personaForm.get('direccion')!.value;
-    cliente.correo = this.personaForm.get('correo')!.value;
-    cliente.activo = this.personaForm.get('activo')!.value; 
+    cliente = cliente.actualizarCliente(this.personaForm.get('cedula')!.value, this.personaForm.get('nombre')!.value, this.personaForm.get('direccion')!.value, this.personaForm.get('correo')!.value, this.personaForm.get('activo')!.value);
     
     this.clienteService.actualizar(cliente, this.personaEditar.id).subscribe(
       response => {

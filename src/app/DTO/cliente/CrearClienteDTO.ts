@@ -14,6 +14,4 @@ export class CrearClienteDTO {
         return this;
     }
 
-
-
 }
