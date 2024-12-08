@@ -12,11 +12,17 @@ import Swal from 'sweetalert2';
 })
 export class NuevoComponent {
 
-  formulario: FormGroup;
+  formulario!: FormGroup;
   existe: boolean = false;
-  constructor(private formBuilder: FormBuilder,
-      private clientesService: ClientesService,
-      private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder,private clientesService: ClientesService, private alertService: AlertService) {
+    this.formBuild(formBuilder);
+  }
+
+  /**
+   * Metodo que crea el formulario reactivo del frontend
+   * @returns void
+   */
+  formBuild(fb: FormBuilder){
     this.formulario = this.formBuilder.group({
       cedula: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(15)]],
       nombre: ['', [Validators.required, soloTexto()]],
@@ -25,6 +31,7 @@ export class NuevoComponent {
       activo: [1],
     });
   }
+
 
   onSubmit() {
 
@@ -36,10 +43,7 @@ export class NuevoComponent {
     } 
 
     let cliente = new CrearClienteDTO();
-    cliente.cedula = this.formulario.get('cedula')!.value;
-    cliente.nombre = this.formulario.get('nombre')!.value;
-    cliente.direccion = this.formulario.get('direccion')!.value;
-    cliente.correo = this.formulario.get('correo')!.value;
+    cliente = cliente.crearCliente(this.formulario.get('cedula')!.value, this.formulario.get('nombre')!.value, this.formulario.get('direccion')!.value, this.formulario.get('correo')!.value)
 
     this.clientesService.enviarDatos(cliente).subscribe(response => {
 

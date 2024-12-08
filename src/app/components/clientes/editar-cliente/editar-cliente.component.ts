@@ -19,12 +19,14 @@ export class EditarClienteComponent {
   @Output() modoOculto = new EventEmitter();
   personaForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private clienteService: ClientesService, 
-    private alert: AlertService
-  ) {
+  constructor(private fb: FormBuilder, private clienteService: ClientesService, private alert: AlertService) {
     this.formBuild(fb);
   }
-  
+  /**
+   * Metodo que crea el formulario reactivo del frontend
+   * @param fb 
+   */
+
   formBuild(fb: FormBuilder){
     this.personaForm = this.fb.group({
       idCliente: '',
@@ -38,7 +40,6 @@ export class EditarClienteComponent {
     });
 
   }
-
 
 
   ngOnChanges(changes: SimpleChanges): void {
