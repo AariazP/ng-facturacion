@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
-import { ProductoService } from 'src/app/service/productos.service';
+import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { CrearProductoDTO } from 'src/app/dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
@@ -17,7 +16,7 @@ export class NuevoProductoComponent implements OnInit {
   existe: boolean = false;
   tipoImpuesto!: string[];
 
-  constructor(private formBuilder: FormBuilder, private productoService: ProductoService, 
+  constructor(private formBuilder: FormBuilder, private httpProductoService: HttpProductoService, 
     private alert: AlertService
   ) {
     this.formulario = this.formBuilder.group({
@@ -30,7 +29,7 @@ export class NuevoProductoComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.productoService.getTipoImpuesto().subscribe(
+    this.httpProductoService.getTipoImpuesto().subscribe(
       data => {
         this.tipoImpuesto = data;
       }, 
@@ -56,7 +55,7 @@ export class NuevoProductoComponent implements OnInit {
     producto.activo = this.formulario.get('activo')!.value;
     producto.impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
 
-    this.productoService.enviarDatos(producto).subscribe(
+    this.httpProductoService.enviarDatos(producto).subscribe(
       response => {
         this.alert.simpleSuccessAlert('Producto guardado correctamente');
         this.formulario.reset();
@@ -72,10 +71,10 @@ export class NuevoProductoComponent implements OnInit {
     const delay = 300;
   
     setTimeout(() => {
-      this.productoService.verificarExistencia(input.value).subscribe(data => {
+      this.httpProductoService.verificarExistencia(input.value).subscribe(data => {
         if (data) {
 
-          this.productoService.fueEliminado(input.value).subscribe(
+          this.httpProductoService.fueEliminado(input.value).subscribe(
             response => {
               if (response) {
                 Swal.fire({
@@ -90,7 +89,7 @@ export class NuevoProductoComponent implements OnInit {
                 }).then((result) => {
                   if (result.isConfirmed) {
   
-                    this.productoService.recuperarProducto(input.value).subscribe(response => {
+                    this.httpProductoService.recuperarProducto(input.value).subscribe(response => {
                       Swal.fire({
                         title: "Recuperado!",
                         text: "El producto ha sido recuperado.",

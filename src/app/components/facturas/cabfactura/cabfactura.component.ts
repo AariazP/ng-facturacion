@@ -1,13 +1,13 @@
 import { Component, DoCheck, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
-import { DetalleVentaDTO } from 'src/app/dto/venta/DetalleVentaDTO';
-import { ClientesService } from 'src/app/service/clientes.service';
-import { FacturasService } from 'src/app/service/facturas.service';
-import { ProductoService } from 'src/app/service/productos.service';
+import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
+import { HttpFacturasService } from 'src/app/http-services/httpFacturas.service';
+import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { AlertService } from 'src/app/utils/alert.service';
 import { cantidadMayorQueCero, soloTexto, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { jsPDF } from 'jspdf';
+import { DetalleVentaDTO } from 'src/app/dto/detalleVenta/DetalleVentaDTO';
 
 @Component({
   selector: 'app-cabfactura',
@@ -34,11 +34,11 @@ export class CabfacturaComponent implements DoCheck {
   hayStock = true;
   constructor(
               private formBuilder: FormBuilder, 
-              private clienteComponent: ClientesService,
-              private facturasService: FacturasService, 
-              private productoService: ProductoService,
+              private httpClienteComponent: HttpClientesService,
+              private httpFacturasService: HttpFacturasService, 
+              private httpProductoService: HttpProductoService,
               private alert : AlertService,
-              private clienteService: ClientesService
+              private httpClienteService: HttpClientesService
               ) {
 
     this.formulario = this.formBuilder.group({
@@ -101,7 +101,7 @@ export class CabfacturaComponent implements DoCheck {
       let factura = new CrearVentaDTO();
      factura.cliente = this.formulario.get('cliente')!.value;
 
-    this.clienteService.verificarExistencia(factura.cliente).subscribe(
+    this.httpClienteComponent.verificarExistencia(factura.cliente).subscribe(
       response => {
         if(!response){
           this.alert.simpleErrorAlert('El cliente con esa cedula no se ha encontrado');
@@ -120,13 +120,13 @@ export class CabfacturaComponent implements DoCheck {
     this.listProductos.map(producto => {
       let detalleFactura =  new DetalleVentaDTO();
       detalleFactura.cantidad = producto.cantidadProducto;
-      detalleFactura.codigoProducto = producto.codProducto
+      detalleFactura.codProducto = producto.codProducto
       factura.agregarDetalle(detalleFactura);
     });
 
   
     
-    this.facturasService.guardarFactura(factura).subscribe(
+    this.httpFacturasService.guardarFactura(factura).subscribe(
       (resp: any) => {
         setTimeout(() => {
           console.log(dinero);
@@ -160,7 +160,7 @@ export class CabfacturaComponent implements DoCheck {
   }
 
   generarFactura(){
-    this.facturasService.generaFactura().subscribe(
+    this.httpFacturasService.generaFactura().subscribe(
       (resp: any) => {
         this.formulario.patchValue({
           numFactura: resp
@@ -199,7 +199,7 @@ export class CabfacturaComponent implements DoCheck {
     if(this.clientes.length != 0){
       return;
     }
-    this.clienteComponent.obtenerClientes().subscribe(data => {
+    this.httpClienteComponent.obtenerClientes().subscribe(data => {
       this.clientes = data;
     })
   }
@@ -213,7 +213,7 @@ export class CabfacturaComponent implements DoCheck {
     }
 
 
-    this.clienteService.obtenerCliente(cedula).subscribe(
+    this.httpClienteComponent.obtenerCliente(cedula).subscribe(
       response => {
         this.formulario.patchValue({
           nombre: response.nombre,
@@ -242,7 +242,7 @@ export class CabfacturaComponent implements DoCheck {
     let cantidad = +this.productosForm.get('cantidadProducto')?.value;
     let codigo = this.productosForm.get('codProducto')?.value;
 
-    this.productoService.verificarActivo(codigo).subscribe(
+    this.httpProductoService.verificarActivo(codigo).subscribe(
       (response) => {
         if (!response) {
           this.alert.simpleErrorAlert('El producto no está activo');
@@ -251,7 +251,7 @@ export class CabfacturaComponent implements DoCheck {
       }
     )
 
-    this.productoService.verificarCantidad(cantidad, codigo).subscribe(
+    this.httpProductoService.verificarCantidad(cantidad, codigo).subscribe(
       (response) => {
         if (!response) {
         this.alert.simpleErrorAlert('La cantidad de productos supera el stock disponible');
@@ -292,7 +292,7 @@ export class CabfacturaComponent implements DoCheck {
     if(this.productos.length != 0){
       return;
     }
-    this.productoService.getData().subscribe(data => {
+    this.httpProductoService.getData().subscribe(data => {
       this.productos = data;
     })
   }

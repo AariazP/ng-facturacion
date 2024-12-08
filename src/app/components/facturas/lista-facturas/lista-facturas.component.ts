@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Form, FormBuilder, FormGroup } from '@angular/forms';
-import { ClientesService } from 'src/app/service/clientes.service';
-import { FacturasService } from 'src/app/service/facturas.service';
+import { HttpFacturasService } from 'src/app/http-services/httpFacturas.service';
 import { jsPDF } from 'jspdf';
 
 @Component({
@@ -24,7 +23,7 @@ export class ListaFacturasComponent {
   carritoComprado: any;
 
 
-  constructor(private facturasService: FacturasService, private fb: FormBuilder) {
+  constructor(private httpfacturasService: HttpFacturasService, private fb: FormBuilder) {
 
     this.formFacturas = this.fb.group({
       fecha: [this.getFechaActual()]
@@ -41,7 +40,7 @@ export class ListaFacturasComponent {
   }
 
   getData(){
-    this.facturasService.getData().subscribe(data => {
+    this.httpfacturasService.getData().subscribe(data => {
       this.facturas = data;
       this.facturasFiltradas = data;
     })
@@ -90,7 +89,7 @@ export class ListaFacturasComponent {
   // Método para mostrar la previsualización de una factura
   mostrarPrevisualizacion(factura: any) {
     this.facturaSeleccionada = factura;
-    this.facturasService.obtenerDetalleVenta(factura.id).subscribe(data => {
+    this.httpfacturasService.obtenerDetalleVenta(factura.id).subscribe(data => {
       this.carritoComprado = data;
     })
   }
@@ -101,7 +100,7 @@ export class ListaFacturasComponent {
 
   eliminarPorId(id: number) {
     console.log(id)
-    this.facturasService.eliminarPorId(id).subscribe(
+    this.httpfacturasService.eliminarPorId(id).subscribe(
       (response) => {
       console.log('Persona eliminada correctamente');
       this.getData();

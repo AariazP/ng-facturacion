@@ -7,9 +7,8 @@ import { ClienteDTO } from '../dto/cliente/ClienteDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientesService {
+export class HttpClientesService {
  
-  
 
   private URL_API: string = environment.ApiUrl;
 

@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProductoService } from 'src/app/service/productos.service';
-import { Router } from '@angular/router';
-import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
+import { validarDecimalConDosDecimales } from '../../../validators/validatorFn';
 import { ActualizarProductoDTO } from 'src/app/dto/producto/ActualizarProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
@@ -19,8 +18,7 @@ export class EditarProductoComponent {
   personaForm: FormGroup;
 
 
-  constructor(private fb: FormBuilder,
-     private productoService: ProductoService, 
+  constructor(private fb: FormBuilder,private httpProductoService: HttpProductoService, 
     private alert: AlertService) {
     this.personaForm = this.fb.group({
       idProducto: '',
@@ -56,7 +54,7 @@ export class EditarProductoComponent {
       });
       return;
     } 
-    this.productoService.actualizar(productoActualizar).subscribe(
+    this.httpProductoService.actualizar(productoActualizar).subscribe(
       response => {
         
         this.alert.simpleSuccessAlert('Producto actualizado correctamente');

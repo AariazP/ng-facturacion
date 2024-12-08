@@ -6,7 +6,7 @@ import { ResponseData } from '../interface/interfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class ProductoService {
+export class HttpProductoService {
   
   
   private URL_API: string = environment.ApiUrl;

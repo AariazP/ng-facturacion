@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
-import { ClientesService } from 'src/app/service/clientes.service';
+import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-home-cliente',
@@ -17,7 +17,7 @@ export class HomeClienteComponent {
   No es igual a la longitud de filtroClientes porque filtroClientes se actualiza con la búsqueda */
   totalClientes: number; 
 
-  constructor(private clientesService: ClientesService, private alert: AlertService) {
+  constructor(private httpclientesService: HttpClientesService, private alert: AlertService) {
     this.personaEditar = new ClienteDTO();
     this.clientes = [];
     this.filtroClientes = [];
@@ -42,7 +42,7 @@ export class HomeClienteComponent {
    * Obtiene los clientes del servicio y los asigna a la variable clientes
    */
   obtenerClientes(){
-    this.clientesService.obtenerClientes().subscribe(data => {
+    this.httpclientesService.obtenerClientes().subscribe(data => {
       this.clientes = data;
       this.filtroClientes = data;
       this.updateClienteCount(); 
@@ -62,7 +62,7 @@ export class HomeClienteComponent {
     this.alert.confirmAlert('¿Está seguro de eliminar este cliente?', 'Este cambio no se puede revertir').then((result) => {
 
       if(result){
-        this.clientesService.eliminarPorId(id).subscribe(
+        this.httpclientesService.eliminarPorId(id).subscribe(
           (response) => {
             
             if(response)this.alert.simpleSuccessAlert('Cliente eliminado correctamente');

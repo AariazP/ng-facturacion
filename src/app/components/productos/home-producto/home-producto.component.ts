@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductoService } from 'src/app/service/productos.service';
+import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-home-producto',
@@ -15,7 +15,7 @@ export class HomeProductoComponent {
   modoOculto: boolean = true;
   totalProductos: number = 0;
   
-  constructor(private productoService: ProductoService, private alert: AlertService) {
+  constructor(private httpProductoService: HttpProductoService, private alert: AlertService) {
   }
   ngOnInit() {
    this.getData();
@@ -27,7 +27,7 @@ export class HomeProductoComponent {
   }
   
   getData(){
-    this.productoService.getData().subscribe(data => {
+    this.httpProductoService.getData().subscribe(data => {
       this.productos = data;
       this.filtroProductos = data;
       this.updateProductoCount(); // Actualiza el conteo cuando se obtienen los datos
@@ -39,7 +39,7 @@ export class HomeProductoComponent {
     this.alert.confirmAlert('¿Está seguro de eliminar este producto?', 'Este cambio no se puede revertir').then((result) => {
 
       if(result){
-        this.productoService.eliminarPorId(id).subscribe(
+        this.httpProductoService.eliminarPorId(id).subscribe(
           (response) => {
             if(response){
               this.alert.simpleSuccessAlert('Producto eliminado correctamente');

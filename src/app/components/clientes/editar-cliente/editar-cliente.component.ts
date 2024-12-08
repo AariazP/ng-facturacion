@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClientesService } from 'src/app/service/clientes.service';
+import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
 import { ActualizarClienteDTO } from 'src/app/dto/cliente/ActualizarClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
@@ -19,7 +19,7 @@ export class EditarClienteComponent {
   @Output() modoOculto = new EventEmitter();
   personaForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private clienteService: ClientesService, private alert: AlertService) {
+  constructor(private fb: FormBuilder, private httpClienteService: HttpClientesService, private alert: AlertService) {
     this.formBuild(fb);
   }
   /**
@@ -62,7 +62,7 @@ export class EditarClienteComponent {
     let cliente = new ActualizarClienteDTO();
     cliente = cliente.actualizarCliente(this.personaForm.get('cedula')!.value, this.personaForm.get('nombre')!.value, this.personaForm.get('direccion')!.value, this.personaForm.get('correo')!.value, this.personaForm.get('activo')!.value);
     
-    this.clienteService.actualizar(cliente, this.personaEditar.id).subscribe(
+    this.httpClienteService.actualizar(cliente, this.personaEditar.id).subscribe(
       response => {
         this.alert.simpleSuccessAlert('Cliente editado correctamente');
         this.modoOculto.emit();

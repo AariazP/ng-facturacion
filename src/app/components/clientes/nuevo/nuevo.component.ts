@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
-import { ClientesService } from 'src/app/service/clientes.service';
+import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { CrearClienteDTO } from 'src/app/dto/cliente/CrearClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
@@ -14,7 +14,7 @@ export class NuevoComponent {
 
   formulario!: FormGroup;
   existe: boolean = false;
-  constructor(private formBuilder: FormBuilder,private clientesService: ClientesService, private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder,private clientesService: HttpClientesService, private alertService: AlertService) {
     this.formBuild(formBuilder);
   }
 
