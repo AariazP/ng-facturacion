@@ -201,7 +201,7 @@ export class CabfacturaComponent implements DoCheck {
     if(this.clientes.length != 0){
       return;
     }
-    this.clienteComponent.getData().subscribe(data => {
+    this.clienteComponent.obtenerClientes().subscribe(data => {
       this.clientes = data;
     })
   }

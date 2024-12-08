@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
@@ -8,45 +9,65 @@ import { AlertService } from 'src/app/utils/alert.service';
 })
 export class HomeClienteComponent {
 
-  clientes: any ; 
-  personaEditar: any;
-  filtroClientes: any [] = [];
+  clientes: ClienteDTO[]; 
+  personaEditar: ClienteDTO;
+  filtroClientes: ClienteDTO [];
   modoOculto: boolean = true;
-  totalClientes: number = 0;
+  /* La variable totalClientes se utiliza para mostrar el total de clientes en la tabla
+  No es igual a la longitud de filtroClientes porque filtroClientes se actualiza con la búsqueda */
+  totalClientes: number; 
 
-  constructor(private clientesService: ClientesService,
-    private alert: AlertService
-  ) {
+  constructor(private clientesService: ClientesService, private alert: AlertService) {
+    this.personaEditar = new ClienteDTO();
+    this.clientes = [];
+    this.filtroClientes = [];
+    this.totalClientes = 0;
   }
+
   ngOnInit() {
-   this.getData();
+   this.obtenerClientes();
    this.updateClienteCount();
   }
   
+  /**
+   * Actualiza el total de clientes en la tabla
+   * Se llama cada vez que se actualiza filtroClientes que es el arreglo que se muestra en la tabla
+   * cuando se realiza una búsqueda
+   */
   updateClienteCount() {
     this.totalClientes = this.filtroClientes.length;
   }
 
-  getData(){
-    this.clientesService.getData().subscribe(data => {
+  /**
+   * Obtiene los clientes del servicio y los asigna a la variable clientes
+   */
+  obtenerClientes(){
+    this.clientesService.obtenerClientes().subscribe(data => {
       this.clientes = data;
       this.filtroClientes = data;
-      this.updateClienteCount(); // Actualiza el conteo cuando se obtienen los datos
-    })
+      this.updateClienteCount(); 
+    },
+    error => {
+      this.alert.simpleErrorAlert(error.error.mensaje);
+    });
   }
-  
-  eliminarPorId(id: number) {
 
-    
+  /**
+   * Elimina un cliente por su id, muestra un mensaje de confirmación antes de eliminar
+   * La cedula es diferente al id, el id es un número único que se asigna a cada cliente
+   * @param id 
+   */
+  eliminarPorId(id: number) {
+   
     this.alert.confirmAlert('¿Está seguro de eliminar este cliente?', 'Este cambio no se puede revertir').then((result) => {
 
       if(result){
         this.clientesService.eliminarPorId(id).subscribe(
           (response) => {
-            if(response){
-              this.alert.simpleSuccessAlert('Cliente eliminado correctamente');
-            }
-          this.getData();
+            
+            if(response)this.alert.simpleSuccessAlert('Cliente eliminado correctamente');
+            
+          this.obtenerClientes();
         }, error => {
           this.alert.simpleErrorAlert(error.error.mensaje);
         });
@@ -59,26 +80,37 @@ export class HomeClienteComponent {
     
   }
 
+  /**
+   * Busca un cliente por su cedula, nombre o id
+   * @param cedula 
+   */  
   buscar(texto: Event) {
-    const input = texto.target as HTMLInputElement;
-    this.filtroClientes = this.clientes.filter( (cleinte: any) =>
-      cleinte.id.toString().includes(input.value.toLowerCase()) ||
-      cleinte.cedula.toLowerCase().includes(input.value.toLowerCase()) ||
-      cleinte.nombre.toLowerCase().includes(input.value.toLowerCase())
+    const busqueda = (texto.target as HTMLInputElement).value.toLocaleLowerCase();
+    this.filtroClientes = this.clientes.filter( (cliente: any) =>
+      cliente.id.toString().includes(busqueda) ||
+      cliente.cedula.toLowerCase().includes(busqueda) ||
+      cliente.nombre.toLowerCase().includes(busqueda)
     );
     this.updateClienteCount(); 
   }
-//
-  toggleModoEdicion(persona: any) {
+
+  /**
+   * Cambia el modo de edición de la tabla
+   * Si el modo de edición está activo, se desactiva y viceversa
+   * @param persona 
+   */
+  toggleModoEdicion(persona: ClienteDTO) {
     this.personaEditar = persona;
     this.editarModoOcuto();
   }
 
+  /**
+   * Cambia del modo de edición al modo oculto
+   */
   editarModoOcuto(){
     this.modoOculto = !this.modoOculto;
-    this.getData();
+    this.obtenerClientes();
   }
-
 
 
 }

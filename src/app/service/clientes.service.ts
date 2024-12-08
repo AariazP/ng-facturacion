@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../env/env';
 import { ResponseData } from 'src/app/interface/interfaces';
+import { ClienteDTO } from '../DTO/cliente/ClienteDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +15,8 @@ export class ClientesService {
 
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<any> {
-    return this.http.get<any>(`${this.URL_API}/clientes`);
+  obtenerClientes(): Observable<ClienteDTO[]> {
+    return this.http.get<ClienteDTO[]>(`${this.URL_API}/clientes`);
   }
 
   enviarDatos(cliente: any) {

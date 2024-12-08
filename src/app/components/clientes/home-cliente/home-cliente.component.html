@@ -15,9 +15,7 @@
     </div>
   </div>
 
-
 <h6 class="totalClientes">Se han encontrado {{ totalClientes }} clientes.</h6>
-
 
   <div class="table-container">
     <div class="separador">
@@ -34,21 +32,21 @@
               <th class="eliminar">Acciones</th>
           </tr>
           </thead>
-        
-
           <tbody>
-            <tr *ngFor="let cliente of filtroClientes">
-              <td>{{ cliente.cedula }}</td>
-              <td>{{ cliente.nombre }}</td>
-              <td>{{ cliente.direccion }}</td>
-              <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
-              <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
-              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
-              <td class="eliminar">
-                <button (click)="eliminarPorId(cliente.id)">❌</button>
-                <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
-              </td>
-            </tr>
+            @for(cliente of filtroClientes; track cliente.id){
+              <tr>
+                <td>{{ cliente.cedula }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.direccion }}</td>
+                <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
+                <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
+                <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
+                <td class="eliminar">
+                  <button (click)="eliminarPorId(cliente.id)">❌</button>
+                  <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
+                </td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>
