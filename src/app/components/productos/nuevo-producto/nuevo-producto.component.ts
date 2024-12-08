@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
 import { ProductoService } from 'src/app/service/productos.service';
-import { CrearProductoDTO } from 'src/app/DTO/producto/CrearProductoDTO';
+import { CrearProductoDTO } from 'src/app/dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
 

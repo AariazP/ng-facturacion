@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductoService } from 'src/app/service/productos.service';
 import { Router } from '@angular/router';
 import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
-import { ActualizarProductoDTO } from 'src/app/DTO/producto/ActualizarProductoDTO';
+import { ActualizarProductoDTO } from 'src/app/dto/producto/ActualizarProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-editar-producto',

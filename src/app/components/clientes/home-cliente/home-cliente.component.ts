@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ClienteDTO } from 'src/app/DTO/cliente/ClienteDTO';
+import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({

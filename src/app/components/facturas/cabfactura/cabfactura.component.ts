@@ -1,9 +1,7 @@
 import { Component, DoCheck, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { switchMap } from 'rxjs';
-import { CrearFacturaDTO } from 'src/app/DTO/factura/CrearFacturaDTO';
-import { DetalleFacturaDTO } from 'src/app/DTO/factura/DetalleFacturaDTO';
-import { ClienteComponent } from 'src/app/page/cliente/cliente.component';
+import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
+import { DetalleVentaDTO } from 'src/app/dto/venta/DetalleVentaDTO';
 import { ClientesService } from 'src/app/service/clientes.service';
 import { FacturasService } from 'src/app/service/facturas.service';
 import { ProductoService } from 'src/app/service/productos.service';
@@ -100,7 +98,7 @@ export class CabfacturaComponent implements DoCheck {
         return;
       }
 
-      let factura = new CrearFacturaDTO();
+      let factura = new CrearVentaDTO();
      factura.cliente = this.formulario.get('cliente')!.value;
 
     this.clienteService.verificarExistencia(factura.cliente).subscribe(
@@ -120,7 +118,7 @@ export class CabfacturaComponent implements DoCheck {
     }
 
     this.listProductos.map(producto => {
-      let detalleFactura =  new DetalleFacturaDTO();
+      let detalleFactura =  new DetalleVentaDTO();
       detalleFactura.cantidad = producto.cantidadProducto;
       detalleFactura.codigoProducto = producto.codProducto
       factura.agregarDetalle(detalleFactura);

@@ -1,4 +1,4 @@
-export class DetalleFacturaDTO{
+export class DetalleVentaDTO{
     codigoProducto!: string;
     cantidad!: number;
 }

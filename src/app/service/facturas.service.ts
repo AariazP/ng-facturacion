@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../env/env';
 import { HttpClient } from '@angular/common/http';
-import { CrearFacturaDTO } from '../DTO/factura/CrearFacturaDTO';
+import { CrearVentaDTO } from '../dto/venta/CrearVentaDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class FacturasService {
     return this.http.get(`${this.URL_API}/venta/${id}`);
   }
 
-  guardarFactura(factura: CrearFacturaDTO) {
+  guardarFactura(factura: CrearVentaDTO) {
     return this.http.post(`${this.URL_API}/venta/guardar`, factura);
   }
 
