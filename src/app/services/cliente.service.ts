@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { HttpClientesService } from "../http-services/httpClientes.service";
 import { CrearClienteDTO } from "../dto/cliente/CrearClienteDTO";
 import { AlertService } from "../utils/alert.service";
@@ -10,19 +10,20 @@ import { catchError, Observable, of } from "rxjs";
   })
 export class ClienteService {
   
-  
+
+  private clienteService: HttpClientesService = inject(HttpClientesService);
+  private alertService: AlertService = inject(AlertService);
     
-  constructor(private clientesService: HttpClientesService, private alertService: AlertService) {}
 
   crearCliente(cliente: CrearClienteDTO){
-    return this.clientesService.crearCliente(cliente).subscribe({
+    return this.clienteService.crearCliente(cliente).subscribe({
       next: () => this.alertService.simpleSuccessAlert("Cliente guardado correctamente"),
-      error: () => this.alertService.simpleErrorAlert("Error al guardar cliente") 
+      error: (error) => this.alertService.simpleErrorAlert(error.error.mensaje) 
     });
   }
 
   obtenerCliente(cedula: string): Observable <ClienteDTO | null>{
-    return this.clientesService.obtenerCliente(cedula).pipe(
+    return this.clienteService.obtenerCliente(cedula).pipe(
       catchError(() => {
         return of(null); 
       })
@@ -30,7 +31,7 @@ export class ClienteService {
   }
 
   fueEliminado(input: string) {
-    return this.clientesService.fueEliminado(input).pipe(
+    return this.clienteService.fueEliminado(input).pipe(
       catchError(() => {
         return of(null); 
       })
@@ -38,10 +39,25 @@ export class ClienteService {
   }
 
   recuperarCliente(input: string) {
-    return this.clientesService.recuperarCliente(input).subscribe({
+    return this.clienteService.recuperarCliente(input).subscribe({
       next: () => this.alertService.simpleSuccessAlert("Cliente recuperado correctamente"),
-      error: () => this.alertService.simpleErrorAlert("Error al recuperar cliente") 
+      error: (error) => this.alertService.simpleErrorAlert(error.error.mensaje) 
     }); 
+  }
+
+  obtenerClientes() : Observable<ClienteDTO[]> {
+    return this.clienteService.obtenerClientes().pipe(
+      catchError(() => {
+        return of([]); 
+      })
+    );
+  }
+
+  eliminarClienteId(id: number) {
+    return this.clienteService.eliminarPorId(id).subscribe({
+      next: () => this.alertService.simpleSuccessAlert("Cliente eliminado correctamente"),
+      error: (error) => this.alertService.simpleErrorAlert(error.error.mensaje) 
+    });
   }
 
 }

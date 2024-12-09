@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
-import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
-import { AlertService } from 'src/app/utils/alert.service';
+import { ClienteService } from 'src/app/services/cliente.service';
+import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.service';
+
+
 @Component({
   selector: 'app-home-cliente',
   templateUrl: './home-cliente.component.html',
@@ -9,15 +11,16 @@ import { AlertService } from 'src/app/utils/alert.service';
 })
 export class HomeClienteComponent {
 
-  clientes: ClienteDTO[]; 
-  personaEditar: ClienteDTO;
-  filtroClientes: ClienteDTO [];
-  modoOculto: boolean = true;
+  protected clientes: ClienteDTO[]; 
+  protected personaEditar: ClienteDTO;
+  protected filtroClientes: ClienteDTO [];
+  protected modoOculto: boolean = true;
   /* La variable totalClientes se utiliza para mostrar el total de clientes en la tabla
   No es igual a la longitud de filtroClientes porque filtroClientes se actualiza con la búsqueda */
-  totalClientes: number; 
+  protected totalClientes: number; 
+  private alertClient: ClienteAlertService = inject(ClienteAlertService);
 
-  constructor(private httpclientesService: HttpClientesService, private alert: AlertService) {
+  constructor(private clienteService: ClienteService) {
     this.personaEditar = new ClienteDTO();
     this.clientes = [];
     this.filtroClientes = [];
@@ -42,13 +45,10 @@ export class HomeClienteComponent {
    * Obtiene los clientes del servicio y los asigna a la variable clientes
    */
   obtenerClientes(){
-    this.httpclientesService.obtenerClientes().subscribe(data => {
-      this.clientes = data;
-      this.filtroClientes = data;
-      this.updateClienteCount(); 
-    },
-    error => {
-      this.alert.simpleErrorAlert(error.error.mensaje);
+    this.clienteService.obtenerClientes().subscribe((clientes) => {
+      this.clientes = clientes;
+      this.filtroClientes = clientes;
+      this.updateClienteCount();
     });
   }
 
@@ -58,21 +58,11 @@ export class HomeClienteComponent {
    * @param id 
    */
   eliminarPorId(id: number) {
-   
-    this.alert.confirmAlert('¿Está seguro de eliminar este cliente?', 'Este cambio no se puede revertir').then((result) => {
+
+    this.alertClient.eliminarCliente().then((result) => {
 
       if(result){
-        this.httpclientesService.eliminarPorId(id).subscribe(
-          (response) => {
-            
-            if(response)this.alert.simpleSuccessAlert('Cliente eliminado correctamente');
-            
-          this.obtenerClientes();
-        }, error => {
-          this.alert.simpleErrorAlert(error.error.mensaje);
-        });
-      }else{
-        this.alert.simpleInfoAlert('Operación cancelada');3
+        this.clienteService.eliminarClienteId(id);
       }
 
     });
