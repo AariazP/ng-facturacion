@@ -5,6 +5,7 @@ import { HttpClientesService } from 'src/app/http-services/httpClientes.service'
 import { CrearClienteDTO } from 'src/app/dto/cliente/CrearClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
+import { ClienteService } from 'src/app/services/cliente.service';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',
@@ -14,7 +15,8 @@ export class NuevoComponent {
 
   formulario!: FormGroup;
   existe: boolean = false;
-  constructor(private formBuilder: FormBuilder,private clientesService: HttpClientesService, private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder, private alertService: AlertService, 
+    private clienteService: ClienteService) {
     this.formBuild(formBuilder);
   }
 
@@ -45,13 +47,7 @@ export class NuevoComponent {
     let cliente = new CrearClienteDTO();
     cliente = cliente.crearCliente(this.formulario.get('cedula')!.value, this.formulario.get('nombre')!.value, this.formulario.get('direccion')!.value, this.formulario.get('correo')!.value)
 
-    this.clientesService.enviarDatos(cliente).subscribe(response => {
-
-      this.alertService.simpleSuccessAlert("Cliente guardado correctamente");
-      
-    }, error => {
-      this.alertService.simpleErrorAlert(error.error.mensaje);
-    });
+    this.clienteService.crearCliente(cliente);
     this.formulario.reset();
   }
 

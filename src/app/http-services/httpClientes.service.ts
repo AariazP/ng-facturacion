@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../env/env';
 import { ResponseData } from 'src/app/interface/interfaces';
 import { ClienteDTO } from '../dto/cliente/ClienteDTO';
+import { CrearClienteDTO } from '../dto/cliente/CrearClienteDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class HttpClientesService {
     return this.http.get<ClienteDTO[]>(`${this.URL_API}/clientes`);
   }
 
-  enviarDatos(cliente: any) {
+  crearCliente(cliente: CrearClienteDTO) {
     return this.http.post(`${this.URL_API}/clientes/guardar`, cliente);
   }
 
