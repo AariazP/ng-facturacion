@@ -47,6 +47,14 @@ export class AlertService {
     });
   }
 
+  cancelarOperacionAlert(){
+    Swal.fire({
+      title: "Operación cancelada",
+      text: "La operación fue cancelada",
+      icon: "info"
+    });
+  }
+
   async simpleInputAlert(): Promise<number> {
     const { value: dinero } = await Swal.fire({
       title: "Ingrese con cuánto van a pagar",

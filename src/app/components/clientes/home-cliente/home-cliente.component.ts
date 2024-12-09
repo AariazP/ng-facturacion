@@ -63,10 +63,10 @@ export class HomeClienteComponent {
 
       if(result){
         this.clienteService.eliminarClienteId(id);
+        this.obtenerClientes();
       }
-
     });
-
+    
     
   }
 

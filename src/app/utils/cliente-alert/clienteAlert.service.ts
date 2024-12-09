@@ -1,10 +1,13 @@
-import { Inject, Injectable } from "@angular/core";
+import { inject, Inject, Injectable } from "@angular/core";
 import Swal from 'sweetalert2';
+import { AlertService } from "../alert.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClienteAlertService {
+
+    private alertService: AlertService = inject(AlertService);
 
     preguntarRecuperarCliente(): Promise<boolean> {
         return Swal.fire({
@@ -31,19 +34,10 @@ export class ClienteAlertService {
             cancelButtonText: "No, cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    "Eliminado",
-                    "El cliente ha sido eliminado correctamente.",
-                    "success"
-                );
-                return true; // Confirmación
+                return true;
             } else {
-                Swal.fire(
-                    "Cancelado",
-                    "La operación de eliminación fue cancelada.",
-                    "info"
-                );
-                return false; // Cancelación
+                this.alertService.cancelarOperacionAlert();
+                return false;
             }
         });
     }
