@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
-import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
+import { soloTexto, validarCorreo} from 'src/app/validators/validatorFn';
 import { CrearClienteDTO } from 'src/app/dto/cliente/CrearClienteDTO';
-import { AlertService } from 'src/app/utils/alert.service';
-import Swal from 'sweetalert2';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.service';
 @Component({
@@ -14,17 +11,13 @@ import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.se
 })
 export class NuevoComponent {
 
-  formulario!: FormGroup;
-  existe: boolean = false;
-  constructor(private formBuilder: FormBuilder, private clienteService: ClienteService, private clientAlert: ClienteAlertService) {
-    this.formBuild(formBuilder);
-  }
+  protected formulario!: FormGroup;
+  protected existe: boolean = false;
+  private formBuilder:FormBuilder = inject(FormBuilder);
+  private clienteService: ClienteService = inject(ClienteService);
+  private clientAlert: ClienteAlertService = inject(ClienteAlertService);
 
-  /**
-   * Metodo que crea el formulario reactivo del frontend
-   * @returns void
-   */
-  formBuild(fb: FormBuilder) {
+  ngOnInit(): void {
     this.formulario = this.formBuilder.group({
       cedula: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(15)]],
       nombre: ['', [Validators.required, soloTexto()]],
@@ -34,24 +27,32 @@ export class NuevoComponent {
     });
   }
 
-
   onSubmit() {
-
     if (!this.formulario.valid) {
-      Object.values(this.formulario.controls).forEach(control => {
-        control.markAsTouched();
-      });
-      return;
+      this.marcarCamposComoTocados();
+    }else{
+      const { cedula, nombre, direccion, correo } = this.formulario.value;
+      const cliente = CrearClienteDTO.crearCliente(cedula, nombre, direccion, correo);
+      this.clienteService.crearCliente(cliente);
+      this.formulario.reset();
     }
-
-    let cliente = new CrearClienteDTO();
-    cliente = cliente.crearCliente(this.formulario.get('cedula')!.value, this.formulario.get('nombre')!.value, this.formulario.get('direccion')!.value, this.formulario.get('correo')!.value)
-
-    this.clienteService.crearCliente(cliente);
-    this.formulario.reset();
   }
 
-  validarCodigo(event: any) {
+  /**
+   * Marca todos los controles del formulario como tocados.
+   */
+  private marcarCamposComoTocados(): void {
+    Object.values(this.formulario.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  }
+
+  /**
+   * Evento que se dispara al escribir en el campo cedula.
+   * verifica si la cedula ya existe en la base de datos.
+   * @param event  evento de teclado
+   */
+  protected validarCedulaNuevoCliente(event: any) {
     const input = this.formulario.get('cedula')!.value;
     this.existe = false;
     const delay = 300;
@@ -63,7 +64,11 @@ export class NuevoComponent {
     }, delay);
   }
 
-  verificarClienteExisteCedula(input: string) {
+  /**
+   * Este metodo verifica si la cedula del cliente ya existe en la base de datos.
+   * @param input cedula del cliente
+   */
+  private verificarClienteExisteCedula(input: string) {
     this.clienteService.obtenerCliente(input).subscribe({
       next: (data) => {
 
@@ -80,8 +85,11 @@ export class NuevoComponent {
     });
   }
 
-  recuperarClienteEliminado(input: string) {
-
+  /**
+   * Este metodo verifica si el cliente fue eliminado anteriormente.
+   * @param input cedula del cliente
+   */
+  private recuperarClienteEliminado(input: string) {
     this.clienteService.fueEliminado(input).subscribe({
       next: async (data) => {
         if (data) {

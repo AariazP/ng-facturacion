@@ -6,12 +6,13 @@ export class CrearClienteDTO {
     nombre!: string;
 
 
-    crearCliente(cedula:string, nombre:string, direccion:string, correo:string):CrearClienteDTO {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.correo = correo;
-        return this;
+    static crearCliente(cedula:string, nombre:string, direccion:string, correo:string):CrearClienteDTO {
+        let cliente = new CrearClienteDTO();
+        cliente.cedula = cedula;
+        cliente.nombre = nombre;
+        cliente.direccion = direccion;
+        cliente.correo = correo;
+        return cliente;
     }
 
 }
