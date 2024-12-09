@@ -6,6 +6,7 @@ import { CrearClienteDTO } from 'src/app/dto/cliente/CrearClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
 import { ClienteService } from 'src/app/services/cliente.service';
+import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.service';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',
@@ -15,8 +16,7 @@ export class NuevoComponent {
 
   formulario!: FormGroup;
   existe: boolean = false;
-  constructor(private formBuilder: FormBuilder, private alertService: AlertService, 
-    private clienteService: ClienteService) {
+  constructor(private formBuilder: FormBuilder, private clienteService: ClienteService, private clientAlert: ClienteAlertService) {
     this.formBuild(formBuilder);
   }
 
@@ -24,7 +24,7 @@ export class NuevoComponent {
    * Metodo que crea el formulario reactivo del frontend
    * @returns void
    */
-  formBuild(fb: FormBuilder){
+  formBuild(fb: FormBuilder) {
     this.formulario = this.formBuilder.group({
       cedula: ['', [Validators.required, Validators.pattern('[0-9]*'), Validators.maxLength(15)]],
       nombre: ['', [Validators.required, soloTexto()]],
@@ -42,7 +42,7 @@ export class NuevoComponent {
         control.markAsTouched();
       });
       return;
-    } 
+    }
 
     let cliente = new CrearClienteDTO();
     cliente = cliente.crearCliente(this.formulario.get('cedula')!.value, this.formulario.get('nombre')!.value, this.formulario.get('direccion')!.value, this.formulario.get('correo')!.value)
@@ -52,61 +52,46 @@ export class NuevoComponent {
   }
 
   validarCodigo(event: any) {
-
-    const input = this.formulario.get('cedula')!.value
+    const input = this.formulario.get('cedula')!.value;
     this.existe = false;
     const delay = 300;
-  
-    if(input == null || input=='') return;
+
+    if (!input) return;
+
     setTimeout(() => {
-      this.clientesService.obtenerCliente(input).subscribe(data => {
-        if ( data != null) {	
-
-          this.clientesService.fueEliminado(input).subscribe(response => {
-
-            if(response){
-              Swal.fire({
-                title: "Este cliente fue eliminado antes",
-                text: "¿Te gustaría recuperarlo?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, recuperar", 
-                cancelButtonText: "No, cancelar"
-              }).then((result) => {
-                if (result.isConfirmed) {
-
-                  this.clientesService.recuperarCliente(input).subscribe(response => {
-                    Swal.fire({
-                      title: "Recuperado!",
-                      text: "El cliente ha sido recuperado.",
-                      icon: "success"
-                    });
-                  });
-                }
-              });
-            }
-
-          });
-
-          this.existe = true;
-          this.formulario.get('cedula')!.setErrors({ 'codigoExistente': true });
-
-        } else {
-
-          this.formulario.get('cedula')!.setErrors(null);
-          this.existe = false;
-
-        }
-      }, 
-      error => {
-
-      }
-    );
+      this.verificarClienteExisteCedula(input);
     }, delay);
   }
 
+  verificarClienteExisteCedula(input: string) {
+    this.clienteService.obtenerCliente(input).subscribe({
+      next: (data) => {
 
-  
+        if (data != null) {
+          this.recuperarClienteEliminado(input);
+          this.existe = true;
+          this.formulario.get('cedula')!.setErrors({ codigoExistente: true });
+
+        } else {
+          this.formulario.get('cedula')!.setErrors(null);
+          this.existe = false;
+        }
+      }
+    });
+  }
+
+  recuperarClienteEliminado(input: string) {
+
+    this.clienteService.fueEliminado(input).subscribe({
+      next: async (data) => {
+        if (data) {
+          const response = await this.clientAlert.preguntarRecuperarCliente();
+          if (response) {
+            this.clienteService.recuperarCliente(input);
+          }          
+        }
+      }
+    });
+  }
+
 }

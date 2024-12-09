@@ -6,8 +6,16 @@ import Swal from 'sweetalert2';
 })
 export class ClienteAlertService {
 
-    recuperarClienteEliminadoAlert(): void {
-        alert("Cliente recuperado correctamente");
+    preguntarRecuperarCliente(): Promise<boolean> {
+        return Swal.fire({
+          title: "Este cliente fue eliminado antes",
+          text: "¿Te gustaría recuperarlo?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, recuperar",
+          cancelButtonText: "No, cancelar",
+        }).then((result) => result.isConfirmed);
     }
-
 }

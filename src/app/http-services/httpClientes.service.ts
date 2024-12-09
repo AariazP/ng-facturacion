@@ -36,7 +36,7 @@ export class HttpClientesService {
   }
 
   obtenerCliente(cedula:string){
-    return this.http.get<any>(`${this.URL_API}/clientes/${cedula}`);
+    return this.http.get<ClienteDTO>(`${this.URL_API}/clientes/${cedula}`);
   }
 
   fueEliminado(input: any) {
