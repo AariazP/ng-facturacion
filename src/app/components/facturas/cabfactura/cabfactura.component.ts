@@ -1,4 +1,4 @@
-import { Component, DoCheck, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, Inject, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
@@ -21,7 +21,7 @@ export class CabfacturaComponent implements DoCheck {
   datosCabecera: any = {};
   clienteSeleccionado: any; 
   productoSeleccionado: any; 
-  formulario: FormGroup;
+  formulario!: FormGroup;
   productosForm!: FormGroup;
   listProductos: any[] = [];
   modoOculto: boolean = true;
@@ -32,15 +32,23 @@ export class CabfacturaComponent implements DoCheck {
   total: number = 0;
   stockProducto = '';
   hayStock = true;
-  constructor(
-              private formBuilder: FormBuilder, 
-              private httpClienteComponent: HttpClientesService,
-              private httpFacturasService: HttpFacturasService, 
-              private httpProductoService: HttpProductoService,
-              private alert : AlertService,
-              private httpClienteService: HttpClientesService
-              ) {
 
+  private formBuilder: FormBuilder = Inject(FormBuilder);
+  private httpClienteComponent: HttpClientesService = Inject(HttpClientesService);
+  private httpFacturasService: HttpFacturasService = Inject(HttpFacturasService);
+  private httpProductoService: HttpProductoService = Inject(HttpProductoService);
+  private alert : AlertService = Inject(AlertService);
+
+  ngDoCheck() {
+    this.validarFormularios();
+  } 
+  
+  ngOnInit(){
+    this.generarFactura();
+    this.buildForms();
+  }
+
+  buildForms() {
     this.formulario = this.formBuilder.group({
       numFactura: ['', [Validators.required]],
       cliente: ['', [Validators.required]],
@@ -55,15 +63,6 @@ export class CabfacturaComponent implements DoCheck {
       precioProducto: ['', [Validators.required]],
       cantidadProducto: [1, [Validators.required, cantidadMayorQueCero() ]],
     });
-  }
-
-  ngDoCheck() {
-    this.validarFormularios();
-  }
-  
-  
-  ngOnInit(){
-    this.generarFactura();
   }
 
   async onSubmit() {
@@ -296,6 +295,7 @@ export class CabfacturaComponent implements DoCheck {
       this.productos = data;
     })
   }
+
   seleccionarProducto(): void{
     let idProducto = this.productosForm.get('codProducto')?.value
     this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
@@ -306,8 +306,6 @@ export class CabfacturaComponent implements DoCheck {
       });
     }
   }
-
-
 
   validarFormularios(){
     if (this.clienteSeleccionado) {
@@ -373,10 +371,5 @@ export class CabfacturaComponent implements DoCheck {
     }
 
   }
-
-  buscarCliente(){
-
-  }
-
 
 }
