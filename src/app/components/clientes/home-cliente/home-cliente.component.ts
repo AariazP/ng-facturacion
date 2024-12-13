@@ -57,17 +57,14 @@ export class HomeClienteComponent {
    * La cedula es diferente al id, el id es un número único que se asigna a cada cliente
    * @param id 
    */
-  eliminarPorId(id: number) {
-
-    this.alertClient.eliminarCliente().then((result) => {
-
-      if(result){
-        this.clienteService.eliminarClienteId(id);
-        this.obtenerClientes();
-      }
-    });
-    
-    
+  async eliminarPorId(id: number) {
+    const result = await this.alertClient.eliminarCliente();
+    if (result) {
+      try {
+        await this.clienteService.eliminarClienteId(id);
+        this.obtenerClientes(); 
+      } catch (error) {}
+    }
   }
 
   /**

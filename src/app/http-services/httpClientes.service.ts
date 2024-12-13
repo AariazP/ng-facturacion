@@ -24,8 +24,7 @@ export class HttpClientesService {
   }
 
   eliminarPorId(id: number) {
-    const url = `${this.URL_API}/clientes/eliminar/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(`${this.URL_API}/clientes/eliminar/${id}`);
   }
 
   actualizar(datos: any, id: number) {

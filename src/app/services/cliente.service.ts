@@ -53,10 +53,18 @@ export class ClienteService {
     );
   }
 
-  eliminarClienteId(id: number) {
-    return this.clienteService.eliminarPorId(id).subscribe({
-      next: () => this.alertService.simpleSuccessAlert("Cliente eliminado correctamente"),
-      error: (error) => this.alertService.simpleErrorAlert(error.error.mensaje) 
+  async eliminarClienteId(id: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.clienteService.eliminarPorId(id).subscribe({
+        next: () => {
+          this.alertService.simpleSuccessAlert("Cliente eliminado correctamente");
+          resolve();
+        },
+        error: (error) => {
+          this.alertService.simpleErrorAlert(error.error.mensaje);
+          reject(error);
+        },
+      });
     });
   }
 
