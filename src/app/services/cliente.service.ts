@@ -68,4 +68,8 @@ export class ClienteService {
     });
   }
 
+  verificarExistencia(cedula: string): Observable<boolean> {
+    return this.clienteService.verificarExistencia(cedula);
+  }
+
 }

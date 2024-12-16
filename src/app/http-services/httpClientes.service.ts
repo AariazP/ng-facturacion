@@ -30,8 +30,8 @@ export class HttpClientesService {
   actualizar(datos: any, id: number) {
     return this.http.put(`${this.URL_API}/clientes/actualizar/${id}`, datos);
   }
-  verificarExistencia(cod: string) {
-    return this.http.get<ResponseData>(`${this.URL_API}/clientes/verificar-cliente/${cod}`);
+  verificarExistencia(cedula: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.URL_API}/clientes/verificar-cliente/${cedula}`);
   }
 
   obtenerCliente(cedula:string){

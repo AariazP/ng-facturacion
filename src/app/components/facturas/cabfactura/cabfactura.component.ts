@@ -1,13 +1,13 @@
-import { Component, DoCheck, Inject, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { HttpFacturasService } from 'src/app/http-services/httpFacturas.service';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { AlertService } from 'src/app/utils/alert.service';
-import { cantidadMayorQueCero, soloTexto, validarDecimalConDosDecimales } from 'src/app/validators/validatorFn';
+import { cantidadMayorQueCero} from 'src/app/validators/validatorFn';
 import { jsPDF } from 'jspdf';
-import { DetalleVentaDTO } from 'src/app/dto/detalleVenta/DetalleVentaDTO';
+import { FacturaService } from 'src/app/services/factura.service';
 
 @Component({
   selector: 'app-cabfactura',
@@ -29,22 +29,23 @@ export class CabfacturaComponent implements DoCheck {
   subtotal: number = 0;
   porcentajeIva: number = 19;
   igv: number = 0;
-  total: number = 0;
+  totalPagar: number = 0;
   stockProducto = '';
   hayStock = true;
 
-  private formBuilder: FormBuilder = Inject(FormBuilder);
-  private httpClienteComponent: HttpClientesService = Inject(HttpClientesService);
-  private httpFacturasService: HttpFacturasService = Inject(HttpFacturasService);
-  private httpProductoService: HttpProductoService = Inject(HttpProductoService);
-  private alert : AlertService = Inject(AlertService);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private httpClienteComponent: HttpClientesService = inject(HttpClientesService);
+  private httpFacturasService: HttpFacturasService = inject(HttpFacturasService);
+  private httpProductoService: HttpProductoService = inject(HttpProductoService);
+  private alert : AlertService = inject(AlertService);
+  private facturaService: FacturaService = inject(FacturaService);
 
   ngDoCheck() {
     this.validarFormularios();
   } 
   
   ngOnInit(){
-    this.generarFactura();
+    this.generarIdFactura();
     this.buildForms();
   }
 
@@ -71,83 +72,22 @@ export class CabfacturaComponent implements DoCheck {
       this.formulario.markAllAsTouched();
       return;
     }
-    
-    let totalPagar = this.total;
-    console.log('total' + totalPagar );
-    
-    await this.alert.simpleInputAlert().then((result) => {
-      let dinero = 0;
-      
-      if(result == null || result == undefined){
-        this.alert.simpleErrorAlert('No se ha ingresado un valor');
-        return;
-      }
-
-
-      if (isNaN(Number(result))) {
-        this.alert.simpleErrorAlert('El valor ingresado no es un número');
-        return;
-      }
-      console.log('result' + result);
-      if (result) {
-        dinero = Number(result);
-      }
-      if (dinero < this.total) {
-        this.alert.simpleErrorAlert('El dinero ingresado es menor al total de la factura');
-        return;
-      }
-
-      let factura = new CrearVentaDTO();
-     factura.cliente = this.formulario.get('cliente')!.value;
-
-    this.httpClienteComponent.verificarExistencia(factura.cliente).subscribe(
-      response => {
-        if(!response){
-          this.alert.simpleErrorAlert('El cliente con esa cedula no se ha encontrado');
-          return;
-        }
-      });
-
-
-    factura.usuario = Number(localStorage.getItem('id'));
-   
-    if(this.listProductos.length == 0){
-      this.alert.simpleErrorAlert('No se ha agregado ningun producto a la factura');
-      return;
-    }
-
-    this.listProductos.map(producto => {
-      let detalleFactura =  new DetalleVentaDTO();
-      detalleFactura.cantidad = producto.cantidadProducto;
-      detalleFactura.codProducto = producto.codProducto
-      factura.agregarDetalle(detalleFactura);
-    });
-
   
+
+    let factura = new CrearVentaDTO();
+    factura.cliente = this.formulario.get('cliente')!.value;
+    factura.usuario = Number(localStorage.getItem('id'));
+
+    this.facturaService.agregarProductosAFactura(factura, this.listProductos);
+
     
-    this.httpFacturasService.guardarFactura(factura).subscribe(
-      (resp: any) => {
-        setTimeout(() => {
-          console.log(dinero);
-          this.alert.simpleSuccessAlert('El cambio es: ' + (dinero-totalPagar));
-        }, 300);
-        this.alert.simpleSuccessAlert('Factura guardada correctamente');
-            // Llamar al método imprimirFactura() después de guardar la factura
-    this.imprimirFactura();
-      },
-      error => {
-        this.alert.simpleErrorAlert(error.error.mensaje);
-      }
-    )
 
-
+    this.facturaService.crearFactura(factura, this.totalPagar);
     
     this.formulario.reset();
-    this.generarFactura();
+    this.generarIdFactura();
     this.clienteSeleccionado = null;
     this.resetListProductos();
-
-    });
      
   }
 
@@ -157,9 +97,8 @@ export class CabfacturaComponent implements DoCheck {
     this.igv = 0;
     this.total = 0;
   }
-
-  generarFactura(){
-    this.httpFacturasService.generaFactura().subscribe(
+  generarIdFactura(){
+    this.facturaService.generarIdFactura().subscribe(
       (resp: any) => {
         this.formulario.patchValue({
           numFactura: resp
@@ -167,31 +106,7 @@ export class CabfacturaComponent implements DoCheck {
       }
     )
   }
-
-  imprimirFactura() {
-    const doc = new jsPDF();
   
-    // Establecer el tamaño de fuente
-    doc.setFontSize(12);
-  
-    // Añadir contenido de la factura, como la información del cliente
-    doc.text('Factura de Venta', 10, 10);
-    doc.text('Fecha: ' + new Date().toLocaleDateString(), 10, 40);
-  
-    // Espacio entre la información del cliente y los productos
-    let startY = 50; // Posición Y inicial donde comenzarán los productos
-  
-    // Recorrer la lista de productos y agregarlos al PDF
-    this.listProductos.forEach((producto: any, index: number) => {
-      const productoY = startY + (index * 10); // Aumenta la posición Y para cada producto
-  
-      // Agregar el nombre, cantidad y precio de cada producto al PDF
-      doc.text(`${producto.nombreProducto} - Cantidad: ${producto.cantidad} - Precio: ${producto.precio.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`, 10, productoY);
-    });
-  
-    // Descargar el PDF con un nombre dinámico basado en el cliente
-    doc.save(`Factura.pdf`);
-  }
   
 
   listarClientes() {
