@@ -32,6 +32,7 @@ export class CabfacturaComponent implements DoCheck {
   totalPagar: number = 0;
   stockProducto = '';
   hayStock = true;
+  total=0;
 
   private formBuilder: FormBuilder = inject(FormBuilder);
   private httpClienteComponent: HttpClientesService = inject(HttpClientesService);
@@ -123,7 +124,7 @@ export class CabfacturaComponent implements DoCheck {
 
     if(cedula == ''){ 
       this.formulario.reset();
-      this.generarFactura();
+      //this.generarFactura();
     }
 
 

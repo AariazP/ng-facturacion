@@ -110,12 +110,12 @@ export class FacturaService {
         let startY = 50; // Posición Y inicial donde comenzarán los productos
       
         // Recorrer la lista de productos y agregarlos al PDF
-        this.listProductos.forEach((producto: any, index: number) => {
-          const productoY = startY + (index * 10); // Aumenta la posición Y para cada producto
+        //this.listProductos.forEach((producto: any, index: number) => {
+         // const productoY = startY + (index * 10); // Aumenta la posición Y para cada producto
       
           // Agregar el nombre, cantidad y precio de cada producto al PDF
-          doc.text(`${producto.nombreProducto} - Cantidad: ${producto.cantidad} - Precio: ${producto.precio.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`, 10, productoY);
-        });
+         // doc.text(`${producto.nombreProducto} - Cantidad: ${producto.cantidad} - Precio: ${producto.precio.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`, 10, productoY);
+        //});
       
         // Descargar el PDF con un nombre dinámico basado en el cliente
         doc.save(`Factura.pdf`);
