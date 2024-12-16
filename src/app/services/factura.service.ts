@@ -97,27 +97,6 @@ export class FacturaService {
     }
 
     imprimirFactura() {
-        const doc = new jsPDF();
-      
-        // Establecer el tamaño de fuente
-        doc.setFontSize(12);
-      
-        // Añadir contenido de la factura, como la información del cliente
-        doc.text('Factura de Venta', 10, 10);
-        doc.text('Fecha: ' + new Date().toLocaleDateString(), 10, 40);
-      
-        // Espacio entre la información del cliente y los productos
-        let startY = 50; // Posición Y inicial donde comenzarán los productos
-      
-        // Recorrer la lista de productos y agregarlos al PDF
-        //this.listProductos.forEach((producto: any, index: number) => {
-         // const productoY = startY + (index * 10); // Aumenta la posición Y para cada producto
-      
-          // Agregar el nombre, cantidad y precio de cada producto al PDF
-         // doc.text(`${producto.nombreProducto} - Cantidad: ${producto.cantidad} - Precio: ${producto.precio.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`, 10, productoY);
-        //});
-      
-        // Descargar el PDF con un nombre dinámico basado en el cliente
-        doc.save(`Factura.pdf`);
+        
       }
 }
