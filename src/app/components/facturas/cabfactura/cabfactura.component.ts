@@ -7,7 +7,7 @@ import { HttpProductoService } from 'src/app/http-services/httpProductos.service
 import { AlertService } from 'src/app/utils/alert.service';
 import { cantidadMayorQueCero} from 'src/app/validators/validatorFn';
 import { jsPDF } from 'jspdf';
-import { FacturaService } from 'src/app/services/factura.service';
+import { FacturaService } from 'src/app/services/venta.service';
 
 @Component({
   selector: 'app-cabfactura',
@@ -60,35 +60,32 @@ export class CabfacturaComponent implements DoCheck {
     });
 
     this.productosForm = this.formBuilder.group({
-      codProducto: ['', [Validators.required]],
+      codigoProducto: ['', [Validators.required]],
       nombreProducto: ['', [Validators.required]],
       precioProducto: ['', [Validators.required]],
       cantidadProducto: [1, [Validators.required, cantidadMayorQueCero() ]],
     });
   }
 
-  async onSubmit() {
+  onSubmit() {
 
     if (!this.formulario.valid ) {
       this.formulario.markAllAsTouched();
       return;
     }
   
-
-    let factura = new CrearVentaDTO();
-    factura.cliente = this.formulario.get('cliente')!.value;
-    factura.usuario = Number(localStorage.getItem('id'));
-
-    this.facturaService.agregarProductosAFactura(factura, this.listProductos);
-
-    
-
-    this.facturaService.crearFactura(factura, this.totalPagar);
-    
-    this.formulario.reset();
+    this.validarFormularios();
+    let venta = new CrearVentaDTO();
+    venta.cliente = this.formulario.get('cliente')!.value;
+    venta.usuario = Number(localStorage.getItem('id'));
+    if(!this.facturaService.agregarProductosVenta(venta, this.listProductos)){
+      return;
+    }
+    this.facturaService.crearVenta(venta, this.totalPagar);
+    //this.formulario.reset();
     this.generarIdFactura();
     this.clienteSeleccionado = null;
-    this.resetListProductos();
+    //this.resetListProductos();
      
   }
 
@@ -98,8 +95,9 @@ export class CabfacturaComponent implements DoCheck {
     this.igv = 0;
     this.total = 0;
   }
+
   generarIdFactura(){
-    this.facturaService.generarIdFactura().subscribe(
+    this.facturaService.generarIdVenta().subscribe(
       (resp: any) => {
         this.formulario.patchValue({
           numFactura: resp
@@ -124,19 +122,15 @@ export class CabfacturaComponent implements DoCheck {
 
     if(cedula == ''){ 
       this.formulario.reset();
-      //this.generarFactura();
     }
 
-
-    this.httpClienteComponent.obtenerCliente(cedula).subscribe(
+    this.facturaService.obtenerCliente(cedula).subscribe(
       response => {
         this.formulario.patchValue({
-          nombre: response.nombre,
-          direccion: response.direccion,
-          correo: response.correo
+          nombre: response?.nombre,
+          direccion: response?.direccion,
+          correo: response?.correo
         });
-      }, 
-      error => {
       }
     )
   }
@@ -155,7 +149,7 @@ export class CabfacturaComponent implements DoCheck {
     } 
 
     let cantidad = +this.productosForm.get('cantidadProducto')?.value;
-    let codigo = this.productosForm.get('codProducto')?.value;
+    let codigo = this.productosForm.get('codigoProducto')?.value;
 
     this.httpProductoService.verificarActivo(codigo).subscribe(
       (response) => {
@@ -213,8 +207,12 @@ export class CabfacturaComponent implements DoCheck {
   }
 
   seleccionarProducto(): void{
-    let idProducto = this.productosForm.get('codProducto')?.value
+    let idProducto = this.productosForm.get('codigoProducto')?.value
     this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
+    if(this.productoSeleccionado == null || this.productoSeleccionado == undefined){
+      this.productosForm.get('codigoProducto')?.setErrors({ 'productoNoEncontrado': true });
+      return;
+    }
     this.stockProducto = this.productoSeleccionado.cantidad;
     if(this.productoSeleccionado != null && this.productoSeleccionado != undefined){
       this.productosForm.patchValue({

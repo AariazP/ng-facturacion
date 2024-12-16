@@ -36,7 +36,7 @@
             <input (focus)="listarProductos()"
             type="text" list="productos"
             (input)="seleccionarProducto()"
-            formControlName="codProducto"
+            formControlName="codigoProducto"
             placeholder="productos"
             >
 
@@ -44,7 +44,7 @@
               <option *ngFor="let producto of productos" [value]="producto.codigo">{{producto.nombre}}</option>
             </datalist>
 
-            <span *ngIf="productosForm.get('codProducto')!.invalid && (productosForm.get('codProducto')!.dirty || productosForm.get('codProducto')!.touched)">
+            <span *ngIf="productosForm.get('codigoProducto')!.invalid && (productosForm.get('codigoProducto')!.dirty || productosForm.get('codigoProducto')!.touched)">
               Por favor, ingrese un valor válido.
             </span>
 
@@ -102,7 +102,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let listProducto of listProductos">
-                <td>{{ listProducto.codProducto }}</td>
+                <td>{{ listProducto.codigoProducto }}</td>
                 <td>{{ listProducto.nombreProducto }}</td>
                 <td>$ {{ listProducto.precioProducto | number:'1.0-0' }}</td>
                 <td>{{ listProducto.cantidadProducto }}</td>

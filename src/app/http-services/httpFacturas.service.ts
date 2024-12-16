@@ -24,7 +24,7 @@ export class HttpFacturasService {
   guardarDetalles(detalles: any) {
     return this.http.post(`${this.URL_API}/venta/guardar`, detalles);
   }
-  generaIdFactura(){
+  generaIdVenta(){
     return this.http.get(`${this.URL_API}/venta/siguiente-id`);
   }
 

@@ -14,7 +14,7 @@ export class CrearVentaDTO {
     agregarDetalle(detalleFactura: DetalleVentaDTO) {
         let productoExistente = false;
         this.listDetalleVenta.forEach(detalle => {
-            if (detalle.codProducto === detalleFactura.codProducto) {
+            if (detalle.codigoProducto === detalleFactura.codigoProducto) {
                 detalle.cantidad += detalleFactura.cantidad;
                 productoExistente = true;
             }
