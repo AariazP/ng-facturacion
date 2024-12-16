@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { validarDecimalConDosDecimales } from '../../../validators/validatorFn';
-import { ActualizarProductoDTO } from 'src/app/dto/producto/ActualizarProductoDTO';
+import { ActualizarProductoDTO } from '../../../dto/producto/ActualizarProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-editar-producto',

@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
-import { ActualizarClienteDTO } from 'src/app/dto/cliente/ActualizarClienteDTO';
+import { ActualizarClienteDTO } from '../../../dto/cliente/ActualizarClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';
-import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
+import { ClienteDTO } from '../../../dto/cliente/ClienteDTO';
 
 
 @Component({

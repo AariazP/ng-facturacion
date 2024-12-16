@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
-import { CrearProductoDTO } from 'src/app/dto/producto/CrearProductoDTO';
+import { CrearProductoDTO } from '../../../dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
 

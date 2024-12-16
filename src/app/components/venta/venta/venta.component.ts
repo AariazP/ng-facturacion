@@ -1,6 +1,6 @@
 import { Component, DoCheck, inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
+import { CrearVentaDTO } from '../../../dto/venta/CrearVentaDTO';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { AlertService } from 'src/app/utils/alert.service';
