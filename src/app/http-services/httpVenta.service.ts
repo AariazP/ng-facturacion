@@ -7,7 +7,7 @@ import { CrearVentaDTO } from '../dto/venta/CrearVentaDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class HttpFacturasService {
+export class HttpVentaService {
   
 
   private URL_API: string = environment.ApiUrl;

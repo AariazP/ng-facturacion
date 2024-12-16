@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { Form, FormBuilder, FormGroup } from '@angular/forms';
-import { HttpFacturasService } from 'src/app/http-services/httpFacturas.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { jsPDF } from 'jspdf';
+import { HttpVentaService } from 'src/app/http-services/httpVenta.service';
 
 @Component({
-  selector: 'app-lista-facturas',
-  templateUrl: './lista-facturas.component.html',
-  styleUrls: ['./lista-facturas.component.css']
+  selector: 'app-lista-ventas',
+  templateUrl: './lista-ventas.component.html',
+  styleUrls: ['./lista-ventas.component.css']
 })
-export class ListaFacturasComponent {
+export class ListaVentasComponent {
 
 
   facturas: any ;
@@ -23,7 +23,7 @@ export class ListaFacturasComponent {
   carritoComprado: any;
 
 
-  constructor(private httpfacturasService: HttpFacturasService, private fb: FormBuilder) {
+  constructor(private httpVentaService: HttpVentaService, private fb: FormBuilder) {
 
     this.formFacturas = this.fb.group({
       fecha: [this.getFechaActual()]
@@ -40,7 +40,7 @@ export class ListaFacturasComponent {
   }
 
   getData(){
-    this.httpfacturasService.getData().subscribe(data => {
+    this.httpVentaService.getData().subscribe(data => {
       this.facturas = data;
       this.facturasFiltradas = data;
     })
@@ -89,7 +89,7 @@ export class ListaFacturasComponent {
   // Método para mostrar la previsualización de una factura
   mostrarPrevisualizacion(factura: any) {
     this.facturaSeleccionada = factura;
-    this.httpfacturasService.obtenerDetalleVenta(factura.id).subscribe(data => {
+    this.httpVentaService.obtenerDetalleVenta(factura.id).subscribe(data => {
       this.carritoComprado = data;
     })
   }
@@ -100,7 +100,7 @@ export class ListaFacturasComponent {
 
   eliminarPorId(id: number) {
     console.log(id)
-    this.httpfacturasService.eliminarPorId(id).subscribe(
+    this.httpVentaService.eliminarPorId(id).subscribe(
       (response) => {
       console.log('Persona eliminada correctamente');
       this.getData();

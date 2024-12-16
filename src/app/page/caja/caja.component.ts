@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
-import { ListaFacturasComponent } from 'src/app/components/facturas/lista-facturas/lista-facturas.component';
+import { ListaVentasComponent } from 'src/app/components/venta/lista-ventas/listaVentas.component';
 
 @Component({
   selector: 'app-caja',
@@ -20,7 +20,7 @@ export class CajaComponent {
 
   valorFormateado: string = ''; // Para almacenar el valor con formato
 
-  constructor(private menuComponent: MenuComponent, private listaFacturasComponent: ListaFacturasComponent) {}
+  constructor(private menuComponent: MenuComponent, private listaVentasComponent: ListaVentasComponent) {}
 
   formatearValor(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -45,8 +45,8 @@ export class CajaComponent {
   ngOnInit() {
     this.cargarDatos();
     this.actualizarTotalEfectivo();
-    this.listaFacturasComponent.ngOnInit();
-    console.log(this.listaFacturasComponent.sumaTotal);
+    this.listaVentasComponent.ngOnInit();
+    console.log(this.listaVentasComponent.sumaTotal);
   }
 
   mostrarModal(action: 'ingreso' | 'egreso') {
@@ -117,7 +117,7 @@ export class CajaComponent {
     this.ingresos = parseFloat(localStorage.getItem('ingresos') || '0');
     this.egresos = parseFloat(localStorage.getItem('egresos') || '0');
     this.movimientos = JSON.parse(localStorage.getItem('movimientos') || '[]');
-    this.totalVentas = this.listaFacturasComponent.sumaTotal;
+    this.totalVentas = this.listaVentasComponent.sumaTotal;
   }
 
   limpiarDatos() {

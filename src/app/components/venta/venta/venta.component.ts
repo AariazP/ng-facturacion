@@ -2,19 +2,17 @@ import { Component, DoCheck, inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
-import { HttpFacturasService } from 'src/app/http-services/httpFacturas.service';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { AlertService } from 'src/app/utils/alert.service';
 import { cantidadMayorQueCero} from 'src/app/validators/validatorFn';
-import { jsPDF } from 'jspdf';
 import { FacturaService } from 'src/app/services/venta.service';
 
 @Component({
-  selector: 'app-cabfactura',
-  templateUrl: './cabfactura.component.html',
-  styleUrls: ['./cabfactura.component.css']
+  selector: 'app-venta',
+  templateUrl: './venta.component.html',
+  styleUrls: ['./venta.component.css']
 })
-export class CabfacturaComponent implements DoCheck {
+export class VentaComponent implements DoCheck {
 
   clientes: any[] = [];
   productos: any[] = [];
@@ -36,7 +34,6 @@ export class CabfacturaComponent implements DoCheck {
 
   private formBuilder: FormBuilder = inject(FormBuilder);
   private httpClienteComponent: HttpClientesService = inject(HttpClientesService);
-  private httpFacturasService: HttpFacturasService = inject(HttpFacturasService);
   private httpProductoService: HttpProductoService = inject(HttpProductoService);
   private alert : AlertService = inject(AlertService);
   private facturaService: FacturaService = inject(FacturaService);
@@ -106,8 +103,6 @@ export class CabfacturaComponent implements DoCheck {
     )
   }
   
-  
-
   listarClientes() {
     if(this.clientes.length != 0){
       return;
@@ -149,7 +144,7 @@ export class CabfacturaComponent implements DoCheck {
     } 
 
     let cantidad = +this.productosForm.get('cantidadProducto')?.value;
-    let codigo = this.productosForm.get('codigoProducto')?.value;
+    let codigo = this.productosForm.get('codProducto')?.value;
 
     this.httpProductoService.verificarActivo(codigo).subscribe(
       (response) => {
@@ -207,10 +202,10 @@ export class CabfacturaComponent implements DoCheck {
   }
 
   seleccionarProducto(): void{
-    let idProducto = this.productosForm.get('codigoProducto')?.value
+    let idProducto = this.productosForm.get('codProducto')?.value
     this.productoSeleccionado = this.productos.find( producto => producto.codigo == idProducto);
     if(this.productoSeleccionado == null || this.productoSeleccionado == undefined){
-      this.productosForm.get('codigoProducto')?.setErrors({ 'productoNoEncontrado': true });
+      this.productosForm.get('codProducto')?.setErrors({ 'productoNoEncontrado': true });
       return;
     }
     this.stockProducto = this.productoSeleccionado.cantidad;

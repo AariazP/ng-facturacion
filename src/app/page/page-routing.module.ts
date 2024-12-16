@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductoComponent } from './producto/producto.component';
-import { FacturaComponent } from './factura/factura.component';
 import { NuevoComponent } from '../components/clientes/nuevo/nuevo.component';
 import { NuevoProductoComponent } from '../components/productos/nuevo-producto/nuevo-producto.component';
-import { Cod404Component } from '../components/cod404/cod404.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { PrincipalComponent } from './principal/principal.component';
 import { CajaComponent } from './caja/caja.component';
 import { FacturacionComponent } from './facturacion/facturacion.component';
-import { ListaFacturasComponent } from '../components/facturas/lista-facturas/lista-facturas.component';
 import { AuthGuard } from '../guards/guard.guard';
+import { ListaVentasComponent } from '../components/venta/lista-ventas/listaVentas.component';
+import { VentaComponent } from '../components/venta/venta/venta.component';
 
 const routes: Routes = [
 
@@ -35,14 +34,14 @@ const routes: Routes = [
       component: NuevoProductoComponent
     },
     {
-      path: 'factura',
+      path: 'venta',
       canActivate: [AuthGuard],
-      component: FacturaComponent
+      component: VentaComponent
     },
     {
-      path: 'lista-factura',
+      path: 'lista-ventas',
       canActivate: [AuthGuard],
-      component: ListaFacturasComponent
+      component: ListaVentasComponent
     },
     {
       path: 'principal',

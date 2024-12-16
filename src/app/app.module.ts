@@ -7,7 +7,6 @@ import { ClienteComponent } from './page/cliente/cliente.component';
 import { ProductoComponent } from './page/producto/producto.component';
 import { FacturaComponent } from './page/factura/factura.component';
 import { MenuComponent } from './components/menu/menu.component';
-
 import { Cod404Component } from './components/cod404/cod404.component';
 import { NuevoComponent } from './components/clientes/nuevo/nuevo.component';
 import { HomeClienteComponent } from './components/clientes/home-cliente/home-cliente.component';
@@ -17,11 +16,10 @@ import { NuevoProductoComponent } from './components/productos/nuevo-producto/nu
 import { EditarClienteComponent } from './components/clientes/editar-cliente/editar-cliente.component';
 import { EditarProductoComponent } from './components/productos/editar-producto/editar-producto.component';
 import { LoginComponent } from './page/login/login.component';
-import { PageModule } from './page/page.module';
-import { CabfacturaComponent } from './components/facturas/cabfactura/cabfactura.component';
-import { ListaFacturasComponent } from './components/facturas/lista-facturas/lista-facturas.component';
 import { CardComponent } from './components/card/card.component';
 import { PrincipalComponent } from './page/principal/principal.component';
+import { VentaComponent } from './components/venta/venta/venta.component';
+import { ListaVentasComponent } from './components/venta/lista-ventas/listaVentas.component';
 
 @NgModule({
   declarations: [
@@ -38,14 +36,10 @@ import { PrincipalComponent } from './page/principal/principal.component';
     EditarClienteComponent,
     EditarProductoComponent,
     LoginComponent,
-    CabfacturaComponent,
-    ListaFacturasComponent,
     CardComponent,
     PrincipalComponent,
-    ListaFacturasComponent, 
-   
-
-    
+    VentaComponent,
+    ListaVentasComponent 
   ],
   imports: [
     BrowserModule,
@@ -55,7 +49,7 @@ import { PrincipalComponent } from './page/principal/principal.component';
     ReactiveFormsModule,
     // PageModule
   ],
-  providers: [ListaFacturasComponent],
+  providers: [ListaVentasComponent],
   exports:[CardComponent],
   bootstrap: [AppComponent]
 })
