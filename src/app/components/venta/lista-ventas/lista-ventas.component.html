@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <form [formGroup]="formFacturas">
-        <div class="row mt-4">
+        <div class="row">
           <div class="col-6">
             <div class="buscar">
               <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar cliente...">
@@ -22,7 +22,10 @@
           </div>
           <div class="col-2">
             <div class="row  align-items-center justify-content-center text-center">
-              <button id="nuevo" class="btn btn-primary" (click)="reset()"> Todas las ventas </button>
+              <button id="nuevo" class="btn btn-primary" (click)="reset()">
+                <span class="texto-grande">Todas las ventas</span>
+                <span class="texto-pequeno">Todo</span>
+              </button>              
             </div>
           </div>
         </div>
@@ -75,7 +78,7 @@
           <p><strong>Número de Factura:</strong> {{ facturaSeleccionada?.id }}</p>
           <p><strong>Cédula Cliente:</strong> {{ facturaSeleccionada?.cliente }}</p>
           <p><strong>Fecha y Hora:</strong> {{ facturaSeleccionada?.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</p>
-          <p><strong>Total:</strong> {{ facturaSeleccionada?.total }}</p>
+          <p><strong>Total:</strong> $ {{ facturaSeleccionada?.total | number:'1.0-0' }}</p>
           <p><strong>Productos:</strong></p>
           <div class="container">
             <div class="table-container">
@@ -89,7 +92,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let producto of carritoComprado?.detalleVentaList">
+                      <tr *ngFor="let producto of ventaRealizada?.detalleVentaList">
                         <td class="text-left">{{ producto.producto }}</td>
                         <td class="text-left">{{ producto.cantidad }}</td>
                       </tr>
