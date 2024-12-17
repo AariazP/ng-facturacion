@@ -1,8 +1,5 @@
 import { Component, DoCheck, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
-import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
-import { AlertService } from 'src/app/utils/alert.service';
 import { cantidadMayorQueCero } from 'src/app/validators/validatorFn';
 import { FacturaService } from 'src/app/services/venta.service';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
@@ -135,7 +132,6 @@ export class VentaComponent implements DoCheck {
 
   /**
    * Este metodo limpia la lista de productos y los valores de la factura
-   * 
    */
   private resetListProductos(): void {
     this.listProductos = [];
@@ -373,6 +369,5 @@ export class VentaComponent implements DoCheck {
     this.productosForm.get('cantidadProducto')?.setErrors(null);
     this.hayStock = true;
   }
-
-
+  
 }

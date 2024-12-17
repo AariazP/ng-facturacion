@@ -3,6 +3,7 @@ import { environment } from '../env/env';
 import { HttpClient } from '@angular/common/http';
 import { CrearVentaDTO } from '../dto/venta/CrearVentaDTO';
 import { Observable } from 'rxjs';
+import { DetalleVentaDTO } from '../dto/detalleVenta/DetalleVentaDTO';
 
 
 @Injectable({
@@ -15,9 +16,10 @@ export class HttpVentaService {
 
   constructor(private http: HttpClient) { }
 
-  getData(){
-    return this.http.get(`${this.URL_API}/venta/obtener-ventas-completadas`); 
+  public obtenerVentas(): Observable<DetalleVentaDTO> {
+    return this.http.get<DetalleVentaDTO>(`${this.URL_API}/venta/obtener-ventas-completadas`); 
   }
+  
   guardarCabecera(cabecera: any) {
     return this.http.post(`${this.URL_API}/venta`, cabecera);
   }

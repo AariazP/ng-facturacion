@@ -149,12 +149,25 @@ export class FacturaService {
 
     return true;
   }
-
-  generarIdVenta(): Observable<number> {
+  
+  /**
+   * Este metodo se encarga de obtener las ventas de la base de datos
+   * @returns un observable de tipo DetalleVentaDTO
+   */
+  public obtenerVentas(): Observable<DetalleVentaDTO> {
+    return this.httpFacturaService.obtenerVentas();
+  }
+  /**
+   * Este metodo se encarga de obtener el siguiente id de venta
+   * @returns un observable de tipo number
+   */
+  public generarIdVenta(): Observable<number> {
     return this.httpFacturaService.generaIdVenta();
   }
-
-  imprimirFactura() {
+  /**
+   * Este metodo se encarga de imprimir la factura
+   */
+  public imprimirFactura() {
     console.log('Factura impresa');
   }
 }
