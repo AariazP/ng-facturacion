@@ -47,10 +47,12 @@
 
       <div class="form-group">
         <input
-          type="number"
+          type="text"
           class="form-control"
           formControlName="precio"
           placeholder="Precio"
+          [value]="valorFormateado"
+          (input)="formatearValor($event)"
         >
         <span
           class="text-danger"

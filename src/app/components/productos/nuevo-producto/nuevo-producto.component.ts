@@ -15,6 +15,8 @@ export class NuevoProductoComponent implements OnInit {
   formulario: FormGroup;
   existe: boolean = false;
   tipoImpuesto!: string[];
+  valorNumerico: number = 0; 
+  valorFormateado: string = '';
 
   constructor(private formBuilder: FormBuilder, private httpProductoService: HttpProductoService, 
     private alert: AlertService
@@ -46,11 +48,11 @@ export class NuevoProductoComponent implements OnInit {
       });
       return;
     }
-
+    
     let producto = new CrearProductoDTO();
     producto.codigo = this.formulario.get('codigo')!.value;
     producto.nombre = this.formulario.get('nombre')!.value;
-    producto.precio = this.formulario.get('precio')!.value;
+    producto.precio = this.formulario.get('precio')!.value.replace(/,/g, '');
     producto.cantidad = this.formulario.get('stock')!.value;
     producto.activo = this.formulario.get('activo')!.value;
     producto.impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
@@ -62,6 +64,19 @@ export class NuevoProductoComponent implements OnInit {
       }, error => {
         this.alert.simpleErrorAlert(error.error.mensaje);
       });
+  }
+
+  formatearValor(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const valorSinFormato = input.value.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
+    const valorNumerico = parseInt(valorSinFormato, 10);
+
+    if (!isNaN(valorNumerico)) {
+      this.valorFormateado = valorNumerico.toLocaleString('en-US'); // Formato con comas
+      input.value = this.valorFormateado;
+    } else {
+      this.valorFormateado = '';
+    }
   }
 
   validarCodigo(event: any) {
