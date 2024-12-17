@@ -164,7 +164,7 @@
 
     <div class="col-lg-2">
 
-      <input type="text" list="cliente" formControlName="cliente" placeholder="Cédula del cliente">
+      <input type="text" list="cliente" formControlName="cliente" (input)="seleccionarCliente()" placeholder="Cédula del cliente">
 
       <datalist id="cliente" >
         @for(cliente of clientes;track cliente.cedula){

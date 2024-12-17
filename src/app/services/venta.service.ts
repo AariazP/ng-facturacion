@@ -24,12 +24,13 @@ export class FacturaService {
    * @returns un observable de tipo void
    */
 
-  crearVenta(venta: CrearVentaDTO, total: number): Observable<void> {
-    const subject = new Subject<void>();
+  public crearVenta(venta: CrearVentaDTO, total: number): Observable<boolean> {
+    const subject = new Subject<boolean>();
     this.alert.simpleInputAlert().then((result) => {
       let dinero = 0;
-      if (!this.validarDinero(result, total, dinero)) return;
-      if (!this.verificarExistenciaCliente(venta.cliente)) return;
+      console.log("El dinero es valido: "+this.validarDinero(result, total, dinero));
+      if (!this.validarDinero(result, total, dinero)) return subject.next(false);
+      if (!this.verificarExistenciaCliente(venta.cliente)) return subject.next(false);
       this.guardarVenta(venta, total, dinero);
     });
 
@@ -59,7 +60,8 @@ export class FacturaService {
     }
 
     if (result) dinero = Number(result);
-
+    console.log("dinero: "+dinero);
+    console.log("total: "+total);
     if (dinero < total) {
       this.alert.simpleErrorAlert('El dinero ingresado es menor al total de la factura');
       return !isValid;

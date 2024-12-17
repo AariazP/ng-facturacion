@@ -29,7 +29,6 @@ export class VentaComponent implements DoCheck {
   subtotal: number = 0;
   porcentajeIva: number = 19;
   igv: number = 0;
-  totalPagar: number = 0;
   stockProducto:number;
   protected hayStock = true;
   total = 0;
@@ -76,27 +75,65 @@ export class VentaComponent implements DoCheck {
     });
   }
 
+  /**
+   * Este metodo se encarga de enviar el formulario de la vista
+   */
   onSubmit() {
-
+    if (!this.validarFormulario()) return;
+    const venta = this.crearVentaDTO();
+    if (!this.validarProductosVenta(venta)) return;
+    this.procesarVenta(venta);
+  }
+  /**
+   * Este metodo se encarga de validar si los campos del formulario están completos
+   * @returns 
+   */
+  private validarFormulario(): boolean {
     if (!this.formulario.valid) {
       this.formulario.markAllAsTouched();
-      return;
+      return false;
     }
-
     this.validarFormularios();
-    let venta = new CrearVentaDTO();
-    venta.cliente = this.formulario.get('cliente')!.value;
-    venta.usuario = Number(localStorage.getItem('id'));
-    if (!this.facturaService.agregarProductosVenta(venta, this.listProductos))return;
-    this.facturaService.crearVenta(venta, this.totalPagar).subscribe(
-      () => {
-        this.formulario.reset();
-        this.generarIdFactura();
-        this.clienteSeleccionado = null;
-        this.resetListProductos();
-      },
-    );
+    return true;
+  }
+  
+  /**
+   * Este metodo devuelve un objeto de tipo CrearVentaDTO con los datos del formulario
+   * @returns 
+   */
+  private crearVentaDTO(): CrearVentaDTO {
+    return {
+      cliente: this.formulario.get('cliente')!.value,
+      usuario: Number(localStorage.getItem('id')),
+    } as CrearVentaDTO;
+  }
 
+  /**
+   * Este metodo se encarga de validar si los productos de la venta están en la base de datos
+   * @param venta 
+   * @returns 
+   */
+  private validarProductosVenta(venta: CrearVentaDTO): boolean {
+    return this.facturaService.agregarProductosVenta(venta, this.listProductos);
+  }
+
+  /**
+   * Este metodo se encarga de guardar la venta en la base de datos
+   * @param venta 
+   */
+  private procesarVenta(venta: CrearVentaDTO): void {
+    this.calcularValores();
+    this.facturaService.crearVenta(venta, this.total).subscribe(() => this.finalizarVenta());
+  }
+  
+  /**
+   * Este metodo limpia los campos del formulario y genera un nuevo id de factura
+   */
+  private finalizarVenta(): void {
+    this.formulario.reset();
+    this.generarIdFactura();
+    this.clienteSeleccionado = null;
+    this.resetListProductos();
   }
 
   /**
@@ -110,7 +147,10 @@ export class VentaComponent implements DoCheck {
     this.total = 0;
   }
 
-  generarIdFactura() {
+  /**
+   * Este metodo se encarga de obtener el id de la factura
+   */
+  protected generarIdFactura() {
     this.facturaService.generarIdVenta().subscribe(
       (resp: number) => {
         this.formulario.patchValue({
@@ -119,21 +159,15 @@ export class VentaComponent implements DoCheck {
       }
     )
   }
-
-  listarClientes() {
-    if (this.clientes.length != 0) {
-      return;
-    }
-    this.httpClienteComponent.obtenerClientes().subscribe(data => {
-      this.clientes = data;
-    })
-  }
-
-  seleccionarCliente(): void {
+  /**
+   * Este metodo se encarga de seleccionar un cliente de la lista de clientes de la base de datos
+   */
+  protected seleccionarCliente(): void {
     let cedula = this.formulario.get('cliente')!.value;
 
     if (cedula == '') {
       this.formulario.reset();
+      this.generarIdFactura();
     }
 
     this.facturaService.obtenerCliente(cedula).subscribe(
@@ -146,18 +180,25 @@ export class VentaComponent implements DoCheck {
       }
     )
   }
-
-  cambiarModoOculto() {
+  /**
+   * Este metodo se encarga de cambiar el modo de visualización de la vista
+   */
+  protected cambiarModoOculto() {
     this.modoOculto = !this.modoOculto;
   }
+  /**
+   * Este metodo se encarga de agregar un producto a la lista de productos de la factura
+   * y calcular el subtotal, igv y total de la factura
+   * @returns 
+   */
+  public agregarProducto() {
 
-  agregarProducto() {
-
+    // Validar que los campos del formulario de productos estén completos
     if (!this.productosForm.valid) {
       Object.values(this.productosForm.controls).forEach(control => control.markAsTouched());
       return;
     }
-  
+    // Validar que el producto ingresado esté activo y que la cantidad ingresada no exceda el stock
     const cantidad = +this.productosForm.get('cantidadProducto')?.value;
     const codigo = this.productosForm.get('codigoProducto')?.value;
   
@@ -165,7 +206,7 @@ export class VentaComponent implements DoCheck {
         !this.productoService.verificarProductoCantidad(cantidad, codigo)) {
       return;
     }
-  
+    // Agregar el producto a la lista de productos
     const precio = this.productosForm.get('precioProducto')?.value;
     const nombre = this.productosForm.get('nombreProducto')?.value;
     const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
@@ -176,27 +217,39 @@ export class VentaComponent implements DoCheck {
       const producto = ProductoDTO.crearProductoDTO(codigo, nombre, precio, cantidad);
       this.listProductos.push(producto);
     }
-    
+
     this.resetForms();
   
-    // Calcular subtotal y otros valores
     this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
     this.calcularValores();
    
   }
-
+  
+  /**
+   * Este metodo se encarga de resetear los campos del formulario de productos
+   * y el producto seleccionado
+   */
   private resetForms(){
     this.productosForm.reset();
     this.productoSeleccionado = null;
     this.productosForm.get('cantidadProducto')?.setValue(1);
   }
-  calcularValores() {
+
+  /**
+   * Este metodo se encarga de calcular el subtotal, igv y total de la factura
+   */
+  private calcularValores() {
+    console.log(this.listProductos);
     this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
     this.total = this.subtotal;
   }
 
-  eliminarPorId(producto: any) {
+  /**
+   * Este metodo se encarga de eliminar un producto de la lista de productos de la factura
+   * @param producto Producto a eliminar
+   */
+  protected eliminarPorId(producto: any) {
     const indice = this.listProductos.indexOf(producto);
     if (indice !== -1) {
       this.listProductos.splice(indice, 1);
@@ -208,7 +261,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de listar los productos disponibles en la base de datos
    * y asignarlos a la variable productos.
    */
-  listarProductos() {
+  protected listarProductos() {
     this.productoService.getProductos().subscribe(
       data => {this.productos = data;}
     );
@@ -220,7 +273,7 @@ export class VentaComponent implements DoCheck {
    * Asigna los atributos del producto seleccionado a los campos del formulario
    * @returns void
    */
-  seleccionarProducto(): void {
+  protected seleccionarProducto(): void {
     const idProducto = this.productosForm.get('codigoProducto')?.value;
     const producto = this.productos.find(producto => producto.codigo === idProducto);
 
@@ -237,7 +290,7 @@ export class VentaComponent implements DoCheck {
     });
   }
 
-  validarFormularios() {
+  private validarFormularios() {
     if (this.clienteSeleccionado) {
       this.formulario.patchValue({
         ruc: this.clienteSeleccionado.rucDni,

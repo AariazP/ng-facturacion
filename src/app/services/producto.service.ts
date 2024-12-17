@@ -29,9 +29,7 @@ export class ProductoService {
     public verificarProductoActivo(codigo: string): boolean {
         this.httpProductoService.verificarActivo(codigo).subscribe(
             (response) => {
-                if (!response) {
-                    this.alert.simpleErrorAlert('El producto no está activo');
-                }
+                if (!response) this.alert.simpleErrorAlert('El producto no está activo');
                 return response;
             }
         )
@@ -47,9 +45,7 @@ export class ProductoService {
     public verificarProductoCantidad(cantidad: number, codigo: string): boolean {
         this.httpProductoService.verificarCantidad(cantidad, codigo).subscribe(
             (response) => {
-                if (!response) {
-                    this.alert.simpleErrorAlert('No hay suficiente cantidad de producto');
-                }
+                if (!response) this.alert.simpleErrorAlert('No hay suficiente cantidad de producto');
                 return response;
             }
         )
