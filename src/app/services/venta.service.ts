@@ -22,7 +22,6 @@ export class FacturaService {
     this.dinero = 0;
   }
 
-
   /**
    * Este metodo se encarga de crear una venta y guardarla en la base de datos
    * @param venta es el DTO de la venta que se va a guardar
@@ -63,8 +62,8 @@ export class FacturaService {
       return !isValid;
     }
 
-    if (result) dinero = Number(result);
-    if (dinero < total) {
+    if (result) this.dinero = Number(result);
+    if (this.dinero < total) {
       this.alert.simpleErrorAlert('El dinero ingresado es menor al total de la factura');
       return !isValid;
     }
@@ -83,7 +82,6 @@ export class FacturaService {
     this.httpFacturaService.guardarFactura(venta).subscribe({
       next: () => {
         this.mostrarCambio(total);
-        console.log("Cambio: " + (total-this.dinero));
         this.alert.simpleSuccessAlert('Factura guardada correctamente');
         this.imprimirFactura();
       },
@@ -99,7 +97,7 @@ export class FacturaService {
    */
   private mostrarCambio(total: number) {
     setTimeout(() => {
-      this.alert.simpleSuccessAlert('El cambio es: ' + (total-this.dinero));
+      this.alert.simpleSuccessAlert('El cambio es: ' + (this.dinero-total));
     }, 300);
   }
 

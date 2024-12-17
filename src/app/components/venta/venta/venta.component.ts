@@ -17,24 +17,21 @@ import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 })
 export class VentaComponent implements DoCheck {
 
-  clientes: ClienteDTO[];
-  productos: ProductoDTO[];
-  clienteSeleccionado: any;
-  productoSeleccionado: any;
-  formulario!: FormGroup;
-  productosForm!: FormGroup;
+  protected clientes: ClienteDTO[];
+  protected productos: ProductoDTO[];
+  protected clienteSeleccionado!: ClienteDTO | null;
+  protected productoSeleccionado!: ProductoDTO | null;
+  protected formulario!: FormGroup;
+  protected productosForm!: FormGroup;
   protected listProductos: ProductoDTO[];
-  modoOculto: boolean = true;
-
-  subtotal: number = 0;
-  porcentajeIva: number = 19;
-  igv: number = 0;
-  stockProducto:number;
+  protected modoOculto: boolean = true;
+  protected subtotal: number = 0;
+  protected porcentajeIva: number = 19;
+  protected igv: number = 0;
+  protected stockProducto: number;
   protected hayStock = true;
-  total = 0;
-
+  protected total = 0;
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private httpClienteComponent: HttpClientesService = inject(HttpClientesService);
   private productoService: ProductoService = inject(ProductoService);
   private facturaService: FacturaService = inject(FacturaService);
 
@@ -44,7 +41,7 @@ export class VentaComponent implements DoCheck {
     this.listProductos = [];
     this.stockProducto = 0;
   }
-  
+
   ngDoCheck() {
     this.validarFormularios();
   }
@@ -96,7 +93,7 @@ export class VentaComponent implements DoCheck {
     this.validarFormularios();
     return true;
   }
-  
+
   /**
    * Este metodo devuelve un objeto de tipo CrearVentaDTO con los datos del formulario
    * @returns 
@@ -125,7 +122,7 @@ export class VentaComponent implements DoCheck {
     this.calcularValores();
     this.facturaService.crearVenta(venta, this.total).subscribe(() => this.finalizarVenta());
   }
-  
+
   /**
    * Este metodo limpia los campos del formulario y genera un nuevo id de factura
    */
@@ -201,16 +198,16 @@ export class VentaComponent implements DoCheck {
     // Validar que el producto ingresado esté activo y que la cantidad ingresada no exceda el stock
     const cantidad = +this.productosForm.get('cantidadProducto')?.value;
     const codigo = this.productosForm.get('codigoProducto')?.value;
-  
-    if (!this.productoService.verificarProductoActivo(codigo) || 
-        !this.productoService.verificarProductoCantidad(cantidad, codigo)) {
+
+    if (!this.productoService.verificarProductoActivo(codigo) ||
+      !this.productoService.verificarProductoCantidad(cantidad, codigo)) {
       return;
     }
     // Agregar el producto a la lista de productos
     const precio = this.productosForm.get('precioProducto')?.value;
     const nombre = this.productosForm.get('nombreProducto')?.value;
     const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
-  
+
     if (productoExistente) {
       productoExistente.cantidad += cantidad;
     } else {
@@ -219,17 +216,17 @@ export class VentaComponent implements DoCheck {
     }
 
     this.resetForms();
-  
+
     this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
     this.calcularValores();
-   
+
   }
-  
+
   /**
    * Este metodo se encarga de resetear los campos del formulario de productos
    * y el producto seleccionado
    */
-  private resetForms(){
+  private resetForms() {
     this.productosForm.reset();
     this.productoSeleccionado = null;
     this.productosForm.get('cantidadProducto')?.setValue(1);
@@ -262,7 +259,7 @@ export class VentaComponent implements DoCheck {
    */
   protected listarProductos() {
     this.productoService.getProductos().subscribe(
-      data => {this.productos = data;}
+      data => { this.productos = data; }
     );
   }
 
@@ -289,53 +286,74 @@ export class VentaComponent implements DoCheck {
     });
   }
 
+  /**
+   * Este metodo se encarga de validar los campos del formulario
+   * y asignar los valores de los campos al formulario
+   */
   private validarFormularios() {
-    if (this.clienteSeleccionado) {
-      this.formulario.patchValue({
-        ruc: this.clienteSeleccionado.rucDni,
-        razonSocial: this.clienteSeleccionado.nombre,
-        correo: this.clienteSeleccionado.correo
-      });
-    } else {
-      // Si no hay cliente seleccionado, se deben borrar los valores y marcar los campos como inválidos
-      this.formulario.patchValue({
-        ruc: '',
-        razonSocial: '',
-        correo: ''
-      });
-      this.formulario.get('ruc')?.setValidators(Validators.required);
-      this.formulario.get('razonSocial')?.setValidators(Validators.required);
-      this.formulario.get('correo')?.setValidators(Validators.required);
-    }
+    // Validar cliente
+    this.actualizarFormulario(
+      this.formulario,
+      this.clienteSeleccionado,
+      {
+        ruc: 'rucDni',
+        razonSocial: 'nombre',
+        correo: 'correo',
+      },
+      ['ruc', 'razonSocial', 'correo']
+    );
 
-    if (this.productoSeleccionado) {
-      this.productosForm.patchValue({
-        nombreProducto: this.productoSeleccionado.nombre,
-        precioProducto: this.productoSeleccionado.precio,
-
-      });
-    } else {
-      // Si no hay cliente seleccionado, se deben borrar los valores y marcar los campos como inválidos
-      this.productosForm.patchValue({
-        nombreProducto: '',
-        precioProducto: '',
-
-      });
-      this.productosForm.get('nombreProducto')?.setValidators(Validators.required);
-      this.productosForm.get('precioProducto')?.setValidators(Validators.required);
-
-    }
-
-    // Actualizar la validación de los campos
-    this.formulario.get('ruc')?.updateValueAndValidity();
-    this.formulario.get('razonSocial')?.updateValueAndValidity();
-    this.formulario.get('correo')?.updateValueAndValidity();
-
-    // Actualizar la validación de los campos
-    this.productosForm.get('nombreProducto')?.updateValueAndValidity();
-    this.productosForm.get('precioProducto')?.updateValueAndValidity();
-
+    // Validar producto
+    this.actualizarFormulario(
+      this.productosForm,
+      this.productoSeleccionado,
+      {
+        nombreProducto: 'nombre',
+        precioProducto: 'precio',
+      },
+      ['nombreProducto', 'precioProducto']
+    );
   }
+
+  /**
+   * Actualiza los valores de un formulario reactivo y valida los campos.
+   * @param formulario El formulario a actualizar.
+   * @param objetoSeleccionado El objeto con los datos seleccionados (puede ser nulo).
+   * @param camposMap Un mapeo entre los campos del formulario y las propiedades del objeto.
+   * @param camposValidar Una lista de nombres de campos que deben ser validados si no hay objeto seleccionado.
+   */
+  private actualizarFormulario(
+    formulario: FormGroup,
+    objetoSeleccionado: any | null,
+    camposMap: { [key: string]: string },
+    camposValidar: string[]
+  ) {
+    if (objetoSeleccionado) {
+      // Actualizar los campos con los valores del objeto seleccionado
+      const valores = Object.keys(camposMap).reduce((acc, key) => {
+        acc[key] = objetoSeleccionado[camposMap[key]] || '';
+        return acc;
+      }, {} as { [key: string]: any });
+      formulario.patchValue(valores);
+    } else {
+      // Vaciar los campos y añadir validaciones si no hay objeto seleccionado
+      const valores = Object.keys(camposMap).reduce((acc, key) => {
+        acc[key] = '';
+        return acc;
+      }, {} as { [key: string]: any });
+      formulario.patchValue(valores);
+
+      camposValidar.forEach(campo => {
+        formulario.get(campo)?.setValidators(Validators.required);
+      });
+    }
+
+    // Actualizar el estado de validación de los campos
+    camposValidar.forEach(campo => {
+      formulario.get(campo)?.updateValueAndValidity();
+    });
+  }
+
   /**
    * Este metodo se encarga de validar si la cantidad de producto ingresada
    * es mayor al stock disponible
@@ -344,17 +362,17 @@ export class VentaComponent implements DoCheck {
    */
   validarStock(event: any): void {
     const cantidad = event.target.value;
-  
+
     if (cantidad > this.stockProducto) {
       this.productosForm.get('cantidadProducto')?.setErrors({ stockExcedido: true });
       this.productosForm.get('cantidadProducto')?.markAsTouched();
       this.hayStock = false;
       return;
     }
-  
+
     this.productosForm.get('cantidadProducto')?.setErrors(null);
     this.hayStock = true;
   }
-  
+
 
 }

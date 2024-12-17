@@ -36,7 +36,7 @@ export class HomeProductoComponent {
       this.productos = data;
       this.filtroProductos= data;
       this.updateProductoCount(); 
-    })
+    });
   }
   
   eliminarPorId(id: number) {
