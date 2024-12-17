@@ -102,10 +102,10 @@ export class VentaComponent implements DoCheck {
    * @returns 
    */
   private crearVentaDTO(): CrearVentaDTO {
-    return {
-      cliente: this.formulario.get('cliente')!.value,
-      usuario: Number(localStorage.getItem('id')),
-    } as CrearVentaDTO;
+    let venta = new CrearVentaDTO();
+    venta.cliente = this.formulario.get('cliente')!.value;
+    venta.usuario = Number(localStorage.getItem('id'));
+    return venta
   }
 
   /**
@@ -140,7 +140,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo limpia la lista de productos y los valores de la factura
    * 
    */
-  resetListProductos(): void {
+  private resetListProductos(): void {
     this.listProductos = [];
     this.subtotal = 0;
     this.igv = 0;
@@ -239,7 +239,6 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de calcular el subtotal, igv y total de la factura
    */
   private calcularValores() {
-    console.log(this.listProductos);
     this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
     this.total = this.subtotal;

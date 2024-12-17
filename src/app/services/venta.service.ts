@@ -6,6 +6,7 @@ import { DetalleVentaDTO } from "../dto/detalleVenta/DetalleVentaDTO";
 import { map, Observable, Subject } from "rxjs";
 import { ClienteDTO } from "../dto/cliente/ClienteDTO";
 import { HttpVentaService } from "../http-services/httpVenta.service";
+import { ProductoDTO } from "../dto/producto/ProductoDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,11 @@ export class FacturaService {
   private httpFacturaService: HttpVentaService = inject(HttpVentaService);
   private alert: AlertService = inject(AlertService);
   private clientService: ClienteService = inject(ClienteService);
+  private dinero:number;
+
+  constructor() { 
+    this.dinero = 0;
+  }
 
 
   /**
@@ -27,11 +33,9 @@ export class FacturaService {
   public crearVenta(venta: CrearVentaDTO, total: number): Observable<boolean> {
     const subject = new Subject<boolean>();
     this.alert.simpleInputAlert().then((result) => {
-      let dinero = 0;
-      console.log("El dinero es valido: "+this.validarDinero(result, total, dinero));
-      if (!this.validarDinero(result, total, dinero)) return subject.next(false);
+      if (!this.validarDinero(result, total, this.dinero)) return subject.next(false);
       if (!this.verificarExistenciaCliente(venta.cliente)) return subject.next(false);
-      this.guardarVenta(venta, total, dinero);
+      this.guardarVenta(venta, total);
     });
 
     return subject.asObservable();
@@ -60,8 +64,6 @@ export class FacturaService {
     }
 
     if (result) dinero = Number(result);
-    console.log("dinero: "+dinero);
-    console.log("total: "+total);
     if (dinero < total) {
       this.alert.simpleErrorAlert('El dinero ingresado es menor al total de la factura');
       return !isValid;
@@ -77,12 +79,11 @@ export class FacturaService {
    * @param total  total de la venta
    * @param dinero dinero ingresado por el usuario
    */
-  private guardarVenta(venta: CrearVentaDTO, total: number, dinero: number) {
-
+  private guardarVenta(venta: CrearVentaDTO, total: number) {
     this.httpFacturaService.guardarFactura(venta).subscribe({
-
       next: () => {
-        this.mostrarCambio(dinero, total);
+        this.mostrarCambio(total);
+        console.log("Cambio: " + (total-this.dinero));
         this.alert.simpleSuccessAlert('Factura guardada correctamente');
         this.imprimirFactura();
       },
@@ -96,9 +97,9 @@ export class FacturaService {
    * @param dinero Cantidad de dinero dada por el usuario
    * @param total Total de la factura
    */
-  private mostrarCambio(dinero: number, total: number) {
+  private mostrarCambio(total: number) {
     setTimeout(() => {
-      this.alert.simpleSuccessAlert('El cambio es: ' + (dinero - total));
+      this.alert.simpleSuccessAlert('El cambio es: ' + (total-this.dinero));
     }, 300);
   }
 
@@ -132,20 +133,20 @@ export class FacturaService {
 
   /**
    * Este metodo se encarga de agregar los productos que se agregaron al carrito a la factura
-   * @param factura DTO de la factura que se va a guardar
+   * @param venta DTO de la factura que se va a guardar
    * @param listProductos lista de productos que se agregaron al carrito
    * @returns un booleano que indica si se agregaron los productos correctamente
    */
-  public agregarProductosVenta(factura: CrearVentaDTO, listProductos: any[]): boolean {
+  public agregarProductosVenta(venta: CrearVentaDTO, listProductos: ProductoDTO[]): boolean {
     if (listProductos.length == 0) {
       this.alert.simpleErrorAlert('No se ha agregado ningun producto a la factura');
       return false;
     }
     listProductos.map(producto => {
-      let detalleFactura = new DetalleVentaDTO();
-      detalleFactura.cantidad = producto.cantidadProducto;
-      detalleFactura.codigoProducto = producto.codigoProducto
-      factura.agregarDetalle(detalleFactura);
+      let detalleVenta = new DetalleVentaDTO();
+      detalleVenta.cantidad = producto.cantidad;
+      detalleVenta.codigoProducto = producto.codigo;
+      venta.agregarDetalle(detalleVenta);
     });
 
     return true;
