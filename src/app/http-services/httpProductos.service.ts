@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../env/env';
 import { ResponseData } from '../interface/interfaces';
+import { ProductoDTO } from '../dto/producto/ProductoDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +14,8 @@ export class HttpProductoService {
 
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<any> {
-    return this.http.get<any>(`${this.URL_API}/productos`);
+  getProductos(): Observable<ProductoDTO[]> {
+    return this.http.get<ProductoDTO[]>(`${this.URL_API}/productos`);
   }
 
   getTipoImpuesto(): Observable<string[]>  {

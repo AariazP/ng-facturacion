@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ProductoDTO } from 'src/app/dto/producto/ProductoDTO';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
+import { ProductoService } from 'src/app/services/producto.service';
 import { AlertService } from 'src/app/utils/alert.service';
 @Component({
   selector: 'app-home-producto',
@@ -9,13 +11,16 @@ import { AlertService } from 'src/app/utils/alert.service';
 export class HomeProductoComponent {
 
   
-  productos: any ; 
+  productos: ProductoDTO[] ; 
   productosEditar: any;
   filtroProductos: any [] = [];
   modoOculto: boolean = true;
   totalProductos: number = 0;
+
+  private productoService: ProductoService = inject(ProductoService);
   
-  constructor(private httpProductoService: HttpProductoService, private alert: AlertService) {
+  constructor(private alert: AlertService) {
+    this.productos = [];
   }
   ngOnInit() {
    this.getData();
@@ -27,33 +32,17 @@ export class HomeProductoComponent {
   }
   
   getData(){
-    this.httpProductoService.getData().subscribe(data => {
+    this.productoService.getProductos().subscribe(data => {
       this.productos = data;
-      this.filtroProductos = data;
-      this.updateProductoCount(); // Actualiza el conteo cuando se obtienen los datos
-      
+      this.filtroProductos= data;
+      this.updateProductoCount(); 
     })
   }
   
   eliminarPorId(id: number) {
-    this.alert.confirmAlert('¿Está seguro de eliminar este producto?', 'Este cambio no se puede revertir').then((result) => {
 
-      if(result){
-        this.httpProductoService.eliminarPorId(id).subscribe(
-          (response) => {
-            if(response){
-              this.alert.simpleSuccessAlert('Producto eliminado correctamente');
-            }
-          this.getData();
-        }, error => {
-          this.alert.simpleErrorAlert(error.error.mensaje);
-        });
-      }else{
-        this.alert.simpleInfoAlert('Operación cancelada');
-      }
-
-    }
-    );
+    this.productoService.eliminarPorId(id);
+    
   }
   
   buscar(texto: Event) {

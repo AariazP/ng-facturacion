@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../env/env';
 import { HttpClient } from '@angular/common/http';
 import { CrearVentaDTO } from '../dto/venta/CrearVentaDTO';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -24,8 +25,8 @@ export class HttpVentaService {
   guardarDetalles(detalles: any) {
     return this.http.post(`${this.URL_API}/venta/guardar`, detalles);
   }
-  generaIdVenta(){
-    return this.http.get(`${this.URL_API}/venta/siguiente-id`);
+  generaIdVenta(): Observable<number>{
+    return this.http.get<number>(`${this.URL_API}/venta/siguiente-id`);
   }
 
   eliminarPorId(id: number) {

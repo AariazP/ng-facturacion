@@ -19,8 +19,9 @@ export class HomeClienteComponent {
   No es igual a la longitud de filtroClientes porque filtroClientes se actualiza con la búsqueda */
   protected totalClientes: number; 
   private alertClient: ClienteAlertService = inject(ClienteAlertService);
+  private clienteService: ClienteService = inject(ClienteService);
 
-  constructor(private clienteService: ClienteService) {
+  constructor() {
     this.personaEditar = new ClienteDTO();
     this.clientes = [];
     this.filtroClientes = [];

@@ -3,7 +3,7 @@ import { AlertService } from "../utils/alert.service";
 import { CrearVentaDTO } from "../dto/venta/CrearVentaDTO";
 import { ClienteService } from "./cliente.service";
 import { DetalleVentaDTO } from "../dto/detalleVenta/DetalleVentaDTO";
-import { map, Observable } from "rxjs";
+import { map, Observable, Subject } from "rxjs";
 import { ClienteDTO } from "../dto/cliente/ClienteDTO";
 import { HttpVentaService } from "../http-services/httpVenta.service";
 
@@ -16,8 +16,16 @@ export class FacturaService {
   private alert: AlertService = inject(AlertService);
   private clientService: ClienteService = inject(ClienteService);
 
-  crearVenta(venta: CrearVentaDTO, total: number) {
 
+  /**
+   * Este metodo se encarga de crear una venta y guardarla en la base de datos
+   * @param venta es el DTO de la venta que se va a guardar
+   * @param total es el total de la venta
+   * @returns un observable de tipo void
+   */
+
+  crearVenta(venta: CrearVentaDTO, total: number): Observable<void> {
+    const subject = new Subject<void>();
     this.alert.simpleInputAlert().then((result) => {
       let dinero = 0;
       if (!this.validarDinero(result, total, dinero)) return;
@@ -25,10 +33,18 @@ export class FacturaService {
       this.guardarVenta(venta, total, dinero);
     });
 
-    return 
+    return subject.asObservable();
   }
 
-  validarDinero(result: number, total: number, dinero: number) {
+  /**
+   * Este metodo se encarga de validar el dinero ingresado por el usuario
+   * Valida que el valor ingresado sea un número y que sea mayor o igual al total de la factura
+   * @param result es la respuesta del input alert
+   * @param total  es el total de la factura
+   * @param dinero es el dinero ingresado por el usuario
+   * @returns un booleano que indica si el dinero es valido
+   */
+  private validarDinero(result: number, total: number, dinero: number): boolean {
 
     let isValid = true;
 
@@ -53,7 +69,13 @@ export class FacturaService {
 
   }
 
-  guardarVenta(venta: CrearVentaDTO, total: number, dinero: number) {
+  /**
+   * Este metodo se encarga de guardar la venta en la base de datos
+   * @param venta DTO de la venta 
+   * @param total  total de la venta
+   * @param dinero dinero ingresado por el usuario
+   */
+  private guardarVenta(venta: CrearVentaDTO, total: number, dinero: number) {
 
     this.httpFacturaService.guardarFactura(venta).subscribe({
 
@@ -67,13 +89,23 @@ export class FacturaService {
     });
   }
 
-  mostrarCambio(dinero: number, total: number) {
+  /**
+   * Este metodo se encarga de mostrar el cambio al usuario 
+   * @param dinero Cantidad de dinero dada por el usuario
+   * @param total Total de la factura
+   */
+  private mostrarCambio(dinero: number, total: number) {
     setTimeout(() => {
       this.alert.simpleSuccessAlert('El cambio es: ' + (dinero - total));
     }, 300);
   }
 
-  verificarExistenciaCliente(cedula: string) {
+  /**
+   * Este metodo se encarga de verificar si un cliente existe en la base de datos
+   * @param cedula  cedula del cliente
+   * @returns 
+   */
+  public verificarExistenciaCliente(cedula: string): boolean {
     let existe = true;
     this.clientService.verificarExistencia(cedula).subscribe(
       response => {
@@ -85,14 +117,24 @@ export class FacturaService {
     return existe;
   }
 
-  obtenerCliente(cedula: string): Observable<ClienteDTO | null> {
+  /**
+   * Este metodo se encarga de obtener un cliente de la base de datos
+   * @param cedula cedula del cliente
+   * @returns un observable de tipo ClienteDTO o null
+   */
+  public obtenerCliente(cedula: string): Observable<ClienteDTO | null> {
     return this.clientService.obtenerCliente(cedula).pipe(
       map(response => {return response;})
     );
   }
 
-
-  agregarProductosVenta(factura: CrearVentaDTO, listProductos: any[]) {
+  /**
+   * Este metodo se encarga de agregar los productos que se agregaron al carrito a la factura
+   * @param factura DTO de la factura que se va a guardar
+   * @param listProductos lista de productos que se agregaron al carrito
+   * @returns un booleano que indica si se agregaron los productos correctamente
+   */
+  public agregarProductosVenta(factura: CrearVentaDTO, listProductos: any[]): boolean {
     if (listProductos.length == 0) {
       this.alert.simpleErrorAlert('No se ha agregado ningun producto a la factura');
       return false;
@@ -107,11 +149,11 @@ export class FacturaService {
     return true;
   }
 
-  generarIdVenta() {
+  generarIdVenta(): Observable<number> {
     return this.httpFacturaService.generaIdVenta();
   }
 
   imprimirFactura() {
-
+    console.log('Factura impresa');
   }
 }
