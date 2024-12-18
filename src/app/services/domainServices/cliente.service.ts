@@ -1,9 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClientesService } from "../http-services/httpClientes.service";
-import { CrearClienteDTO } from "../dto/cliente/CrearClienteDTO";
-import { AlertService } from "../utils/alert.service";
-import { ClienteDTO } from "../dto/cliente/ClienteDTO";
 import { catchError, Observable, of } from "rxjs";
+import { AlertService } from "src/app/utils/alert.service";
+import { CrearClienteDTO } from "src/app/dto/cliente/CrearClienteDTO";
+import { ClienteDTO } from "src/app/dto/cliente/ClienteDTO";
 
 @Injectable({
     providedIn: 'root'

@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FacturaService } from 'src/app/services/factura.service';
-import { VentaService } from 'src/app/services/venta.service';
 import { VentaDTO } from 'src/app/dto/venta/VentaDTO';
 import { FullVentaDTO } from 'src/app/dto/venta/FullVentaDTO';
+import { FacturaService } from 'src/app/services/domainServices/factura.service';
+import { VentaService } from 'src/app/services/domainServices/venta.service';
 
 @Component({
   selector: 'app-lista-ventas',

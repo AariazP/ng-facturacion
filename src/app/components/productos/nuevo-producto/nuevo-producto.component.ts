@@ -1,12 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
+import { HttpProductoService } from 'src/app/services/http-services/httpProductos.service';
 import { CrearProductoDTO } from '../../../dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
-import Swal from 'sweetalert2';
-import { ProductoService } from 'src/app/services/producto.service';
 import { ProductoAlertService } from 'src/app/utils/product-alert/productoAlert.service';
 import { from, of, switchMap } from 'rxjs';
+import { ProductoService } from 'src/app/services/domainServices/producto.service';
 
 @Component({
   selector: 'app-nuevo-producto',

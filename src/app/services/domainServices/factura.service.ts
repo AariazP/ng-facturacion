@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { FullVentaDTO } from "../dto/venta/FullVentaDTO";
-import { ImprimirFacturaDTO } from "../dto/factura/ImprimirFacturaDTO";
+import { ImprimirFacturaDTO } from "src/app/dto/factura/ImprimirFacturaDTO";
+import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
 
 @Injectable({
     providedIn: 'root'

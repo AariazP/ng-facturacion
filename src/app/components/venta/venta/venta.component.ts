@@ -1,11 +1,11 @@
 import { Component, DoCheck, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { cantidadMayorQueCero } from 'src/app/validators/validatorFn';
-import { VentaService } from 'src/app/services/venta.service';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
 import { ProductoDTO } from 'src/app/dto/producto/ProductoDTO';
-import { ProductoService } from 'src/app/services/producto.service';
 import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
+import { ProductoService } from 'src/app/services/domainServices/producto.service';
+import { VentaService } from 'src/app/services/domainServices/venta.service';
 
 @Component({
   selector: 'app-venta',

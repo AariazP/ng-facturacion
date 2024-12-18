@@ -1,9 +1,9 @@
 import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../env/env';
+import { environment } from '../../env/env';
 import { Observable, tap } from 'rxjs';
-import { UsuarioLoginDTO } from '../dto/usuario/UsuarioLoginDTO';
-import { UsuarioDTO } from '../dto/usuario/UsuarioDTO';
+import { UsuarioLoginDTO } from '../../dto/usuario/UsuarioLoginDTO';
+import { UsuarioDTO } from '../../dto/usuario/UsuarioDTO';
 @Injectable({
   providedIn: 'root'
 })

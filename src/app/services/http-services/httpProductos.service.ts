@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../env/env';
-import { ProductoDTO } from '../dto/producto/ProductoDTO';
-import { ActualizarProductoDTO } from '../dto/producto/ActualizarProductoDTO';
-import { CrearProductoDTO } from '../dto/producto/CrearProductoDTO';
+import { environment } from '../../env/env';
+import { ProductoDTO } from '../../dto/producto/ProductoDTO';
+import { ActualizarProductoDTO } from '../../dto/producto/ActualizarProductoDTO';
+import { CrearProductoDTO } from '../../dto/producto/CrearProductoDTO';
 @Injectable({
   providedIn: 'root'
 })

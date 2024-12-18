@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
+import { HttpClientesService } from 'src/app/services/http-services/httpClientes.service';
 import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
 import { ActualizarClienteDTO } from '../../../dto/cliente/ActualizarClienteDTO';
 import { AlertService } from 'src/app/utils/alert.service';

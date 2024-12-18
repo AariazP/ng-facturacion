@@ -1,14 +1,14 @@
 import { inject, Injectable } from "@angular/core";
-import { AlertService } from "../utils/alert.service";
-import { CrearVentaDTO } from "../dto/venta/CrearVentaDTO";
 import { ClienteService } from "./cliente.service";
-import { DetalleVentaDTO } from "../dto/detalleVenta/DetalleVentaDTO";
 import { map, Observable, Subject } from "rxjs";
-import { ClienteDTO } from "../dto/cliente/ClienteDTO";
 import { HttpVentaService } from "../http-services/httpVenta.service";
-import { ProductoDTO } from "../dto/producto/ProductoDTO";
-import { VentaDTO } from "../dto/venta/VentaDTO";
-import { FullVentaDTO } from "../dto/venta/FullVentaDTO";
+import { AlertService } from "src/app/utils/alert.service";
+import { CrearVentaDTO } from "src/app/dto/venta/CrearVentaDTO";
+import { ClienteDTO } from "src/app/dto/cliente/ClienteDTO";
+import { ProductoDTO } from "src/app/dto/producto/ProductoDTO";
+import { DetalleVentaDTO } from "src/app/dto/detalleVenta/DetalleVentaDTO";
+import { VentaDTO } from "src/app/dto/venta/VentaDTO";
+import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
 
 @Injectable({
   providedIn: 'root'

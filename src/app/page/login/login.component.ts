@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioLoginDTO } from 'src/app/dto/usuario/UsuarioLoginDTO';
-import { HttpLoginService} from 'src/app/http-services/httpLogin.service';
+import { HttpLoginService} from 'src/app/services/http-services/httpLogin.service';
 import { AlertService } from 'src/app/utils/alert.service';
 
 @Component({

@@ -1,10 +1,9 @@
 import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { validarDecimalConDosDecimales } from '../../../validators/validatorFn';
 import { ActualizarProductoDTO } from '../../../dto/producto/ActualizarProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
-import { ProductoService } from 'src/app/services/producto.service';
+import { ProductoService } from 'src/app/services/domainServices/producto.service';
 @Component({
   selector: 'app-editar-producto',
   templateUrl: './editar-producto.component.html',

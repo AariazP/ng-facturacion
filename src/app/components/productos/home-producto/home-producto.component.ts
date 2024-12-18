@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ProductoDTO } from 'src/app/dto/producto/ProductoDTO';
-import { ProductoService } from 'src/app/services/producto.service';
+import { ProductoService } from 'src/app/services/domainServices/producto.service';
 import { ProductoAlertService } from 'src/app/utils/product-alert/productoAlert.service';
 @Component({
   selector: 'app-home-producto',

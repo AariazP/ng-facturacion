@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ClienteDTO } from '../../../dto/cliente/ClienteDTO';
-import { ClienteService } from 'src/app/services/cliente.service';
 import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.service';
+import { ClienteService } from 'src/app/services/domainServices/cliente.service';
 
 @Component({
   selector: 'app-home-cliente',

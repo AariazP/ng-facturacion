@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { soloTexto, validarCorreo} from 'src/app/validators/validatorFn';
 import { CrearClienteDTO } from 'src/app/dto/cliente/CrearClienteDTO';
-import { ClienteService } from 'src/app/services/cliente.service';
 import { ClienteAlertService } from 'src/app/utils/cliente-alert/clienteAlert.service';
+import { ClienteService } from 'src/app/services/domainServices/cliente.service';
 @Component({
   selector: 'app-nuevo',
   templateUrl: './nuevo.component.html',

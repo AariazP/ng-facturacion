@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../env/env';
+import { environment } from '../../env/env';
 import { HttpClient } from '@angular/common/http';
-import { CrearVentaDTO } from '../dto/venta/CrearVentaDTO';
+import { CrearVentaDTO } from '../../dto/venta/CrearVentaDTO';
 import { Observable } from 'rxjs';
-import { VentaDTO } from '../dto/venta/VentaDTO';
-import { FullVentaDTO } from '../dto/venta/FullVentaDTO';
+import { VentaDTO } from '../../dto/venta/VentaDTO';
+import { FullVentaDTO } from '../../dto/venta/FullVentaDTO';
 
 @Injectable({
   providedIn: 'root'
