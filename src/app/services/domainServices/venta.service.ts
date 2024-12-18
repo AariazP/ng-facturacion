@@ -31,17 +31,16 @@ export class VentaService {
    * @returns un observable de tipo void
    */
 
-  public crearVenta(venta: CrearVentaDTO, total: number): Observable<boolean> {
-    const subject = new Subject<boolean>();
+  public crearVenta(venta: CrearVentaDTO, total: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
     this.alert.simpleInputAlert().then((result) => {
-      if (!this.validarDinero(result, total, this.dinero)) return subject.next(false);
-      if (!this.verificarExistenciaCliente(venta.cliente)) return subject.next(false);
-      venta.dineroRecibido = result;
+      if (!this.validarDinero(result, total, this.dinero)) return resolve(false);
+      if (!this.verificarExistenciaCliente(venta.cliente)) return resolve(false);
+      venta.dineroRecibido = total;
       venta.cambio = this.dinero - total;
       this.guardarVenta(venta, total);
-    });
-
-    return subject.asObservable();
+      return resolve(true);
+    })});
   }
 
   /**

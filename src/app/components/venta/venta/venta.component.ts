@@ -119,7 +119,8 @@ export class VentaComponent implements DoCheck {
    */
   private procesarVenta(venta: CrearVentaDTO): void {
     this.calcularValores();
-    this.ventaService.crearVenta(venta, this.total).subscribe(() => this.finalizarVenta());
+    this.ventaService.crearVenta(venta, this.total).then(() => {
+    this.finalizarVenta()});
   }
 
   /**
