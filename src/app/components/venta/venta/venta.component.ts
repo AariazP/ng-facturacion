@@ -1,7 +1,7 @@
 import { Component, DoCheck, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { cantidadMayorQueCero } from 'src/app/validators/validatorFn';
-import { FacturaService } from 'src/app/services/venta.service';
+import { VentaService } from 'src/app/services/venta.service';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
 import { ProductoDTO } from 'src/app/dto/producto/ProductoDTO';
 import { ProductoService } from 'src/app/services/producto.service';
@@ -30,7 +30,7 @@ export class VentaComponent implements DoCheck {
   protected total = 0;
   private formBuilder: FormBuilder = inject(FormBuilder);
   private productoService: ProductoService = inject(ProductoService);
-  private facturaService: FacturaService = inject(FacturaService);
+  private ventaService: VentaService = inject(VentaService);
 
   constructor() {
     this.clientes = [];
@@ -108,7 +108,7 @@ export class VentaComponent implements DoCheck {
    * @returns 
    */
   private validarProductosVenta(venta: CrearVentaDTO): boolean {
-    return this.facturaService.agregarProductosVenta(venta, this.listProductos);
+    return this.ventaService.agregarProductosVenta(venta, this.listProductos);
   }
 
   /**
@@ -117,7 +117,7 @@ export class VentaComponent implements DoCheck {
    */
   private procesarVenta(venta: CrearVentaDTO): void {
     this.calcularValores();
-    this.facturaService.crearVenta(venta, this.total).subscribe(() => this.finalizarVenta());
+    this.ventaService.crearVenta(venta, this.total).subscribe(() => this.finalizarVenta());
   }
 
   /**
@@ -144,7 +144,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de obtener el id de la factura
    */
   protected generarIdFactura() {
-    this.facturaService.generarIdVenta().subscribe(
+    this.ventaService.generarIdVenta().subscribe(
       (resp: number) => {
         this.formulario.patchValue({
           numFactura: resp
@@ -163,7 +163,7 @@ export class VentaComponent implements DoCheck {
       this.generarIdFactura();
     }
 
-    this.facturaService.obtenerCliente(cedula).subscribe(
+    this.ventaService.obtenerCliente(cedula).subscribe(
       response => {
         this.formulario.patchValue({
           nombre: response?.nombre,

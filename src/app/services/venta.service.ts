@@ -11,7 +11,7 @@ import { ProductoDTO } from "../dto/producto/ProductoDTO";
 @Injectable({
   providedIn: 'root'
 })
-export class FacturaService {
+export class VentaService {
 
   private httpFacturaService: HttpVentaService = inject(HttpVentaService);
   private alert: AlertService = inject(AlertService);
@@ -83,7 +83,6 @@ export class FacturaService {
       next: () => {
         this.mostrarCambio(total);
         this.alert.simpleSuccessAlert('Factura guardada correctamente');
-        this.imprimirFactura();
       },
 
       error: (error) => { this.alert.simpleErrorAlert(error.error.mensaje); }
@@ -164,10 +163,5 @@ export class FacturaService {
   public generarIdVenta(): Observable<number> {
     return this.httpFacturaService.generaIdVenta();
   }
-  /**
-   * Este metodo se encarga de imprimir la factura
-   */
-  public imprimirFactura() {
-    console.log('Factura impresa');
-  }
+
 }

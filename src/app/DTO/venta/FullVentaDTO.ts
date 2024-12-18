@@ -1,10 +1,14 @@
 import { FullDetalleDTO } from "../detalleVenta/FullDetalleDTO";
 
 export class FullVentaDTO {
-    id!: number;
-    fecha!: string;
-    total!: number;
-    cliente!: string;
-    usuario!: number;
-    detalles!: FullDetalleDTO[];
+
+    id!:number;
+    fecha!:string;
+    total!:number;
+    nombreCliente!:string;
+    cedulaCliente!:string;
+    direccionCliente!:string;
+    correoCliente!:string;
+    usuario!:number;
+    detalleVentaList!: FullDetalleDTO[];
 }

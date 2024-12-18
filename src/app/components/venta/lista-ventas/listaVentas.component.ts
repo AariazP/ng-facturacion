@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpVentaService } from 'src/app/http-services/httpVenta.service';
 import { jsPDF } from 'jspdf';
 import { FacturaService } from 'src/app/services/factura.service';
+import { VentaService } from 'src/app/services/venta.service';
 
 @Component({
   selector: 'app-lista-ventas',
@@ -23,7 +24,14 @@ export class ListaVentasComponent {
   idFacturaSeleccionada: any;
   ventaRealizada: any;
 
-  constructor(private httpVentaService: HttpVentaService, private fb: FormBuilder, private facturaService: FacturaService) {
+  private httpVentaService: HttpVentaService = inject(HttpVentaService);
+  private fb: FormBuilder = inject(FormBuilder);
+  private facturaService: FacturaService = inject(FacturaService);
+  private ventaService: VentaService = inject(VentaService);
+
+
+
+  constructor() {
 
     this.formFacturas = this.fb.group({
       fecha: [this.getFechaActual()]
@@ -36,7 +44,6 @@ export class ListaVentasComponent {
   }
   ngOnInit() {
    this.getData();
-   //this.establecerFecha(this.getFechaActual());
   }
 
   getData(){
