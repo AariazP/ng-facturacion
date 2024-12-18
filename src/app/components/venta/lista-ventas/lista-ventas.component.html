@@ -6,7 +6,7 @@
       </h1>
     </div>
     <div class="row">
-      <form [formGroup]="formFacturas">
+      <form [formGroup]="formVenta">
         <div class="row">
           <div class="col-6">
             <div class="buscar">
@@ -48,13 +48,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let factura of facturasFiltradas">
-                <td class="text-left">{{ factura.id }}</td>
-                <td class="text-left">{{ factura.cliente }}</td>
-                <td class="text-left">{{ factura.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td class="text-left">$ {{ factura.total  | number:'1.0-0' }}</td>
+              <tr *ngFor="let venta of ventasFiltradas">
+                <td class="text-left">{{ venta.id }}</td>
+                <td class="text-left">{{ venta.cliente }}</td>
+                <td class="text-left">{{ venta.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td class="text-left">$ {{ venta.total  | number:'1.0-0' }}</td>
                 <td class="eliminar">
-                  <button type="button" class="btn btn-primary" (click)="mostrarPrevisualizacion(factura)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
+                  <button type="button" class="btn btn-primary" (click)="mostrarPrevisualizacion(venta)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
                     Previsualizar Factura
                   </button>
                 </td>
@@ -75,10 +75,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p><strong>Número de Factura:</strong> {{ facturaSeleccionada?.id }}</p>
-          <p><strong>Cédula Cliente:</strong> {{ facturaSeleccionada?.cliente }}</p>
-          <p><strong>Fecha y Hora:</strong> {{ facturaSeleccionada?.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</p>
-          <p><strong>Total:</strong> $ {{ facturaSeleccionada?.total | number:'1.0-0' }}</p>
+          <p><strong>Número de Factura:</strong> {{ ventaSeleccionada?.id }}</p>
+          <p><strong>Cédula Cliente:</strong> {{ ventaSeleccionada?.cliente }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ ventaSeleccionada?.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+          <p><strong>Total:</strong> $ {{ ventaSeleccionada?.total | number:'1.0-0' }}</p>
           <p><strong>Productos:</strong></p>
           <div class="container">
             <div class="table-container">

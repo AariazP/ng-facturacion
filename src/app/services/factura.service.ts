@@ -1,9 +1,4 @@
-import { inject, Injectable } from "@angular/core";
-import { AlertService } from "../utils/alert.service";
-import { HttpVentaService } from "../http-services/httpVenta.service";
-import { CrearVentaDTO } from "../dto/venta/CrearVentaDTO";
-import { ClienteService } from "./cliente.service";
-import { DetalleVentaDTO } from "../dto/detalleVenta/DetalleVentaDTO";
+import { Injectable } from "@angular/core";
 import { FullVentaDTO } from "../dto/venta/FullVentaDTO";
 import { ImprimirFacturaDTO } from "../dto/factura/ImprimirFacturaDTO";
 

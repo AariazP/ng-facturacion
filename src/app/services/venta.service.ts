@@ -7,11 +7,14 @@ import { map, Observable, Subject } from "rxjs";
 import { ClienteDTO } from "../dto/cliente/ClienteDTO";
 import { HttpVentaService } from "../http-services/httpVenta.service";
 import { ProductoDTO } from "../dto/producto/ProductoDTO";
+import { VentaDTO } from "../dto/venta/VentaDTO";
+import { FullVentaDTO } from "../dto/venta/FullVentaDTO";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VentaService {
+ 
 
   private httpFacturaService: HttpVentaService = inject(HttpVentaService);
   private alert: AlertService = inject(AlertService);
@@ -153,7 +156,7 @@ export class VentaService {
    * Este metodo se encarga de obtener las ventas de la base de datos
    * @returns un observable de tipo DetalleVentaDTO
    */
-  public obtenerVentas(): Observable<DetalleVentaDTO> {
+  public obtenerVentas(): Observable<VentaDTO[]> {
     return this.httpFacturaService.obtenerVentas();
   }
   /**
@@ -162,6 +165,14 @@ export class VentaService {
    */
   public generarIdVenta(): Observable<number> {
     return this.httpFacturaService.generaIdVenta();
+  }
+  /**
+   * Este metodo se encarga de obtener una venta de la base de datos
+   * dado un id
+   * @param id 
+   */
+  public obtenerVenta(id: number): Observable<FullVentaDTO> {
+    return this.httpFacturaService.obtenerDetalleVenta(id);
   }
 
 }
