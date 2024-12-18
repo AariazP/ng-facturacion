@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientesService } from 'src/app/http-services/httpClientes.service';
 import { soloTexto, validarCorreo } from '../../../validators/validatorFn';
@@ -17,17 +17,24 @@ export class EditarClienteComponent {
 
   @Input() personaEditar!: ClienteDTO;
   @Output() modoOculto = new EventEmitter();
-  personaForm!: FormGroup;
-
-  constructor(private fb: FormBuilder, private httpClienteService: HttpClientesService, private alert: AlertService) {
-    this.formBuild(fb);
-  }
+  protected personaForm!: FormGroup;
+  private fb: FormBuilder = inject(FormBuilder);
+  private httpClienteService: HttpClientesService = inject(HttpClientesService);
+  private alert: AlertService = inject(AlertService);
+ 
   /**
    * Metodo que crea el formulario reactivo del frontend
    * @param fb 
    */
 
-  formBuild(fb: FormBuilder){
+  public ngOnInit(): void {
+    this.formBuild();
+  }
+
+  /**
+   * Crear el formulario reactivo
+   */
+  private formBuild(): void {
     this.personaForm = this.fb.group({
       idCliente: '',
       cedula: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*'), Validators.maxLength(15)]],
@@ -41,15 +48,21 @@ export class EditarClienteComponent {
 
   }
 
-
-  ngOnChanges(changes: SimpleChanges): void {
+  /**
+   * Metodo que se ejecuta cuando hay cambios en el componente
+   * @param changes 
+   */
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes['personaEditar'] && this.personaEditar) {
       this.personaForm.patchValue(this.personaEditar);
     }
   }
   
-
-  guardar(): void {
+  /**
+   * Este metodo se encarga de guardar la edición de un cliente
+   * @returns void
+   */
+  protected guardar(): void {
 
     if (!this.personaForm.valid) {
       
@@ -59,18 +72,20 @@ export class EditarClienteComponent {
       return;
     } 
 
-    let cliente = new ActualizarClienteDTO();
-    cliente = cliente.actualizarCliente(this.personaForm.get('cedula')!.value, this.personaForm.get('nombre')!.value, this.personaForm.get('direccion')!.value, this.personaForm.get('correo')!.value, this.personaForm.get('activo')!.value);
     
-    this.httpClienteService.actualizar(cliente, this.personaEditar.id).subscribe(
-      response => {
+    const { cedula, nombre, direccion, correo, activo } = this.personaForm.value;
+    let cliente = ActualizarClienteDTO.crearActualizarClienteDTO(cedula, nombre, direccion, correo, activo);
+    
+    this.httpClienteService.actualizar(cliente, this.personaEditar.id).subscribe({
+      next: ()=>{
         this.alert.simpleSuccessAlert('Cliente editado correctamente');
         this.modoOculto.emit();
       },
-      error => {
+      error: (error) => {
         this.alert.simpleErrorAlert(error.error.mensaje);
       }
-    )
+    });
+     
   }
 
 }

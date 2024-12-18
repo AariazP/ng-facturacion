@@ -52,7 +52,7 @@ export class NuevoComponent {
    * verifica si la cedula ya existe en la base de datos.
    * @param event  evento de teclado
    */
-  protected validarCedulaNuevoCliente(event: any) {
+  protected validarCedulaNuevoCliente(): void {
     const input = this.formulario.get('cedula')!.value;
     this.existe = false;
     const delay = 300;

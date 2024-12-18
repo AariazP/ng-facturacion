@@ -52,7 +52,7 @@ export class VentaComponent implements DoCheck {
   /**
    * Este metodo se encarga de construir los formularios de la vista
    */
-  buildForms() {
+  private buildForms() {
     this.formulario = this.formBuilder.group({
       numFactura: ['', [Validators.required]],
       cliente: ['', [Validators.required]],
@@ -143,7 +143,7 @@ export class VentaComponent implements DoCheck {
   /**
    * Este metodo se encarga de obtener el id de la factura
    */
-  protected generarIdFactura() {
+  protected generarIdFactura():void {
     this.ventaService.generarIdVenta().subscribe(
       (resp: number) => {
         this.formulario.patchValue({
@@ -176,7 +176,7 @@ export class VentaComponent implements DoCheck {
   /**
    * Este metodo se encarga de cambiar el modo de visualización de la vista
    */
-  protected cambiarModoOculto() {
+  protected cambiarModoOculto():void {
     this.modoOculto = !this.modoOculto;
   }
   /**
@@ -184,7 +184,7 @@ export class VentaComponent implements DoCheck {
    * y calcular el subtotal, igv y total de la factura
    * @returns 
    */
-  public agregarProducto() {
+  public agregarProducto():void {
 
     // Validar que los campos del formulario de productos estén completos
     if (!this.productosForm.valid) {
@@ -222,7 +222,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de resetear los campos del formulario de productos
    * y el producto seleccionado
    */
-  private resetForms() {
+  private resetForms():void {
     this.productosForm.reset();
     this.productoSeleccionado = null;
     this.productosForm.get('cantidadProducto')?.setValue(1);
@@ -231,7 +231,7 @@ export class VentaComponent implements DoCheck {
   /**
    * Este metodo se encarga de calcular el subtotal, igv y total de la factura
    */
-  private calcularValores() {
+  private calcularValores():void {
     this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
     this.total = this.subtotal;
@@ -241,7 +241,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de eliminar un producto de la lista de productos de la factura
    * @param producto Producto a eliminar
    */
-  protected eliminarPorId(producto: any) {
+  protected eliminarPorId(producto: ProductoDTO): void {
     const indice = this.listProductos.indexOf(producto);
     if (indice !== -1) {
       this.listProductos.splice(indice, 1);
@@ -253,7 +253,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de listar los productos disponibles en la base de datos
    * y asignarlos a la variable productos.
    */
-  protected listarProductos() {
+  protected listarProductos():void {
     this.productoService.getProductos().subscribe(
       data => { this.productos = data; }
     );
@@ -286,7 +286,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de validar los campos del formulario
    * y asignar los valores de los campos al formulario
    */
-  private validarFormularios() {
+  private validarFormularios():void {
     // Validar cliente
     this.actualizarFormulario(
       this.formulario,
@@ -323,7 +323,7 @@ export class VentaComponent implements DoCheck {
     objetoSeleccionado: any | null,
     camposMap: { [key: string]: string },
     camposValidar: string[]
-  ) {
+  ):void {
     if (objetoSeleccionado) {
       // Actualizar los campos con los valores del objeto seleccionado
       const valores = Object.keys(camposMap).reduce((acc, key) => {
@@ -348,26 +348,5 @@ export class VentaComponent implements DoCheck {
     camposValidar.forEach(campo => {
       formulario.get(campo)?.updateValueAndValidity();
     });
-  }
-
-  /**
-   * Este metodo se encarga de validar si la cantidad de producto ingresada
-   * es mayor al stock disponible
-   * @param event 
-   * @returns 
-   */
-  validarStock(event: any): void {
-    const cantidad = event.target.value;
-
-    if (cantidad > this.stockProducto) {
-      this.productosForm.get('cantidadProducto')?.setErrors({ stockExcedido: true });
-      this.productosForm.get('cantidadProducto')?.markAsTouched();
-      this.hayStock = false;
-      return;
-    }
-
-    this.productosForm.get('cantidadProducto')?.setErrors(null);
-    this.hayStock = true;
-  }
-  
+  } 
 }

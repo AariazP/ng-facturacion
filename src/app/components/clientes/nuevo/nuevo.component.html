@@ -7,7 +7,7 @@
         <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
           <p class="datos">Cédula:</p>
           <div class="form-group mb-3">
-            <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="cedula" class="form-control" placeholder="Cedula" (keyup)="validarCedulaNuevoCliente($event)">
+            <input [maxLength]="15" pattern="[a-zA-Z0-9]*" type="text" formControlName="cedula" class="form-control" placeholder="Cedula" (keyup)="validarCedulaNuevoCliente()">
             <small *ngIf="formulario.get('cedula')?.hasError('cantidadInvalida') && formulario.get('cedula')!.touched" class="text-danger">
               Por favor, ingrese solo números
             </small>

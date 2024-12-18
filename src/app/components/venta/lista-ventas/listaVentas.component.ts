@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpVentaService } from 'src/app/http-services/httpVenta.service';
 import { FacturaService } from 'src/app/services/factura.service';
 import { VentaService } from 'src/app/services/venta.service';
 import { VentaDTO } from 'src/app/dto/venta/VentaDTO';
@@ -15,14 +14,12 @@ export class ListaVentasComponent {
 
 
   protected ventas: VentaDTO[];
-  personaEditar: any;
   protected ventasFiltradas: VentaDTO[];
-  sumaTotal: number = 0;
+  public sumaTotal: number = 0;
   protected formVenta!: FormGroup;
   protected ventaSeleccionada: VentaDTO | null;
   protected ventaRealizada!: FullVentaDTO;
 
-  private httpVentaService: HttpVentaService = inject(HttpVentaService);
   private fb: FormBuilder = inject(FormBuilder);
   private facturaService: FacturaService = inject(FacturaService);
   private ventaService: VentaService = inject(VentaService);
@@ -119,7 +116,11 @@ export class ListaVentasComponent {
     );
   }
 
-  getFechaActual(): string {
+  /**
+   * Establece la fecha actual en el formato 'YYYY/MM/DD'
+   * @returns la fecha actual en formato 'YYYY/MM/DD' 
+   */
+  private getFechaActual(): string {
     const today = new Date();
     const formattedDate1 = `${today.getFullYear()}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getDate().toString().padStart(2, '0')}`;
     return formattedDate1;
@@ -128,7 +129,7 @@ export class ListaVentasComponent {
   /**
    * Método para obtener los datos de la base de datos
    */
-  reset() {
+  protected reset() {
     this.obtenerVentas();
   }
 

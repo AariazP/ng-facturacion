@@ -46,7 +46,6 @@ export class CajaComponent {
     this.cargarDatos();
     this.actualizarTotalEfectivo();
     this.listaVentasComponent.ngOnInit();
-    console.log(this.listaVentasComponent.sumaTotal);
   }
 
   mostrarModal(action: 'ingreso' | 'egreso') {

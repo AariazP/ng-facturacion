@@ -1,4 +1,5 @@
 export class ActualizarClienteDTO{
+   
 
     cedula!: string;
     direccion!: string;
@@ -15,4 +16,8 @@ export class ActualizarClienteDTO{
         return this;
     }
 
+    static crearActualizarClienteDTO(cedula:string, nombre:string, direccion:string, correo:string, activo:boolean):ActualizarClienteDTO {
+        let cliente = new ActualizarClienteDTO();
+        return cliente.actualizarCliente(cedula, nombre, direccion, correo, activo); 
+      }
 }
