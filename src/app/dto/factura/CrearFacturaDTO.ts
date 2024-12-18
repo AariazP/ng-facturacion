@@ -1,3 +1,6 @@
 export class CrearFacturaDTO {
-    idVenta!: number;
+    idVenta: number;
+    constructor(idVenta: number) {
+        this.idVenta = idVenta;
+    }
 }

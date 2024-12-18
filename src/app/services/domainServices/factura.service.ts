@@ -1,12 +1,17 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
+import { CrearFacturaDTO } from "src/app/dto/factura/CrearFacturaDTO";
 import { ImprimirFacturaDTO } from "src/app/dto/factura/ImprimirFacturaDTO";
 import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
 import { environment } from "src/app/env/env";
+import { HttpFacturaService } from "../http-services/httpFactura.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FacturaService {
+
+
+    private httpFacturaService: HttpFacturaService = inject(HttpFacturaService);
 
     /**
      * Este metodo se encarga de imprimir la factura de una venta
@@ -119,6 +124,22 @@ export class FacturaService {
         printWindow.document.close();
         printWindow.print();
     }
+
+    /**
+     * Este método se encarga de crear una factura en la base de datos
+     * @param factura es el DTO de la factura que se va a crear
+     */
+    public crearFactura(factura: CrearFacturaDTO):void {
+        this.httpFacturaService.crearFactura(factura).subscribe({
+            next: () => {
+                console.log('Factura creada correctamente');
+            },
+            error: (error) => {
+                console.error('Error al crear la factura:', error);
+            }
+        });
+    }
+
 
 
 }
