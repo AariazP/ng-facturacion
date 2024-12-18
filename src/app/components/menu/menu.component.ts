@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/app/env/env';
 
 @Component({
   selector: 'app-menu',
@@ -10,6 +11,7 @@ export class MenuComponent {
 
   public estadoMenu: boolean = false;
   private router: Router = inject(Router);
+  protected nombreNegocio: string = environment.nombreNegocio;
 
   /**
    * Metodo que se encarga de colapsar el menu

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ImprimirFacturaDTO } from "src/app/dto/factura/ImprimirFacturaDTO";
 import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
+import { environment } from "src/app/env/env";
 
 @Injectable({
     providedIn: 'root'
@@ -91,7 +92,14 @@ export class FacturaService {
             .replace('{{total}}', formatoDinero(data.total))
             .replace('{{cambio}}', formatoDinero(data.cambio))
             .replace('{{cufe}}', data.cufe)
-            .replace('{{productos}}', productosHTML);
+            .replace('{{productos}}', productosHTML)
+            .replace('{{nombreNegocio}}', environment.nombreNegocio)
+            .replace('{{direccionNegocio}}', environment.direccionNegocio)
+            .replace('{{gerenteNegocio}}', environment.gerenteNegocio)
+            .replace('{{fechaExpedicion}}', environment.fechaExpedicion)
+            .replace('{{telefonos}}', environment.telefonos)
+            .replace('{{resolucionDIAN}}', environment.resolucionDian)
+        
     }
 
     /**

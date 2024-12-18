@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CardComponent } from 'src/app/components/card/card.component'; 
+import { environment } from 'src/app/env/env';
 
 @Component({
   selector: 'app-principal',
@@ -58,4 +59,6 @@ export class PrincipalComponent {
       link: '/app/facturacion'
     }
   ];
+
+  public nombreNegocio: string = environment.nombreNegocio;
 }

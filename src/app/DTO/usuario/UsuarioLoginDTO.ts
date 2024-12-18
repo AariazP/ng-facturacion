@@ -3,9 +3,10 @@ export class UsuarioLoginDTO {
     contrasena!: string;
 
 
-    crearUsuarioLogin(usuario: string, contrasena: string): UsuarioLoginDTO {
-        this.usuario = usuario;
-        this.contrasena = contrasena;
-        return this;
+    static crearUsuarioLogin(usuario: string, contrasena: string): UsuarioLoginDTO {
+        let usuarioLogin = new UsuarioLoginDTO();
+        usuarioLogin.usuario = usuario;
+        usuarioLogin.contrasena = contrasena;
+        return usuarioLogin;
     }
 }
