@@ -6,6 +6,7 @@ import { ProductoDTO } from 'src/app/dto/producto/ProductoDTO';
 import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-venta',
@@ -31,6 +32,7 @@ export class VentaComponent implements DoCheck {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
+  private menuComponent: MenuComponent = inject(MenuComponent);
 
   constructor() {
     this.clientes = [];
@@ -349,4 +351,16 @@ export class VentaComponent implements DoCheck {
       formulario.get(campo)?.updateValueAndValidity();
     });
   } 
+
+  
+  /**
+   * Este método se encarga de cerrar el menu y asi
+   * evita que se genere un bug con la ventana emergente
+   */
+  cerrarMenu() {
+    if (!this.menuComponent.estadoMenu){
+      this.menuComponent.toggleCollapse();
+    }
+  }
+
 }

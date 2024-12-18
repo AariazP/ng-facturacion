@@ -24,8 +24,9 @@ export class ListaVentasComponent {
   private fb: FormBuilder = inject(FormBuilder);
   private facturaService: FacturaService = inject(FacturaService);
   private ventaService: VentaService = inject(VentaService);
+  private menuComponent: MenuComponent = inject(MenuComponent);
 
-  constructor(private menuComponent: MenuComponent) {
+  constructor() {
     this.ventas = [];
     this.ventasFiltradas = [];
     this.ventaSeleccionada = null;
@@ -87,14 +88,18 @@ export class ListaVentasComponent {
    * @param venta contiene los datos de la venta seleccionada
    */
   protected mostrarPrevisualizacion(venta: VentaDTO) {
-    this.triggerToggleCollapse();
+    this.cerrarMenu();
     this.ventaSeleccionada = venta;
     this.ventaService.obtenerVenta(venta.id).subscribe(data => {
       this.ventaRealizada = data;
     });
   }
 
-  triggerToggleCollapse() {
+  /**
+   * Este método se encarga de cerrar el menu y asi
+   * evita que se genere un bug con la ventana emergente
+   */
+  cerrarMenu() {
     if (!this.menuComponent.estadoMenu){
       this.menuComponent.toggleCollapse();
     }
