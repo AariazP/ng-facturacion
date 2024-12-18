@@ -10,7 +10,6 @@ import { FullVentaDTO } from '../../dto/venta/FullVentaDTO';
   providedIn: 'root'
 })
 export class HttpVentaService {
-  
 
   private URL_API: string = environment.ApiUrl;
   private http: HttpClient = inject(HttpClient);
@@ -33,6 +32,10 @@ export class HttpVentaService {
 
   public obtenerDetalleVenta(id: number): Observable<FullVentaDTO> {
     return this.http.get<FullVentaDTO>(`${this.URL_API}/venta/${id}`);
+  }
+
+  public cancelarVenta(idVenta: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.URL_API}/venta/cancelar/${idVenta}`);
   }
 
 }

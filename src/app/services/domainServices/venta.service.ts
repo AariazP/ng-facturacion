@@ -14,9 +14,10 @@ import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
   providedIn: 'root'
 })
 export class VentaService {
+  
  
 
-  private httpFacturaService: HttpVentaService = inject(HttpVentaService);
+  private httpVentaService: HttpVentaService = inject(HttpVentaService);
   private alert: AlertService = inject(AlertService);
   private clientService: ClienteService = inject(ClienteService);
   private dinero:number;
@@ -82,7 +83,7 @@ export class VentaService {
    * @param dinero dinero ingresado por el usuario
    */
   private guardarVenta(venta: CrearVentaDTO, total: number) {
-    this.httpFacturaService.guardarFactura(venta).subscribe({
+    this.httpVentaService.guardarFactura(venta).subscribe({
       next: () => {
         this.mostrarCambio(total);
         this.alert.simpleSuccessAlert('Factura guardada correctamente');
@@ -157,14 +158,14 @@ export class VentaService {
    * @returns un observable de tipo DetalleVentaDTO
    */
   public obtenerVentas(): Observable<VentaDTO[]> {
-    return this.httpFacturaService.obtenerVentas();
+    return this.httpVentaService.obtenerVentas();
   }
   /**
    * Este metodo se encarga de obtener el siguiente id de venta
    * @returns un observable de tipo number
    */
   public generarIdVenta(): Observable<number> {
-    return this.httpFacturaService.generaIdVenta();
+    return this.httpVentaService.generaIdVenta();
   }
   /**
    * Este metodo se encarga de obtener una venta de la base de datos
@@ -172,7 +173,30 @@ export class VentaService {
    * @param id 
    */
   public obtenerVenta(id: number): Observable<FullVentaDTO> {
-    return this.httpFacturaService.obtenerDetalleVenta(id);
+    return this.httpVentaService.obtenerDetalleVenta(id);
+  }
+
+  /**
+   * Este metodo se encarga de eliminar una venta de la base de datos
+   * En la base de datos se cambia el estado de la venta a cancelada
+   * @param idVenta 
+   * @returns 
+   */
+  public eliminarVenta(idVenta: number): Observable<boolean> {
+    return new Observable<boolean>((observer) => {
+      this.httpVentaService.cancelarVenta(idVenta).subscribe({
+        next: () => {
+          this.alert.simpleSuccessAlert('Venta eliminada correctamente');
+          observer.next(true); // Emitir un valor verdadero
+          observer.complete(); // Completar el observable
+        },
+        error: (error) => {
+          this.alert.simpleErrorAlert(error.error.mensaje);
+          observer.next(false); 
+          observer.complete();
+        }
+      });
+    });
   }
 
 }
