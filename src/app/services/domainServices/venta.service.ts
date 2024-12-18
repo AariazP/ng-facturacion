@@ -14,8 +14,6 @@ import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
   providedIn: 'root'
 })
 export class VentaService {
-  
- 
 
   private httpVentaService: HttpVentaService = inject(HttpVentaService);
   private alert: AlertService = inject(AlertService);
@@ -197,6 +195,10 @@ export class VentaService {
         }
       });
     });
+  }
+
+  preguntarEliminarVenta() {
+    return this.alert.confirmAlert('¿Está seguro que desea eliminar la venta?', 'Esta acción no se puede deshacer');
   }
 
 }

@@ -137,6 +137,14 @@ export class ListaVentasComponent {
    * @param idVenta es el id de la venta a eliminar
    */
   public eliminarVenta(idVenta: number) {
+    this.ventaService.preguntarEliminarVenta().then((result) => {
+      if (result) {
+        this.eliminarVentaSinConfirmar(idVenta);
+      }
+    });
+  }
+
+  private eliminarVentaSinConfirmar(idVenta: number) {
     this.ventaService.eliminarVenta(idVenta).subscribe(
       {next: () => {this.obtenerVentas();}}
     );
