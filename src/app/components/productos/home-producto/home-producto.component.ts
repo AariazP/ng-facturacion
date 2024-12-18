@@ -10,11 +10,11 @@ import { ProductoAlertService } from 'src/app/utils/product-alert/productoAlert.
 export class HomeProductoComponent {
 
 
-  productos: ProductoDTO[];
-  productosEditar: any;
-  filtroProductos: ProductoDTO[];
-  modoOculto: boolean = true;
-  totalProductos: number = 0;
+  private productos: ProductoDTO[];
+  protected productosEditar!: ProductoDTO;
+  protected filtroProductos: ProductoDTO[];
+  protected modoOculto: boolean = true;
+  protected totalProductos: number = 0;
 
   private productoService: ProductoService = inject(ProductoService);
   private productoAlert: ProductoAlertService = inject(ProductoAlertService);
@@ -60,22 +60,48 @@ export class HomeProductoComponent {
     }
   }
 
-  buscar(texto: Event) {
-    const input = texto.target as HTMLInputElement;
-    this.filtroProductos = this.productos.filter((producto: any) =>
-      producto.codigo.toString().toLowerCase().includes(input.value.toLowerCase()) ||
-      producto.nombre.toLowerCase().includes(input.value.toLowerCase())
+  /**
+   * Este método se encarga de buscar un producto por su código o nombre
+   * @param texto 
+   */
+  buscar(evento: Event): void {
+    const input = (evento.target as HTMLInputElement).value.toLowerCase();
+  
+    this.filtroProductos = this.productos.filter((producto: ProductoDTO) =>
+      this.coincideConBusqueda(producto, input)
     );
+  
     this.updateProductoCount();
-
   }
-
-  toggleModoEdicion(persona: any) {
-    this.productosEditar = persona;
+  /**
+   * Este método se encarga de verificar si un producto coincide con la búsqueda
+   * @param producto  producto a verificar
+   * @param texto  texto de búsqueda
+   * @returns  un booleano que indica si el producto coincide con la búsqueda
+   */
+  private coincideConBusqueda(producto: ProductoDTO, texto: string): boolean {
+    const { codigo, nombre } = producto;
+    return (
+      codigo.toString().toLowerCase().includes(texto) ||
+      nombre.toLowerCase().includes(texto)
+    );
+  }
+  
+  /**
+   * Este método se encarga de cambiar el modo de edición de un producto
+   * y mostrar el formulario de edición a través de un modal
+   * @param producto es el producto a editar
+   */
+  protected toggleModoEdicion(producto: ProductoDTO) {
+    this.productosEditar = producto;
     this.editarModoOcuto()
   }
 
-  editarModoOcuto() {
+  /**
+   * Este método se encarga de cambiar el modo de edición de un producto
+   * @returns void
+   */
+  protected editarModoOcuto() {
     this.modoOculto = !this.modoOculto;
     this.obtenerProductos();
   }
