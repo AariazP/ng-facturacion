@@ -11,10 +11,6 @@ import { VentaService } from 'src/app/services/domainServices/venta.service';
   styleUrls: ['./lista-ventas.component.css']
 })
 export class ListaVentasComponent {
-eliminarVenta(_t41: VentaDTO) {
-throw new Error('Method not implemented.');
-}
-
 
   protected ventas: VentaDTO[];
   protected ventasFiltradas: VentaDTO[];
@@ -134,6 +130,24 @@ throw new Error('Method not implemented.');
    */
   protected reset() {
     this.obtenerVentas();
+  }
+
+  /**
+   * Este método se encarga de eliminar una venta de la base de datos
+   * @param idVenta es el id de la venta a eliminar
+   */
+  public eliminarVenta(idVenta: number) {
+    this.ventaService.preguntarEliminarVenta().then((result) => {
+      if (result) {
+        this.eliminarVentaSinConfirmar(idVenta);
+      }
+    });
+  }
+
+  private eliminarVentaSinConfirmar(idVenta: number) {
+    this.ventaService.eliminarVenta(idVenta).subscribe(
+      {next: () => {this.obtenerVentas();}}
+    );
   }
 
 }
