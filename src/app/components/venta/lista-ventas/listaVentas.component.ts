@@ -4,8 +4,8 @@ import { VentaDTO } from 'src/app/dto/venta/VentaDTO';
 import { FullVentaDTO } from 'src/app/dto/venta/FullVentaDTO';
 import { FacturaService } from 'src/app/services/domainServices/factura.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
+import { FacturaDTO } from 'src/app/dto/factura/FacturaDTO';
 import { CrearFacturaDTO } from 'src/app/dto/factura/CrearFacturaDTO';
-import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-lista-ventas',
