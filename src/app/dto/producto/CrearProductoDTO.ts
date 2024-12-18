@@ -8,11 +8,11 @@ export class CrearProductoDTO {
     impuesto!: string;
 
     static crearProductoDTO(codigo: string, nombre: string, 
-      precio: number, stock: number, impuesto: string, activo: boolean): CrearProductoDTO {
+      precio: string, stock: number, impuesto: string, activo: boolean): CrearProductoDTO {
       let producto = new CrearProductoDTO();
       producto.codigo = codigo;
       producto.nombre = nombre;
-      producto.precio = precio;
+      producto.precio = Number(precio.replace(",", ""));
       producto.cantidad = stock;
       producto.activo = activo;
       producto.impuesto = impuesto;

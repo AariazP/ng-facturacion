@@ -67,7 +67,8 @@ export class NuevoProductoComponent implements OnInit {
       Object.values(this.formulario.controls).forEach(control => { control.markAsTouched(); });
       return;
     }
-    const { codigo, nombre, precio, stock, impuesto, activo } = this.formulario.value;
+    const { codigo, nombre, precio, stock, activo } = this.formulario.value;
+    let impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
     let producto = CrearProductoDTO.crearProductoDTO(codigo, nombre, precio, stock, impuesto, activo);
     this.productoService.guardarProducto(producto);
     this.formulario.reset();

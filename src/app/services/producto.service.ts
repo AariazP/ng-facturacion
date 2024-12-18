@@ -97,7 +97,9 @@ export class ProductoService {
     public guardarProducto(producto: CrearProductoDTO): void {
         this.httpProductoService.enviarDatos(producto).subscribe({
             next: () => {this.alert.simpleSuccessAlert('Producto guardado correctamente');},
-            error: (error) => {this.alert.simpleErrorAlert(error.error.mensaje);}
+            error: (error) => {this.alert.simpleErrorAlert(error.error.mensaje);
+                console.log(error);
+            }
         });
     }
 
