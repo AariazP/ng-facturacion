@@ -10,5 +10,7 @@ export class FullVentaDTO {
     direccionCliente!:string;
     correoCliente!:string;
     usuario!:number;
+    dineroRecibido!:number;
+    cambio!:number;
     detalleVentaList!: FullDetalleDTO[];
 }

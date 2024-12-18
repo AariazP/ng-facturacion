@@ -20,6 +20,7 @@ export class ImprimirFacturaDTO{
     base!: number;
     cufe!: string;
     iva!: number;
+    dineroRecibido!: number;
 
     static crearFactura(venta: FullVentaDTO): ImprimirFacturaDTO {
         let factura = new ImprimirFacturaDTO();
@@ -29,9 +30,10 @@ export class ImprimirFacturaDTO{
         factura.cc = venta.cedulaCliente;
         factura.direccion = venta.direccionCliente;
         factura.correo = venta.correoCliente;
+        factura.dineroRecibido = venta.dineroRecibido;
+        factura.cambio = venta.cambio;
         ImprimirFacturaDTO.agregarProductos(venta, factura);
         factura.total = venta.total;
-        factura.cambio = 0;
         factura.base = venta.total - this.iva;
         factura.iva = venta.total * this.iva;
         factura.cufe = 'b015063ded3dd7d0aa9c5ea54bc088c800b6c25de46aaca068a2ce2930a27a166c435ae9c978b0f5c88bec073befece7'
