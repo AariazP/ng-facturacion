@@ -85,7 +85,6 @@ export class VentaService {
     this.httpFacturaService.guardarFactura(venta).subscribe({
       next: () => {
         this.mostrarCambio(total);
-        this.alert.simpleSuccessAlert('Factura guardada correctamente');
       },
 
       error: (error) => { this.alert.simpleErrorAlert(error.error.mensaje); }
@@ -98,9 +97,9 @@ export class VentaService {
    * @param total Total de la factura
    */
   private mostrarCambio(total: number) {
-    setTimeout(() => {
-      this.alert.simpleSuccessAlert('El cambio es: ' + (this.dinero-total));
-    }, 300);
+      this.alert.simpleSuccessAlert(
+        'El cambio es: $ ' + Math.floor(this.dinero - total).toLocaleString('es-ES').replace(/\./g, ',').replace(/,/g, '.')
+      );
   }
 
   /**

@@ -12,7 +12,7 @@ export const environment = {
   imageUrl: '../../assets/404-status-code.png',
 
   //Este es el nombre de la tienda
-  nombreNegocio: 'Remates 7a',
+  nombreNegocio: 'Remates la 7a',
   direccionNegocio: 'Quimbaya Quindío Cra. 7 N.14-11, NIT: 890.107.487-3',
   gerenteNegocio: 'Alcides Duque',
   fechaExpedicion: '2024/12/10',
