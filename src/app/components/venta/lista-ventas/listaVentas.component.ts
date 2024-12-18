@@ -4,6 +4,7 @@ import { VentaDTO } from 'src/app/dto/venta/VentaDTO';
 import { FullVentaDTO } from 'src/app/dto/venta/FullVentaDTO';
 import { FacturaService } from 'src/app/services/domainServices/factura.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-lista-ventas',
@@ -18,12 +19,11 @@ export class ListaVentasComponent {
   protected formVenta!: FormGroup;
   protected ventaSeleccionada: VentaDTO | null;
   protected ventaRealizada!: FullVentaDTO;
-
   private fb: FormBuilder = inject(FormBuilder);
   private facturaService: FacturaService = inject(FacturaService);
   private ventaService: VentaService = inject(VentaService);
 
-  constructor() {
+  constructor(private menuComponent: MenuComponent) {
     this.ventas = [];
     this.ventasFiltradas = [];
     this.ventaSeleccionada = null;
@@ -79,10 +79,18 @@ export class ListaVentasComponent {
    * @param venta contiene los datos de la venta seleccionada
    */
   protected mostrarPrevisualizacion(venta: VentaDTO) {
+    this.triggerToggleCollapse();
     this.ventaSeleccionada = venta;
     this.ventaService.obtenerVenta(venta.id).subscribe(data => {
       this.ventaRealizada = data;
     });
+  }
+
+  triggerToggleCollapse() {
+    if (!this.menuComponent.estadoMenu){
+      this.menuComponent.toggleCollapse();
+    }
+    console.log('el menu esta', this.menuComponent.estadoMenu);
   }
 
   /**
