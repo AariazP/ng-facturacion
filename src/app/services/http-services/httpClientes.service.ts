@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../env/env';
 import { CrearClienteDTO } from '../../dto/cliente/CrearClienteDTO';
 import { ClienteDTO } from '../../dto/cliente/ClienteDTO';
+import { Page } from 'src/app/dto/pageable/Page';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +14,8 @@ export class HttpClientesService {
   private URL_API: string = environment.ApiUrl;
   private http: HttpClient = inject(HttpClient);
 
-  public obtenerClientes(): Observable<ClienteDTO[]> {
-    return this.http.get<ClienteDTO[]>(`${this.URL_API}/clientes`);
+  public obtenerClientes(page:number): Observable<Page<ClienteDTO>> {
+    return this.http.get<Page<ClienteDTO>>(`${this.URL_API}/clientes?page=${page}`);
   }
 
   public crearCliente(cliente: CrearClienteDTO) {

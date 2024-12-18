@@ -25,8 +25,8 @@ export class ListaVentasComponent {
   private facturaService: FacturaService = inject(FacturaService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
-  protected paginaActual: number = 1;  
-  protected totalPaginas: number = 5;  
+  protected paginaActual: number = 0;
+  protected totalPaginas!: number;
 
   constructor() {
     this.ventas = [];
@@ -35,7 +35,7 @@ export class ListaVentasComponent {
   }
 
   ngOnInit() {
-    this.obtenerVentas();
+    this.obtenerVentas(0);
     this.buildForm();
   }
 
@@ -47,13 +47,14 @@ export class ListaVentasComponent {
       fecha: [this.getFechaActual()]
     });
   }
-  
+
   /**
    * Este método se encarga de obtener las ventas de la base de datos
    * a través del servicio de ventas
    */
-  private obtenerVentas() {
-    this.ventaService.obtenerVentas(0).subscribe(data => {
+  private obtenerVentas(page: number) {
+    this.ventaService.obtenerVentas(page).subscribe(data => {
+      this.totalPaginas = data.totalPages;
       this.ventas = data.content;
       this.ventasFiltradas = data.content;
     })
@@ -64,15 +65,15 @@ export class ListaVentasComponent {
    * en el servicio de factura
    * @param factura
    */
-  protected confirmarGenerarFactura(idVenta: number|undefined) {
+  protected confirmarGenerarFactura(idVenta: number | undefined) {
     if (this.ventaSeleccionada) {
       this.facturaService.imprimirFactura(this.ventaRealizada);
-      console.log("id venta: "+idVenta);
-      if(idVenta!=undefined && idVenta!=null){
+      console.log("id venta: " + idVenta);
+      if (idVenta != undefined && idVenta != null) {
         let factura = new CrearFacturaDTO(idVenta);
         this.facturaService.crearFactura(factura);
         console.log("Factura creada");
-      } 
+      }
     }
   }
 
@@ -102,7 +103,7 @@ export class ListaVentasComponent {
    * evita que se genere un bug con la ventana emergente
    */
   cerrarMenu() {
-    if (!this.menuComponent.estadoMenu){
+    if (!this.menuComponent.estadoMenu) {
       this.menuComponent.toggleCollapse();
     }
     console.log('el menu esta', this.menuComponent.estadoMenu);
@@ -116,17 +117,17 @@ export class ListaVentasComponent {
     const input = (evento.target as HTMLInputElement).value.toLowerCase();
 
     this.ventasFiltradas = this.ventas.filter((venta: VentaDTO) => {
-        const valoresBusqueda = [
-            venta.id.toString(),
-            venta.fecha.toString(),
-            venta.cliente.toString(),
-            venta.toString(),
-            venta.total.toString(),
-        ];
+      const valoresBusqueda = [
+        venta.id.toString(),
+        venta.fecha.toString(),
+        venta.cliente.toString(),
+        venta.toString(),
+        venta.total.toString(),
+      ];
 
-        return valoresBusqueda.some(valor => valor.toLowerCase().includes(input));
+      return valoresBusqueda.some(valor => valor.toLowerCase().includes(input));
     });
-}
+  }
 
   /**
    * Método para filtrar las ventas por fecha
@@ -152,7 +153,7 @@ export class ListaVentasComponent {
    * Método para obtener los datos de la base de datos
    */
   protected reset() {
-    this.obtenerVentas();
+    this.obtenerVentas(0);
   }
 
   /**
@@ -169,26 +170,25 @@ export class ListaVentasComponent {
 
   private eliminarVentaSinConfirmar(idVenta: number) {
     this.ventaService.eliminarVenta(idVenta).subscribe(
-      {next: () => {this.obtenerVentas();}}
+      { next: () => { this.obtenerVentas(0); } }
     );
   }
 
-paginaAnterior() {
-  if (this.paginaActual > 1) {
-    this.paginaActual--;
-    this.cargarVentas();
+  paginaAnterior() {
+    if (this.paginaActual > 0) {  
+      this.paginaActual--;
+      this.cargarVentas();
+    }
   }
-}
 
-paginaSiguiente() {
-  if (this.paginaActual < this.totalPaginas) {
-    this.paginaActual++;
-    this.cargarVentas();
+  paginaSiguiente() {
+    if (this.paginaActual < this.totalPaginas - 1) {  
+      this.paginaActual++;
+      this.cargarVentas();
+    }
   }
-}
 
-cargarVentas() {
-  // Lógica para cargar ventas según la página actual
-  console.log(`Cargando página ${this.paginaActual}`);
-}
+  cargarVentas() {
+    this.obtenerVentas(this.paginaActual);  
+  }
 }

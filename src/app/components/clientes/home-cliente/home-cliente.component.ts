@@ -19,6 +19,8 @@ export class HomeClienteComponent {
   protected totalClientes: number; 
   private alertClient: ClienteAlertService = inject(ClienteAlertService);
   private clienteService: ClienteService = inject(ClienteService);
+  protected paginaActual: number = 0;
+  protected totalPaginas!: number;
 
   constructor() {
     this.personaEditar = new ClienteDTO();
@@ -28,7 +30,7 @@ export class HomeClienteComponent {
   }
 
   ngOnInit() {
-   this.obtenerClientes();
+   this.obtenerClientes(this.paginaActual);
    this.updateClienteCount();
   }
   
@@ -44,10 +46,12 @@ export class HomeClienteComponent {
   /**
    * Obtiene los clientes del servicio y los asigna a la variable clientes
    */
-  private obtenerClientes(): void {
-    this.clienteService.obtenerClientes().subscribe((clientes) => {
-      this.clientes = clientes;
-      this.filtroClientes = clientes;
+  private obtenerClientes(page:number): void {
+    this.clienteService.obtenerClientes(page).then((page) => {
+      console.log(page);
+      this.clientes = page.content;
+      this.filtroClientes = page.content;
+      this.totalPaginas = page.totalPages;
       this.updateClienteCount();
     });
   }
@@ -62,7 +66,7 @@ export class HomeClienteComponent {
     if (result) {
       try {
         await this.clienteService.eliminarClienteId(id);
-        this.obtenerClientes(); 
+        this.obtenerClientes(this.paginaActual); 
       } catch (error) {}
     }
   }
@@ -112,8 +116,24 @@ export class HomeClienteComponent {
    */
   protected editarModoOcuto(){
     this.modoOculto = !this.modoOculto;
-    this.obtenerClientes();
+    this.obtenerClientes(this.paginaActual);
   }
 
+  paginaAnterior() {
+    if (this.paginaActual > 0) {  
+      this.paginaActual--;
+      this.cargarVentas();
+    }
+  }
 
+  paginaSiguiente() {
+    if (this.paginaActual < this.totalPaginas - 1) {  
+      this.paginaActual++;
+      this.cargarVentas();
+    }
+  }
+
+  cargarVentas() {
+    this.obtenerClientes(this.paginaActual);  
+  }
 }

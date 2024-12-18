@@ -4,6 +4,7 @@ import { catchError, Observable, of } from "rxjs";
 import { AlertService } from "src/app/utils/alert.service";
 import { CrearClienteDTO } from "src/app/dto/cliente/CrearClienteDTO";
 import { ClienteDTO } from "src/app/dto/cliente/ClienteDTO";
+import { Page } from "src/app/dto/pageable/Page";
 
 @Injectable({
     providedIn: 'root'
@@ -45,12 +46,16 @@ export class ClienteService {
     }); 
   }
 
-  obtenerClientes() : Observable<ClienteDTO[]> {
-    return this.clienteService.obtenerClientes().pipe(
-      catchError(() => {
-        return of([]); 
-      })
-    );
+  obtenerClientes(page:number) : Promise<Page<ClienteDTO>> {
+    return new Promise((resolve, reject) => {
+      this.clienteService.obtenerClientes(page).subscribe({
+        next: (page) => resolve(page),
+        error: (error) => {
+          this.alertService.simpleErrorAlert(error.error.mensaje);
+          reject(error);
+        }
+      });
+    });
   }
 
   async eliminarClienteId(id: number): Promise<void> {

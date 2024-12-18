@@ -118,16 +118,17 @@
   <div class="d-flex justify-content-center align-items-center mt-3">
     <button class="btn btn-primary rounded-circle mx-2" 
             (click)="paginaAnterior()" 
-            [disabled]="paginaActual === 1">
+            [disabled]="paginaActual === 0">
       &lt;
     </button>
     <span class="fw-bold mx-2">
-      {{ paginaActual }} / {{ totalPaginas }}
+      {{ paginaActual + 1 }} / {{ totalPaginas + 1 }}
     </span>
     <button class="btn btn-primary rounded-circle mx-2" 
             (click)="paginaSiguiente()" 
-            [disabled]="paginaActual === totalPaginas">
+            [disabled]="paginaActual === totalPaginas - 1">
       &gt;
     </button>
   </div>
+  
 </div>
