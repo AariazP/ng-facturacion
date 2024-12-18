@@ -9,6 +9,7 @@ import { ProductoDTO } from "src/app/dto/producto/ProductoDTO";
 import { DetalleVentaDTO } from "src/app/dto/detalleVenta/DetalleVentaDTO";
 import { VentaDTO } from "src/app/dto/venta/VentaDTO";
 import { FullVentaDTO } from "src/app/dto/venta/FullVentaDTO";
+import { Page } from "src/app/dto/pageable/Page";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,6 @@ export class VentaService {
       venta.dineroRecibido = total;
       venta.cambio = this.dinero - total;
       this.guardarVenta(venta, total);
-      return resolve(true);
     })});
   }
 
@@ -155,8 +155,8 @@ export class VentaService {
    * Este metodo se encarga de obtener las ventas de la base de datos
    * @returns un observable de tipo DetalleVentaDTO
    */
-  public obtenerVentas(): Observable<VentaDTO[]> {
-    return this.httpVentaService.obtenerVentas();
+  public obtenerVentas(page:number): Observable<Page<VentaDTO>> {
+    return this.httpVentaService.obtenerVentas(page);
   }
   /**
    * Este metodo se encarga de obtener el siguiente id de venta

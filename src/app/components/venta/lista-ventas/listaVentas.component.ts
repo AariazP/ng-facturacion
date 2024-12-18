@@ -25,6 +25,8 @@ export class ListaVentasComponent {
   private facturaService: FacturaService = inject(FacturaService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
+  protected paginaActual: number = 1;  
+  protected totalPaginas: number = 5;  
 
   constructor() {
     this.ventas = [];
@@ -51,9 +53,9 @@ export class ListaVentasComponent {
    * a través del servicio de ventas
    */
   private obtenerVentas() {
-    this.ventaService.obtenerVentas().subscribe(data => {
-      this.ventas = data;
-      this.ventasFiltradas = data;
+    this.ventaService.obtenerVentas(0).subscribe(data => {
+      this.ventas = data.content;
+      this.ventasFiltradas = data.content;
     })
   }
 
@@ -171,4 +173,22 @@ export class ListaVentasComponent {
     );
   }
 
+paginaAnterior() {
+  if (this.paginaActual > 1) {
+    this.paginaActual--;
+    this.cargarVentas();
+  }
+}
+
+paginaSiguiente() {
+  if (this.paginaActual < this.totalPaginas) {
+    this.paginaActual++;
+    this.cargarVentas();
+  }
+}
+
+cargarVentas() {
+  // Lógica para cargar ventas según la página actual
+  console.log(`Cargando página ${this.paginaActual}`);
+}
 }

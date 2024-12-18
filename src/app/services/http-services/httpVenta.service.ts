@@ -5,6 +5,7 @@ import { CrearVentaDTO } from '../../dto/venta/CrearVentaDTO';
 import { Observable } from 'rxjs';
 import { VentaDTO } from '../../dto/venta/VentaDTO';
 import { FullVentaDTO } from '../../dto/venta/FullVentaDTO';
+import { Page } from 'src/app/dto/pageable/Page';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class HttpVentaService {
   private URL_API: string = environment.ApiUrl;
   private http: HttpClient = inject(HttpClient);
   
-  public obtenerVentas(): Observable<VentaDTO[]> {
-    return this.http.get<VentaDTO[]>(`${this.URL_API}/venta/obtener-ventas-completadas`); 
+  public obtenerVentas(page: number): Observable<Page<VentaDTO>> {
+    return this.http.get<Page<VentaDTO>>(`${this.URL_API}/venta/obtener-ventas-completadas?page=${page}`); 
   }
   
   public generaIdVenta(): Observable<number>{
