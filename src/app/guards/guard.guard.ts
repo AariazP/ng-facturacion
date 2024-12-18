@@ -1,5 +1,5 @@
 import { CanActivate, Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpLoginService } from '../http-services/httpLogin.service'; 
 
 @Injectable({
@@ -7,7 +7,7 @@ import { HttpLoginService } from '../http-services/httpLogin.service';
 })
 export class AuthGuard implements CanActivate {
   
-  constructor(private httploginService: HttpLoginService, private router: Router) {}
+  private router: Router = inject(Router);
 
   canActivate(): boolean {
     const token = localStorage.getItem('id');
