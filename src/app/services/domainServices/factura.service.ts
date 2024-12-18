@@ -131,7 +131,8 @@ export class FacturaService {
      */
     public crearFactura(factura: CrearFacturaDTO):void {
         this.httpFacturaService.crearFactura(factura).subscribe({
-            next: () => {
+            next: (next) => {
+                console.log(next);
                 console.log('Factura creada correctamente');
             },
             error: (error) => {
