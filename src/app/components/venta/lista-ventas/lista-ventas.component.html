@@ -54,11 +54,15 @@
                 <td class="text-left">{{ venta.fecha | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td class="text-left">$ {{ venta.total  | number:'1.0-0' }}</td>
                 <td class="eliminar">
-                  <button type="button" class="btn btn-primary" (click)="mostrarPrevisualizacion(venta)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
-                    Previsualizar Factura
-                  </button>
-                </td>
-              </tr>
+                  <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary ms-2" (click)="mostrarPrevisualizacion(venta)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
+                      Previsualizar Factura
+                    </button>
+                    <button type="button" class="btn btn-danger ms-2" (click)="eliminarVenta(venta)">
+                      ❌ Eliminar Venta
+                    </button>
+                  </div>
+                </td>                              
             </tbody>
           </table>
         </div>

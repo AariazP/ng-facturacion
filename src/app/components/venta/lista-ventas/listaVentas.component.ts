@@ -11,6 +11,9 @@ import { VentaService } from 'src/app/services/domainServices/venta.service';
   styleUrls: ['./lista-ventas.component.css']
 })
 export class ListaVentasComponent {
+eliminarVenta(_t41: VentaDTO) {
+throw new Error('Method not implemented.');
+}
 
 
   protected ventas: VentaDTO[];
