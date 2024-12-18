@@ -80,8 +80,16 @@
           </span>
         </div>
 
-        <div class="col-lg text-right">
-          <button type="submit" class="btn btn-primary" id="verde">Vender</button>
+        <div class="col-lg-2">
+          <div class="col-lg text-right">
+            <button type="button" (click)="cerrarMenu()" class="btn-primary BotonGeneral" id="gris"  data-bs-toggle="modal" data-bs-target="#agregarUsuarioModal"> Agregar Cliente</button>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="col-lg text-right">
+            <button type="submit" class="btn-primary BotonGeneral" id="verde">Vender</button>
+          </div>
         </div>
       </div>
 
@@ -161,7 +169,7 @@
 
           <div class="col-lg-3">
             <div>
-              <button id="azul" (click)="agregarProducto()">Agregar producto</button>
+              <button class="btn-primary BotonGeneral" id="azul" (click)="agregarProducto()">Agregar producto</button>
             </div>
           </div>
         </div>
@@ -189,7 +197,7 @@
                     <td>$ {{ producto.precio | number:'1.0-0' }}</td>
                     <td>{{ producto.cantidad }}</td>
                     <td id="eliminar" class="eliminar">
-                      <button (click)="eliminarPorId(producto)">❌</button>
+                      <button class="btn-primary BotonGeneral" (click)="eliminarPorId(producto)">❌</button>
                     </td>
                   </tr>
                   }
@@ -221,6 +229,22 @@
         <span class="cerrar" (click)="cambiarModoOculto()">❌</span>
         <app-nuevo></app-nuevo>
       </div>
-
     </div>
+
+
+
+    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel" aria-hidden="true"  #modal (shown.bs.modal)="cerrarMenu()">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="agregarUsuarioModalLabel">Agregar Cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body StyleModal">
+            <app-nuevo></app-nuevo>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>

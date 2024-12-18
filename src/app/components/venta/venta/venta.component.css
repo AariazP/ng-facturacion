@@ -42,7 +42,7 @@ input.disabled-input {
   cursor: not-allowed;
 }
 
-button {
+.BotonGeneral{
   border-radius: 10px;
   width: 100%;
   height: 35px;
@@ -58,11 +58,14 @@ button {
   justify-content: center;
   align-items: center;
   transition: background-color 0.3s, transform 0.2s;
-
 }
 
 button#verde{
   background-color: #28a745;
+}
+
+button#gris{
+  background-color: #979797;
 }
 
 button#azul{
@@ -74,6 +77,11 @@ button#azul:hover {
   transform: scale(1.05); 
 }
 
+button#gris:hover {
+  background-color: #575757;
+  transform: scale(1.05); 
+}
+
 button#verde:hover {
   background-color: #17d641;
   transform: scale(1.05); 
@@ -82,6 +90,11 @@ button#verde:hover {
 button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+
+/* Estilo del modal */
+.StyleModal{
+  margin-bottom: 10%;
 }
 
 /* Estilo de la tabla */
