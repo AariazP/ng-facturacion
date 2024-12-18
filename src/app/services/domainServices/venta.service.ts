@@ -97,9 +97,9 @@ export class VentaService {
    * @param total Total de la factura
    */
   private mostrarCambio(total: number) {
-      this.alert.simpleSuccessAlert(
-        'El cambio es: $ ' + Math.floor(this.dinero - total).toLocaleString('es-ES').replace(/\./g, ',').replace(/,/g, '.')
-      );
+    this.alert.simpleSuccessAlert(
+      'El cambio es: $ ' + Math.floor(this.dinero - total).toLocaleString('en-US')
+    );    
   }
 
   /**
