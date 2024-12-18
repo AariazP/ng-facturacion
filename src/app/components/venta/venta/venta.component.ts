@@ -121,6 +121,7 @@ export class VentaComponent implements DoCheck {
    */
   private procesarVenta(venta: CrearVentaDTO): void {
     this.calcularValores();
+<<<<<<< HEAD
     this.ventaService.crearVenta(venta, this.total).pipe(
       finalize(() => {
         this.finalizarVenta();
@@ -133,6 +134,10 @@ export class VentaComponent implements DoCheck {
         console.error('Error en la venta', error);
       }
     );
+=======
+    this.ventaService.crearVenta(venta, this.total).then(() => {
+    this.finalizarVenta()});
+>>>>>>> 49ad657dd54548b1d82317a609f4d357a021ca7d
   }
   
   /**
