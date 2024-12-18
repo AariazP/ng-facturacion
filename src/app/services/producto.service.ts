@@ -4,12 +4,13 @@ import { Observable } from "rxjs";
 import { ProductoDTO } from "../dto/producto/ProductoDTO";
 import { AlertService } from "../utils/alert.service";
 import { ActualizarProductoDTO } from "../dto/producto/ActualizarProductoDTO";
+import { CrearProductoDTO } from "../dto/producto/CrearProductoDTO";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductoService {
-
+    
     private httpProductoService: HttpProductoService = inject(HttpProductoService);
     private alert: AlertService = inject(AlertService);
 
@@ -62,16 +63,16 @@ export class ProductoService {
     public eliminarProductoCodigo(codigo: string): Promise<void> {
         return new Promise((resolve, reject) => {
             this.httpProductoService.eliminarPorCodigo(codigo).subscribe({
-              next: () => {
-                this.alert.simpleSuccessAlert("Cliente eliminado correctamente");
-                resolve();
-              },
-              error: (error) => {
-                this.alert.simpleErrorAlert(error.error.mensaje);
-                reject(error);
-              },
+                next: () => {
+                    this.alert.simpleSuccessAlert("Cliente eliminado correctamente");
+                    resolve();
+                },
+                error: (error) => {
+                    this.alert.simpleErrorAlert(error.error.mensaje);
+                    reject(error);
+                },
             });
-          });
+        });
     }
 
     /**
@@ -87,5 +88,42 @@ export class ProductoService {
                 this.alert.simpleErrorAlert(error.error.mensaje);
             }
         });
+    }
+
+    /**
+     * Este método se encarga de guardar un producto en la base de datos
+     * @param producto es el producto a guardar
+     */
+    public guardarProducto(producto: CrearProductoDTO): void {
+        this.httpProductoService.enviarDatos(producto).subscribe({
+            next: () => {this.alert.simpleSuccessAlert('Producto guardado correctamente');},
+            error: (error) => {this.alert.simpleErrorAlert(error.error.mensaje);}
+        });
+    }
+
+    /**
+     * Este método obtiene los tipos de impuesto de la base de datos
+     * @returns 
+     */
+    public getTipoImpuesto(): Observable<string[]> {
+        return this.httpProductoService.getTipoImpuesto();
+    }
+    
+    /**
+     * Este método se encarga de verificar si un producto existe
+     * y si fue eliminado anteriormente
+     * @param codigo 
+     * @returns 
+     */
+    public fueEliminado(codigo: string): Observable<boolean> {
+        return this.httpProductoService.fueEliminado(codigo);
+    }
+
+    /**
+     * Este método se encarga de recuperar un producto eliminado
+     * @param codigo 
+     */
+    public recuperarProducto(codigo: string): Observable<boolean> {
+        return this.httpProductoService.recuperarProducto(codigo);
     }
 }

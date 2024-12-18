@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { CrearProductoDTO } from '../../../dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import Swal from 'sweetalert2';
+import { ProductoService } from 'src/app/services/producto.service';
+import { ProductoAlertService } from 'src/app/utils/product-alert/productoAlert.service';
+import { from, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-nuevo-producto',
@@ -12,15 +15,38 @@ import Swal from 'sweetalert2';
 })
 export class NuevoProductoComponent implements OnInit {
 
-  formulario: FormGroup;
+  protected formulario!: FormGroup;
   existe: boolean = false;
-  tipoImpuesto!: string[];
-  valorNumerico: number = 0; 
-  valorFormateado: string = '';
+  protected tipoImpuesto!: string[];
+  protected valorNumerico: number = 0;
+  protected valorFormateado: string = '';
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private httpProductoService: HttpProductoService = inject(HttpProductoService);
+  private alert: AlertService = inject(AlertService);
+  private productoService: ProductoService = inject(ProductoService);
+  private productoAlertService: ProductoAlertService = inject(ProductoAlertService);
 
-  constructor(private formBuilder: FormBuilder, private httpProductoService: HttpProductoService, 
-    private alert: AlertService
-  ) {
+
+  ngOnInit(): void {
+    this.buildForm();
+    this.obtenerImpuesto();
+  }
+
+  /**
+   * Obtiene los tipos de impuesto de la base de datos
+   * @returns void
+   */
+  private obtenerImpuesto(): void {
+    this.productoService.getTipoImpuesto().subscribe({
+      next: (data) => { this.tipoImpuesto = data; }
+    });
+  }
+
+
+  /**
+   * Construye el formulario de productos
+   */
+  private buildForm(): void {
     this.formulario = this.formBuilder.group({
       codigo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
       nombre: ['', [Validators.required]],
@@ -30,102 +56,136 @@ export class NuevoProductoComponent implements OnInit {
       activo: [1],
     });
   }
-  ngOnInit(): void {
-    this.httpProductoService.getTipoImpuesto().subscribe(
-      data => {
-        this.tipoImpuesto = data;
-      }, 
-      error => {
-        console.error(error);
-      });
-  }
 
-  onSubmit() {
+  /**
+   * Este método se encarga de guardar un producto en la base de datos
+   * @returns void
+   */
+  onSubmit(): void {
 
     if (!this.formulario.valid) {
-      Object.values(this.formulario.controls).forEach(control => {
-        control.markAsTouched();
-      });
+      Object.values(this.formulario.controls).forEach(control => { control.markAsTouched(); });
       return;
     }
-    
-    let producto = new CrearProductoDTO();
-    producto.codigo = this.formulario.get('codigo')!.value;
-    producto.nombre = this.formulario.get('nombre')!.value;
-    producto.precio = this.formulario.get('precio')!.value.replace(/,/g, '');
-    producto.cantidad = this.formulario.get('stock')!.value;
-    producto.activo = this.formulario.get('activo')!.value;
-    producto.impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
-
-    this.httpProductoService.enviarDatos(producto).subscribe(
-      response => {
-        this.alert.simpleSuccessAlert('Producto guardado correctamente');
-        this.formulario.reset();
-      }, error => {
-        this.alert.simpleErrorAlert(error.error.mensaje);
-      });
+    const { codigo, nombre, precio, stock, impuesto, activo } = this.formulario.value;
+    let producto = CrearProductoDTO.crearProductoDTO(codigo, nombre, precio, stock, impuesto, activo);
+    this.productoService.guardarProducto(producto);
+    this.formulario.reset();
   }
 
-  formatearValor(event: Event): void {
+  /**
+   * Método que se encarga de formatear el valor de un input
+   * @param event Evento que se dispara al escribir en un input
+   */
+  protected formatearValor(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const valorSinFormato = input.value.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
-    const valorNumerico = parseInt(valorSinFormato, 10);
+    // Obtener y formatear el valor
+    const valorNumerico = this.obtenerValorNumerico(input.value);
+    // Actualizar el valor formateado
+    input.value = this.actualizarValorFormateado(valorNumerico);
+  }
 
-    if (!isNaN(valorNumerico)) {
-      this.valorFormateado = valorNumerico.toLocaleString('en-US'); // Formato con comas
-      input.value = this.valorFormateado;
-    } else {
-      this.valorFormateado = '';
+  /**
+   * Este método se encarga de obtener el valor numérico de un string
+   * @param valor Valor a convertir
+   * @returns Valor numérico o null si no se puede convertir
+   */
+  private obtenerValorNumerico(valor: string): number | null {
+    const valorSinFormato = valor.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
+    const valorNumerico = parseInt(valorSinFormato, 10);
+    return isNaN(valorNumerico) ? null : valorNumerico;
+  }
+
+  /**
+   * Este método se encarga de actualizar el valor formateado de un input
+   * @param valor Valor numérico a formatear
+   * @returns Valor formateado
+   */
+  private actualizarValorFormateado(valor: number | null): string {
+    if (valor !== null) {
+      this.valorFormateado = valor.toLocaleString('en-US'); // Formato con comas
+      return this.valorFormateado;
+    }
+    this.valorFormateado = '';
+    return '';
+  }
+
+  /**
+   * Este método se encarga de validar si un código del producto existe
+   * @param event Evento que se dispara al escribir en un input
+   */
+  public validarCodigo(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.existe = false;
+
+    const delay = 300;
+    setTimeout(() => {
+      this.verificarCodigo(input.value);
+    }, delay);
+  }
+
+  /**
+   * Este método se encarga de verificar si un código de producto existe
+   * en la base de datos pero fue eliminado anteriormente
+   * @param codigo 
+   */
+  private verificarCodigo(codigo: string): void {
+    this.httpProductoService.verificarExistencia(codigo).subscribe(data => {
+      if (data) {
+        this.manejarCodigoExistente(codigo);
+      } else {
+        this.establecerErrorFormulario(false);
+      }
+    });
+  }
+
+  /**
+   * Este método se encarga de manejar un código existente
+   * la idea es mostrar un mensaje de confirmación para recuperar el producto
+   * si el producto fue eliminado anteriormente
+   * @param codigo 
+   */
+  private async manejarCodigoExistente(codigo: string): Promise<void> {
+    this.productoService.fueEliminado(codigo)
+      .pipe(switchMap(response => {
+        if (response) {
+          return from(this.productoAlertService.mostrarConfirmacionRecuperacion(codigo));
+        }
+        return of(false);
+      }))
+      .subscribe(resp => {
+        if (resp) this.recuperarProducto(codigo);
+      });
+
+    this.existe = true;
+    this.establecerErrorFormulario(true);
+  }
+
+  /**
+   * Este método se encarga de recuperar un producto eliminado
+   * @param codigo 
+   */
+  private recuperarProducto(codigo: string): void {
+    this.productoService.recuperarProducto(codigo).subscribe(() => {
+      this.alert.simpleSuccessAlert('Producto recuperado correctamente');
+    });
+  }
+
+  /**
+   * Este método se encarga de establecer un error en el formulario
+   * cuando un código de producto existe
+   * @param existe 
+   */
+  private establecerErrorFormulario(existe: boolean): void {
+    const control = this.formulario.get('codigo');
+    if (control) {
+      if (existe) {
+        control.setErrors({ 'codigoExistente': true });
+      } else {
+        control.setErrors(null);
+      }
     }
   }
 
-  validarCodigo(event: any) {
-    const input = event.target as HTMLInputElement;
-    this.existe = false;
-  
-    const delay = 300;
-  
-    setTimeout(() => {
-      this.httpProductoService.verificarExistencia(input.value).subscribe(data => {
-        if (data) {
-
-          this.httpProductoService.fueEliminado(input.value).subscribe(
-            response => {
-              if (response) {
-                Swal.fire({
-                  title: "Este producto fue eliminado antes",
-                  text: "¿Te gustaría recuperarlo?",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Sí, recuperar", 
-                  cancelButtonText: "No, cancelar"
-                }).then((result) => {
-                  if (result.isConfirmed) {
-  
-                    this.httpProductoService.recuperarProducto(input.value).subscribe(response => {
-                      Swal.fire({
-                        title: "Recuperado!",
-                        text: "El producto ha sido recuperado.",
-                        icon: "success"
-                      });
-                    });
-                  }
-                });
-              }
-            });
-
-
-
-          this.existe = true;
-          this.formulario.get('codigo')!.setErrors({ 'codigoExistente': true });
-        } else {
-          //this.formulario.get('codigo')!.setErrors(null);
-          this.existe = false;
-        }
-      });
-    }, delay);
-  }
 
 }

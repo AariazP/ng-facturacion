@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../env/env';
 import { ResponseData } from '../interface/interfaces';
 import { ProductoDTO } from '../dto/producto/ProductoDTO';
+import { ActualizarProductoDTO } from '../dto/producto/ActualizarProductoDTO';
+import { CrearProductoDTO } from '../dto/producto/CrearProductoDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,49 +13,45 @@ export class HttpProductoService {
   
   
   private URL_API: string = environment.ApiUrl;
+  private http: HttpClient = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
-
-  getProductos(): Observable<ProductoDTO[]> {
+  public getProductos(): Observable<ProductoDTO[]> {
     return this.http.get<ProductoDTO[]>(`${this.URL_API}/productos`);
   }
 
-  getTipoImpuesto(): Observable<string[]>  {
+  public getTipoImpuesto(): Observable<string[]>  {
     return this.http.get<string[]>(`${this.URL_API}/productos/tipos-impuestos`);
   }
 
-  enviarDatos(datos: any) {
-    return this.http.post(`${this.URL_API}/productos/guardar`, datos);
+  public enviarDatos(producto: CrearProductoDTO) {
+    return this.http.post(`${this.URL_API}/productos/guardar`, producto);
   }
 
-  eliminarPorCodigo(codigo: string) {
+  public eliminarPorCodigo(codigo: string) {
     const url = `${this.URL_API}/productos/eliminar/${codigo}`;
     return this.http.delete(url);
   }
 
-  actualizar(datos: any) {
-    return this.http.put(`${this.URL_API}/productos/actualizar`, datos);
+  public actualizar(producto: ActualizarProductoDTO) {
+    return this.http.put(`${this.URL_API}/productos/actualizar`, producto);
   }
 
-  verificarExistencia(cod: string) {
-    return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-cod-producto/${cod}`);
-  }
-  disminuirStock(detalles: any) {
-    return this.http.post(`${this.URL_API}/productos/disminuir-stock`, detalles);
+  public verificarExistencia(codigo: string) {
+    return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-cod-producto/${codigo}`);
   }
 
-  verificarCantidad(cantidad: number, codigo: string) {
+  public verificarCantidad(cantidad: number, codigo: string) {
     return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-cantidad/${cantidad}/${codigo}`);
   }
 
-  verificarActivo(codigo: any) {
+  public verificarActivo(codigo: string) {
     return this.http.get<ResponseData>(`${this.URL_API}/productos/verificar-activo/${codigo}`); 
   }
 
-  fueEliminado(value: string) {
-    return this.http.get<any>(`${this.URL_API}/productos/fue-eliminado/${value}`);
+  public fueEliminado(value: string) {
+    return this.http.get<boolean>(`${this.URL_API}/productos/fue-eliminado/${value}`);
   }
-  recuperarProducto(input: string) {
-    return this.http.get<any>(`${this.URL_API}/productos/recuperar-producto/${input}`);
+  public recuperarProducto(input: string): Observable<any> {
+    return this.http.get<boolean>(`${this.URL_API}/productos/recuperar-producto/${input}`);
   }
 }
