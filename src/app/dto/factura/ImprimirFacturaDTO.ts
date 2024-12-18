@@ -34,7 +34,7 @@ export class ImprimirFacturaDTO{
         factura.cambio = venta.cambio;
         ImprimirFacturaDTO.agregarProductos(venta, factura);
         factura.total = venta.total;
-        factura.base = venta.total - this.iva;
+        factura.base = venta.total - venta.total*this.iva;
         factura.iva = venta.total * this.iva;
         factura.cufe = 'b015063ded3dd7d0aa9c5ea54bc088c800b6c25de46aaca068a2ce2930a27a166c435ae9c978b0f5c88bec073befece7'
         return factura;

@@ -36,7 +36,7 @@ export class VentaService {
     this.alert.simpleInputAlert().then((result) => {
       if (!this.validarDinero(result, total, this.dinero)) return subject.next(false);
       if (!this.verificarExistenciaCliente(venta.cliente)) return subject.next(false);
-      venta.dineroRecibido = this.dinero;
+      venta.dineroRecibido = result;
       venta.cambio = this.dinero - total;
       this.guardarVenta(venta, total);
     });

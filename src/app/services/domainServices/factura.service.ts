@@ -93,7 +93,7 @@ export class FacturaService {
             .replace('{{direccion}}', data.direccion)
             .replace('{{base}}', formatoDinero(data.base))
             .replace('{{iva}}', formatoDinero(data.iva))
-            .replace('{{efectivo}}', formatoDinero(data.total))
+            .replace('{{efectivo}}', formatoDinero(data.dineroRecibido))
             .replace('{{total}}', formatoDinero(data.total))
             .replace('{{cambio}}', formatoDinero(data.cambio))
             .replace('{{cufe}}', data.cufe)
