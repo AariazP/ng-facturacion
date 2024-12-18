@@ -3,12 +3,12 @@ import { HttpProductoService } from "../http-services/httpProductos.service";
 import { Observable } from "rxjs";
 import { ProductoDTO } from "../dto/producto/ProductoDTO";
 import { AlertService } from "../utils/alert.service";
+import { ActualizarProductoDTO } from "../dto/producto/ActualizarProductoDTO";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductoService {
-
 
     private httpProductoService: HttpProductoService = inject(HttpProductoService);
     private alert: AlertService = inject(AlertService);
@@ -59,38 +59,33 @@ export class ProductoService {
      * @returns un booleano que indica si el producto fue eliminado
      */
 
-    public eliminarPorId(id: number): boolean {
-        let result = false;
-        this.alert.confirmAlert('¿Está seguro de eliminar este producto?', 'Este cambio no se puede revertir').then((result) => {
-
-            if (result) result=this.eliminarPorIdConfirmado(id);
-            else {
-                this.alert.simpleInfoAlert('Operación cancelada');
-                result= false;
-            }
-
-        }
-        );
-        return result;
+    public eliminarProductoCodigo(codigo: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.httpProductoService.eliminarPorCodigo(codigo).subscribe({
+              next: () => {
+                this.alert.simpleSuccessAlert("Cliente eliminado correctamente");
+                resolve();
+              },
+              error: (error) => {
+                this.alert.simpleErrorAlert(error.error.mensaje);
+                reject(error);
+              },
+            });
+          });
     }
 
     /**
-     * Este metodo se encarga de eliminar un producto por su id sin mostrar un mensaje de confirmación
-     * @param id  es el id del producto a eliminar
-     * @returns  un booleano que indica si el producto fue eliminado
+     * Metodo para actualizar un producto en la base de datos
+     * @param productoActualizar contiene los datos del producto a actualizar
      */
-    private eliminarPorIdConfirmado(id: number): boolean {
-        let result = false;
-        this.httpProductoService.eliminarPorId(id).subscribe({
-
-            next: (response) => {
-                if (response) {
-                    this.alert.simpleSuccessAlert('Producto eliminado correctamente');
-                    result = true;
-                }
-            }, error: (error) => { this.alert.simpleErrorAlert(error.error.mensaje); }
-        }
-        );
-        return result;
+    public actualizar(productoActualizar: ActualizarProductoDTO): void {
+        this.httpProductoService.actualizar(productoActualizar).subscribe({
+            next: () => {
+                this.alert.simpleSuccessAlert('Producto actualizado correctamente');
+            },
+            error: (error) => {
+                this.alert.simpleErrorAlert(error.error.mensaje);
+            }
+        });
     }
 }

@@ -44,7 +44,7 @@
             <td>{{ producto.activo == true ? "Sí": "No" }}</td>
             <td class="d-none d-md-table-cell">{{ producto.fechaCreacion | date }}</td>
             <td class="eliminar">
-              <button (click)="eliminarPorId(producto.codigo)">❌</button>
+              <button (click)="eliminarProductoCodigo(producto.codigo)">❌</button>
               <button class="editar" (click)="toggleModoEdicion(producto)">✏️</button>
             </td>
           </tr>

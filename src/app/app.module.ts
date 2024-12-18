@@ -20,6 +20,7 @@ import { CardComponent } from './components/card/card.component';
 import { PrincipalComponent } from './page/principal/principal.component';
 import { VentaComponent } from './components/venta/venta/venta.component';
 import { ListaVentasComponent } from './components/venta/lista-ventas/listaVentas.component';
+import { ProductoAlertService } from './utils/product-alert/productoAlert.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { ListaVentasComponent } from './components/venta/lista-ventas/listaVenta
     CardComponent,
     PrincipalComponent,
     VentaComponent,
-    ListaVentasComponent 
+    ListaVentasComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +50,7 @@ import { ListaVentasComponent } from './components/venta/lista-ventas/listaVenta
     ReactiveFormsModule,
     // PageModule
   ],
-  providers: [ListaVentasComponent],
+  providers: [ListaVentasComponent, ProductoAlertService],
   exports:[CardComponent],
   bootstrap: [AppComponent]
 })

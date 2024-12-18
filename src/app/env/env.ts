@@ -6,5 +6,7 @@ export const environment = {
 
 
   // Este es el IVA que se va a aplicar a los productos
-  IVA: 0.19
+  IVA: 0.19,
+
+  imageUrl: '../../assets/404-status-code.png'
 };

@@ -26,8 +26,8 @@ export class HttpProductoService {
     return this.http.post(`${this.URL_API}/productos/guardar`, datos);
   }
 
-  eliminarPorId(id: number) {
-    const url = `${this.URL_API}/productos/eliminar/${id}`;
+  eliminarPorCodigo(codigo: string) {
+    const url = `${this.URL_API}/productos/eliminar/${codigo}`;
     return this.http.delete(url);
   }
 

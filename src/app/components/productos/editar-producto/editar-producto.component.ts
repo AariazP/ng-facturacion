@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpProductoService } from 'src/app/http-services/httpProductos.service';
 import { validarDecimalConDosDecimales } from '../../../validators/validatorFn';
 import { ActualizarProductoDTO } from '../../../dto/producto/ActualizarProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
+import { ProductoService } from 'src/app/services/producto.service';
 @Component({
   selector: 'app-editar-producto',
   templateUrl: './editar-producto.component.html',
@@ -15,11 +16,12 @@ export class EditarProductoComponent {
   
   @Input() productosEditar: any = {};
   @Output() modoOculto = new EventEmitter();
-  personaForm: FormGroup;
+  private fb: FormBuilder = inject(FormBuilder);
+  private productoService: ProductoService = inject(ProductoService);
+  private alert: AlertService = inject(AlertService);
+  protected personaForm!: FormGroup;
 
-
-  constructor(private fb: FormBuilder,private httpProductoService: HttpProductoService, 
-    private alert: AlertService) {
+  ngOnInit(): void {
     this.personaForm = this.fb.group({
       idProducto: '',
       codigo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
@@ -29,8 +31,8 @@ export class EditarProductoComponent {
       activo: [1],
       fechaCreacion: ['', [Validators.required]],
     });
-
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productosEditar'] && this.productosEditar) {
@@ -38,34 +40,20 @@ export class EditarProductoComponent {
     }
   }
   
-
-  guardar(): void {
-    
-    let productoActualizar = new ActualizarProductoDTO();
-    productoActualizar.codigo = this.productosEditar.codigo;
-    productoActualizar.nombre = this.personaForm.get('nombre')!.value;
-    productoActualizar.precio = this.personaForm.get('precio')!.value;
-    productoActualizar.cantidad = this.personaForm.get('cantidad')!.value;
-    productoActualizar.activo = this.personaForm.get('activo')!.value == 1;
-
+  /**
+   * Este método se encarga de guardar el producto en la base de datos
+   * @returns 
+   */
+  protected guardar(): void {
+    const { codigo, nombre, precio, cantidad, activo } = this.personaForm.value;
+    let productoActualizar = ActualizarProductoDTO.crearProducto(codigo, nombre, precio, cantidad, activo);
     if (!this.personaForm.valid) {
       Object.values(this.personaForm.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
     } 
-    this.httpProductoService.actualizar(productoActualizar).subscribe(
-      response => {
-        
-        this.alert.simpleSuccessAlert('Producto actualizado correctamente');
-        this.modoOculto.emit();
-      
-      },
-      error => {
-        this.alert.simpleErrorAlert(error.error.mensaje);	
-      }
-
-    )
+    this.productoService.actualizar(productoActualizar);
   }
 
 }
