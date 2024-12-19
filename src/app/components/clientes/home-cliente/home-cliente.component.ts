@@ -48,7 +48,6 @@ export class HomeClienteComponent {
    */
   private obtenerClientes(page:number): void {
     this.clienteService.obtenerClientes(page).then((page) => {
-      console.log(page);
       this.clientes = page.content;
       this.filtroClientes = page.content;
       this.totalPaginas = page.totalPages;

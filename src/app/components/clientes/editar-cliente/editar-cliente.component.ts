@@ -53,7 +53,7 @@ export class EditarClienteComponent {
    * @param changes 
    */
   public ngOnChanges(changes: SimpleChanges): void {
-    if ( this.personaEditar != undefined && changes['personaEditar'] && this.personaEditar ) {
+    if (changes['personaEditar'] && this.personaEditar && this.personaForm) {
       this.personaForm.patchValue(this.personaEditar);
     }
   }
