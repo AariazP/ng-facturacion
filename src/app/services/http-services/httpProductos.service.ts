@@ -54,4 +54,8 @@ export class HttpProductoService {
   public recuperarProducto(input: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.URL_API}/productos/recuperar-producto/${input}`);
   }
+
+  obtenerProductoPorCodigo(codigo: string): Observable<ProductoDTO> {
+    return this.http.get<ProductoDTO>(`${this.URL_API}/productos/obtener-producto/${codigo}`);
+  }
 }

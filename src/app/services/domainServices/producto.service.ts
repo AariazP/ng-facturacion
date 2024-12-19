@@ -129,4 +129,12 @@ export class ProductoService {
     public recuperarProducto(codigo: string): Observable<boolean> {
         return this.httpProductoService.recuperarProducto(codigo);
     }
+
+    /**
+     * Este método se encarga de obtener un producto por su código
+     * @param idProducto 
+     */
+    obtenerProductoPorCodigo(idProducto: string) {
+        return this.httpProductoService.obtenerProductoPorCodigo(idProducto);
+    }
 }

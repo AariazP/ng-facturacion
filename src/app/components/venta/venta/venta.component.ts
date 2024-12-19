@@ -48,6 +48,7 @@ export class VentaComponent implements DoCheck {
   ngOnInit() {
     this.generarIdFactura();
     this.buildForms();
+    this.listarProductos();
   }
 
   /**
@@ -90,6 +91,16 @@ export class VentaComponent implements DoCheck {
     }
     this.validarFormularios();
     return true;
+  }
+
+   /**
+   * Este metodo se encarga de listar los productos disponibles en la base de datos
+   * y asignarlos a la variable productos.
+   */
+   protected listarProductos():void {
+    this.productoService.getProductos(0).subscribe(
+      data => { this.productos = data.content; }
+    );
   }
 
   /**
@@ -259,18 +270,34 @@ export class VentaComponent implements DoCheck {
    */
   protected seleccionarProducto(): void {
     const idProducto = this.productosForm.get('codigoProducto')?.value;
-    const producto = this.productos.find(producto => producto.codigo === idProducto);
-
-    if (!producto) {
-      this.productosForm.get('codigoProducto')?.setErrors({ productoNoEncontrado: true });
+    if (!idProducto || idProducto.trim() === '') {
+      this.productosForm.reset();
+      this.productoSeleccionado = null;
       return;
     }
+    this.productoService.obtenerProductoPorCodigo(idProducto).subscribe(
+      producto => this.asignarProducto(producto)
+    );
+    
+  }
 
-    this.productoSeleccionado = producto;
+  /**
+   * Este metodo se encarga de asignar un producto a la variable productoSeleccionado
+   * @param producto El producto a asignar
+   * @returns void
+   */
+  asignarProducto(producto: ProductoDTO): void {
+    
+    if (!producto) {
+      this.productosForm.get('codigoProducto')?.setErrors({ productoNoEncontrado: true });
+      this.productoSeleccionado = null
+      return;
+    }
     this.stockProducto = producto.cantidad;
-
+    this.productoSeleccionado = producto;
     this.productosForm.patchValue({
-      nombreProducto: producto
+      nombreProducto: producto.nombre,
+      precioProducto: producto.precio
     });
   }
 

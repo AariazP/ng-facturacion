@@ -10,75 +10,55 @@
 
     <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-      <div class="row">
-        <div class="col-lg-1">
-          <p>No.Venta</p>
-        </div>
-
-        <div class="col-lg-2">
-          <p>Cédula del cliente:</p>
-        </div>
-
-        <div class="col-lg-2">
-          <p>Nombre:</p>
-        </div>
-
-        <div class="col-lg-2">
-          <p>Dirección:</p>
-        </div>
-
-        <div class="col-lg-9">
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-1">
-          <input class="disabled-input" type="text" formControlName="numFactura" placeholder="numFactura">
+      <div class="row gy-3 align-items-center">
+        <!-- No. Venta -->
+        <div class="col-lg-2 col-md-6 col-12">
+          <label for="numFactura" class="form-label">No. Venta:</label>
+          <input class="form-control" type="text" formControlName="numFactura" placeholder="Número de Factura">
           <span
-            *ngIf="formulario.get('numFactura') && formulario.get('numFactura')!.errors && formulario.get('numFactura')!.touched">
+            *ngIf="formulario.get('numFactura')?.errors && formulario.get('numFactura')?.touched">
             Por favor, ingrese solo texto en el campo de nombre.
           </span>
         </div>
-
-
-        <div class="col-lg-2">
-
-          <input type="text" list="cliente" formControlName="cliente" (input)="seleccionarCliente()"
+      
+        <!-- Cédula del cliente -->
+        <div class="col-lg-2 col-md-6 col-12">
+          <label for="cliente" class="form-label">Cédula del cliente:</label>
+          <input class="form-control" type="text" list="cliente" formControlName="cliente" (input)="seleccionarCliente()"
             placeholder="Cédula del cliente">
-
           <datalist id="cliente">
-            @for(cliente of clientes;track cliente.cedula){
-            <option [value]="cliente.cedula">{{cliente.nombre}}</option>
+            @for(cliente of clientes; track cliente.cedula) {
+            <option [value]="cliente.cedula">{{ cliente.nombre }}</option>
             }
           </datalist>
-
           <span
-            *ngIf="formulario.get('cliente')!.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
-            Por favor, ingrese un correo válido.
-          </span>
-
-        </div>
-
-
-        <div class="col-lg-2">
-
-          <input class="disabled-input" type="text" formControlName="nombre" placeholder="Nombre"
-            [value]="clienteSeleccionado?.cedula">
-          <span
-            *ngIf="formulario.get('nombre')!.invalid && (formulario.get('nombre')!.dirty || formulario.get('nombre')!.touched)">
+            *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
             Por favor, ingrese un valor válido.
           </span>
         </div>
-
-        <div class="col-lg-2">
-          <input class="disabled-input" type="text" formControlName="direccion" placeholder="Dirección"
+      
+        <!-- Nombre -->
+        <div class="col-lg-2 col-md-6 col-12">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input class="form-control disabled-input" type="text" formControlName="nombre" placeholder="Nombre"
+            [value]="clienteSeleccionado?.nombre">
+          <span
+            *ngIf="formulario.get('nombre')?.invalid && (formulario.get('nombre')?.dirty || formulario.get('nombre')?.touched)">
+            Por favor, ingrese un valor válido.
+          </span>
+        </div>
+      
+        <!-- Dirección -->
+        <div class="col-lg-2 col-md-6 col-12">
+          <label for="direccion" class="form-label">Dirección:</label>
+          <input class="form-control disabled-input" type="text" formControlName="direccion" placeholder="Dirección"
             [value]="clienteSeleccionado?.direccion">
           <span
-            *ngIf="formulario.get('direccion')!.invalid && (formulario.get('direccion')!.dirty || formulario.get('direccion')!.touched)">
+            *ngIf="formulario.get('direccion')?.invalid && (formulario.get('direccion')?.dirty || formulario.get('direccion')?.touched)">
             Por favor, ingrese un valor válido.
           </span>
         </div>
+      </div>      
 
         <div class="col-lg-2">
           <div class="col-lg text-right">
@@ -91,90 +71,67 @@
             <button type="submit" class="btn-primary BotonGeneral" id="verde">Vender</button>
           </div>
         </div>
-      </div>
+      
 
 
     </form>
 
     <div class="productos mt-4">
-      <label for="">Producto a agregar:</label>
-
+      <label>Producto a agregar:</label>
+    
       <div [formGroup]="productosForm">
-        <div class="row">
-          <div class="col-lg-3">
-            <p>Id producto:</p>
-          </div>
-
-          <div class="col-lg-2">
-            <p>Nombre producto:</p>
-          </div>
-
-          <div class="col-lg-2">
-            <p>Precio:</p>
-          </div>
-
-          <div class="col-lg-2">
-            <p>Cantidad:</p>
-          </div>
-
-          <div class="col-lg-3">
-            <p *ngIf="this.productosForm.get('nombreProducto')?.value"> *Tiene en stock: {{ stockProducto }}</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-3">
-            <input type="text" list="productos" (input)="seleccionarProducto()" formControlName="codigoProducto"
-              placeholder="producto">
-
-            <span
-              *ngIf="productosForm.get('codigoProducto')!.invalid && (productosForm.get('codigoProducto')!.dirty || productosForm.get('codigoProducto')!.touched)">
+        <div class="row gy-3">
+          <!-- Id producto -->
+          <div class="col-lg-3 col-md-6 col-12">
+            <label for="codigoProducto" class="form-label">Id producto:</label>
+            <input type="text" list="productos" id="codigoProducto" (input)="seleccionarProducto()" formControlName="codigoProducto" class="form-control" placeholder="Producto">
+            <span *ngIf="productosForm.get('codigoProducto')!.invalid && (productosForm.get('codigoProducto')!.dirty || productosForm.get('codigoProducto')!.touched)">
               Por favor, ingrese un valor válido.
             </span>
-
           </div>
-
-          <div class="col-lg-2">
-            <div>
-              <input class="disabled-input" type="text" formControlName="nombreProducto"
-                placeholder="Nombre del producto" [value]="productoSeleccionado?.nombre">
-              <span
-                *ngIf="productosForm.get('nombreProducto')!.invalid && (productosForm.get('nombreProducto')!.dirty || productosForm.get('nombreProducto')!.touched)">
-                Por favor, ingrese un valor válido.
-              </span>
-            </div>
+    
+          <!-- Nombre producto -->
+          <div class="col-lg-2 col-md-6 col-12">
+            <label for="nombreProducto" class="form-label">Nombre producto:</label>
+            <input type="text" id="nombreProducto" class="form-control disabled-input" formControlName="nombreProducto" placeholder="Nombre del producto" [value]="productoSeleccionado?.nombre">
+            <span *ngIf="productosForm.get('nombreProducto')!.invalid && (productosForm.get('nombreProducto')!.dirty || productosForm.get('nombreProducto')!.touched)">
+              Por favor, ingrese un valor válido.
+            </span>
           </div>
-
-          <div class="col-lg-2">
-            <div>
-              <input class="disabled-input" type="number" formControlName="precioProducto"
-                placeholder="Precio del producto" [value]="productoSeleccionado?.precio">
-              <span
-                *ngIf="productosForm.get('precioProducto')!.invalid && (productosForm.get('precioProducto')!.dirty || productosForm.get('precioProducto')!.touched)">
-                Por favor, ingrese un valor válido.
-              </span>
-            </div>
+    
+          <!-- Precio -->
+          <div class="col-lg-2 col-md-6 col-12">
+            <label for="precioProducto" class="form-label">Precio:</label>
+            <input type="number" id="precioProducto" class="form-control disabled-input" formControlName="precioProducto" placeholder="Precio del producto" [value]="productoSeleccionado?.precio">
+            <span *ngIf="productosForm.get('precioProducto')!.invalid && (productosForm.get('precioProducto')!.dirty || productosForm.get('precioProducto')!.touched)">
+              Por favor, ingrese un valor válido.
+            </span>
           </div>
-
-          <div class="col-lg-2">
-            <div>
-              <input min="1" type="number" formControlName="cantidadProducto" placeholder="Cantidad del producto">
-              <span
-                *ngIf="productosForm.get('cantidadProducto')?.hasError('cantidadInvalida')  && productosForm.get('cantidadProducto')!.invalid && (productosForm.get('cantidadProducto')!.dirty || productosForm.get('cantidadProducto')!.touched)">
-                Por favor, ingrese un valor válido.
-              </span>
-              <span *ngIf="!hayStock">*Valor mayor al stock disponible</span>
-            </div>
+    
+          <!-- Cantidad -->
+          <div class="col-lg-2 col-md-6 col-12">
+            <label for="cantidadProducto" class="form-label">Cantidad:</label>
+            <input type="number" id="cantidadProducto" class="form-control" formControlName="cantidadProducto" placeholder="Cantidad del producto" min="1">
+            <span *ngIf="productosForm.get('cantidadProducto')?.hasError('cantidadInvalida') && productosForm.get('cantidadProducto')!.invalid && (productosForm.get('cantidadProducto')!.dirty || productosForm.get('cantidadProducto')!.touched)">
+              Por favor, ingrese un valor válido.
+            </span>
+            <span *ngIf="!hayStock" class="text-danger">*Valor mayor al stock disponible</span>
           </div>
-
-          <div class="col-lg-3">
-            <div>
-              <button class="btn-primary BotonGeneral" id="azul" (click)="agregarProducto()">Agregar producto</button>
-            </div>
+    
+          <!-- Stock -->
+          <div class="col-lg-3 col-md-12 col-12">
+            <label for="stockProducto" class="form-label d-block">Stock:</label>
+            <p id="stockProducto" *ngIf="this.productosForm.get('nombreProducto')?.value">*Tiene en stock: {{ stockProducto }}</p>
+          </div>
+    
+          <!-- Botón Agregar -->
+          <div class="col-12">
+            <button class="btn btn-primary w-100" id="azul" (click)="agregarProducto()">Agregar producto</button>
           </div>
         </div>
       </div>
-
+    </div>
+    
       <div class="container">
         <div class="table-container">
           <div class="separador">
