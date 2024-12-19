@@ -14,7 +14,7 @@
         <!-- No. Venta -->
         <div class="col-lg-2 col-md-6 col-12">
           <label for="numFactura" class="form-label">No. Venta:</label>
-          <input class="form-control" type="text" formControlName="numFactura" placeholder="Número de Factura">
+          <input class="form-control disabled-input" type="text" formControlName="numFactura" placeholder="Número de Factura">
           <span *ngIf="formulario.get('numFactura')?.errors && formulario.get('numFactura')?.touched">
             Por favor, ingrese solo texto en el campo de nombre.
           </span>
@@ -137,8 +137,8 @@
     <div class="container">
       <div class="table-container">
         <div class="separador">
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+          <div class="table-responsive tabla">
+            <table class="table table-bordered table-hover ">
               <thead>
                 <tr>
                   <th>Cod Producto</th>
@@ -148,6 +148,7 @@
                   <th class="eliminar">Acciones</th>
                 </tr>
               </thead>
+              
               <tbody>
                 @for(producto of listProductos;track producto.codigo){
                 <tr>
@@ -185,7 +186,7 @@
     </div>
 
     <div class="col-lg text-right">
-      <button type="submit" class="btn-primary BotonGeneral" id="verde">Vender</button>
+      <button type="submit" class="btn-primary BotonGeneral" id="verde" (click)="onSubmit()" >Vender</button>
     </div>
 
     <div class="nuevo-usuario" [ngClass]="{ 'oculto': modoOculto }">

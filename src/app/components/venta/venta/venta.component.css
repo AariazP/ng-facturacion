@@ -245,3 +245,8 @@ p.impuesto-usado {
 #btn-vender{
   background-color: #41804e;
 }
+
+.tabla{
+  max-height: 400px;
+  overflow-y: scroll;
+}
