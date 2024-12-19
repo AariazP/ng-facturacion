@@ -197,39 +197,43 @@ export class VentaComponent implements DoCheck {
    * y calcular el subtotal, igv y total de la factura
    * @returns 
    */
-  public agregarProducto():void {
-
-    // Validar que los campos del formulario de productos estén completos
+  public async agregarProducto(): Promise<void> {
     if (!this.productosForm.valid) {
-      Object.values(this.productosForm.controls).forEach(control => control.markAsTouched());
-      return;
+        Object.values(this.productosForm.controls).forEach(control => control.markAsTouched());
+        return;
     }
-    // Validar que el producto ingresado esté activo y que la cantidad ingresada no exceda el stock
+
     const cantidad = +this.productosForm.get('cantidadProducto')?.value;
     const codigo = this.productosForm.get('codigoProducto')?.value;
 
-    if (!this.productoService.verificarProductoActivo(codigo) ||
-      !this.productoService.verificarProductoCantidad(cantidad, codigo)) {
-      return;
+    try {
+        const productoActivo = await this.productoService.verificarProductoActivo(codigo);
+        const cantidadValida = await this.productoService.verificarProductoCantidad(cantidad, codigo);
+
+        if (!productoActivo || !cantidadValida) {
+            this.hayStock = false;
+            return;
+        }
+
+        const precio = this.productosForm.get('precioProducto')?.value;
+        const nombre = this.productosForm.get('nombreProducto')?.value;
+        const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
+
+        if (productoExistente) {
+            productoExistente.cantidad += cantidad;
+        } else {
+            const producto = ProductoDTO.crearProductoDTO(codigo, nombre, precio, cantidad);
+            this.listProductos.push(producto);
+        }
+
+        this.resetForms();
+        this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
+        this.calcularValores();
+    } catch (error) {
+        console.error(error);
     }
-    // Agregar el producto a la lista de productos
-    const precio = this.productosForm.get('precioProducto')?.value;
-    const nombre = this.productosForm.get('nombreProducto')?.value;
-    const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
+}
 
-    if (productoExistente) {
-      productoExistente.cantidad += cantidad;
-    } else {
-      const producto = ProductoDTO.crearProductoDTO(codigo, nombre, precio, cantidad);
-      this.listProductos.push(producto);
-    }
-
-    this.resetForms();
-
-    this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-    this.calcularValores();
-
-  }
 
   /**
    * Este metodo se encarga de resetear los campos del formulario de productos

@@ -28,14 +28,19 @@ export class ProductoService {
      * @param codigo es el código del producto a verificar
      * @returns un booleano que indica si el producto está activo
      */
-    public verificarProductoActivo(codigo: string): boolean {
-        this.httpProductoService.verificarActivo(codigo).subscribe(
-            (response) => {
-                if (!response) this.alert.simpleErrorAlert('El producto no está activo');
-                return response;
-            }
-        )
-        return true;
+    public verificarProductoActivo(codigo: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.httpProductoService.verificarActivo(codigo).subscribe({
+                next: (response) => {
+                    if (!response) this.alert.simpleErrorAlert('El producto no está activo');
+                    resolve(response);
+                },
+                error: (error) => {
+                    this.alert.simpleErrorAlert('Error al verificar producto activo');
+                    reject(false);
+                }
+            });
+        }); 
     }
 
     /**
@@ -44,14 +49,19 @@ export class ProductoService {
      * @param codigo Código del producto a verificar
      * @returns un booleano que indica si el producto tiene suficiente cantidad
      */
-    public verificarProductoCantidad(cantidad: number, codigo: string): boolean {
-        this.httpProductoService.verificarCantidad(cantidad, codigo).subscribe(
-            (response) => {
-                if (!response) this.alert.simpleErrorAlert('No hay suficiente cantidad de producto');
-                return response;
-            }
-        )
-        return true;
+    public verificarProductoCantidad(cantidad: number, codigo: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.httpProductoService.verificarCantidad(cantidad, codigo).subscribe({
+                next: (response) => {
+                    if (!response) this.alert.simpleErrorAlert('No hay suficiente cantidad de producto');
+                    resolve(response);
+                },
+                error: (error) => {
+                    this.alert.simpleErrorAlert('Error al verificar cantidad del producto');
+                    reject(false);
+                }
+            });
+        });
 
     }
 
