@@ -14,7 +14,7 @@ export class PrincipalComponent {
       description: 'Aquí puede realizar una venta directa, relacionando un cliente con un producto específico.',
       imageSrc: 'https://img.icons8.com/3d-fluency/94/receive-cash.png',
       imageAlt: 'receive-cash',
-      link: '/app/factura'
+      link: '/app/venta'
     },
     {
       title: 'Ver inventario',
@@ -35,7 +35,7 @@ export class PrincipalComponent {
       description: 'Aquí puede gestionar y ver un historial detallado de todas las ventas que ha realizado.',
       imageSrc: 'https://img.icons8.com/fluency/96/financial-tasks.png',
       imageAlt: 'financial-tasks',
-      link: '/app/lista-factura'
+      link: '/app/lista-ventas'
     },
     {
       title: 'Caja',
@@ -46,7 +46,7 @@ export class PrincipalComponent {
     },
     {
       title: 'Configuración',
-      description: 'AEn esta sección podrá editar cierta información del negocio',
+      description: 'En esta sección podrá editar cierta información del negocio',
       imageSrc: 'https://img.icons8.com/fluency/96/settings.png',
       imageAlt: 'settings',
       link: '/app/configuracion'
@@ -56,7 +56,7 @@ export class PrincipalComponent {
       description: 'Aquí podrá ver las facturas electrónicas que se han generado.',
       imageSrc: 'https://img.icons8.com/3d-fluency/94/receipt.png',
       imageAlt: 'receipt',
-      link: '/app/facturacion'
+      link: '/app/facturacion-electronica'
     }
   ];
 
