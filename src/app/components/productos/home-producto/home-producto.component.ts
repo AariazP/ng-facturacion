@@ -18,6 +18,8 @@ export class HomeProductoComponent {
 
   private productoService: ProductoService = inject(ProductoService);
   private productoAlert: ProductoAlertService = inject(ProductoAlertService);
+  protected paginaActual: number = 0;
+  protected totalPaginas!: number;
 
   constructor() {
     this.productos = [];
@@ -25,7 +27,7 @@ export class HomeProductoComponent {
   }
 
   ngOnInit() {
-    this.obtenerProductos();
+    this.obtenerProductos(0);
     this.updateProductoCount();
   }
 
@@ -39,10 +41,11 @@ export class HomeProductoComponent {
   /**
    * Este método se encarga de obtener los productos de la base de datos
    */
-  private obtenerProductos() {
-    this.productoService.getProductos().subscribe(data => {
-      this.productos = data;
-      this.filtroProductos = data;
+  private obtenerProductos(page:number) {
+    this.productoService.getProductos(page).subscribe(data => {
+      this.productos = data.content;
+      this.filtroProductos = data.content;
+      this.totalPaginas = data.totalPages;
       this.updateProductoCount();
     });
   }
@@ -55,7 +58,7 @@ export class HomeProductoComponent {
     if (result) {
       try {
         await this.productoService.eliminarProductoCodigo(codigo);
-        this.obtenerProductos();
+        this.obtenerProductos(0);
       } catch (error) {}
     }
   }
@@ -103,7 +106,24 @@ export class HomeProductoComponent {
    */
   protected editarModoOcuto() {
     this.modoOculto = !this.modoOculto;
-    this.obtenerProductos();
+    this.obtenerProductos(0);
   }
 
+  paginaAnterior() {
+    if (this.paginaActual > 0) {  
+      this.paginaActual--;
+      this.cargarVentas();
+    }
+  }
+
+  paginaSiguiente() {
+    if (this.paginaActual < this.totalPaginas - 1) {  
+      this.paginaActual++;
+      this.cargarVentas();
+    }
+  }
+
+  cargarVentas() {
+    this.obtenerProductos(this.paginaActual);  
+  }
 }

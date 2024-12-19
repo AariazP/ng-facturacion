@@ -5,6 +5,7 @@ import { AlertService } from "src/app/utils/alert.service";
 import { ProductoDTO } from "src/app/dto/producto/ProductoDTO";
 import { ActualizarProductoDTO } from "src/app/dto/producto/ActualizarProductoDTO";
 import { CrearProductoDTO } from "src/app/dto/producto/CrearProductoDTO";
+import { Page } from "src/app/dto/pageable/Page";
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +19,8 @@ export class ProductoService {
      * Este método se encarga de obtener los productos de la base de datos
      * @returns un observable de tipo ProductoDTO
      */
-    public getProductos(): Observable<ProductoDTO[]> {
-        return this.httpProductoService.getProductos();
+    public getProductos(page:number): Observable<Page<ProductoDTO>> {
+        return this.httpProductoService.getProductos(page);
     }
 
     /**

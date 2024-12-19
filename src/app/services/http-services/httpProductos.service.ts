@@ -5,6 +5,7 @@ import { environment } from '../../env/env';
 import { ProductoDTO } from '../../dto/producto/ProductoDTO';
 import { ActualizarProductoDTO } from '../../dto/producto/ActualizarProductoDTO';
 import { CrearProductoDTO } from '../../dto/producto/CrearProductoDTO';
+import { Page } from 'src/app/dto/pageable/Page';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +15,8 @@ export class HttpProductoService {
   private URL_API: string = environment.ApiUrl;
   private http: HttpClient = inject(HttpClient);
 
-  public getProductos(): Observable<ProductoDTO[]> {
-    return this.http.get<ProductoDTO[]>(`${this.URL_API}/productos`);
+  public getProductos(page:number): Observable<Page<ProductoDTO>> {
+    return this.http.get<Page<ProductoDTO>>(`${this.URL_API}/productos?page=${page}`);
   }
 
   public getTipoImpuesto(): Observable<string[]>  {

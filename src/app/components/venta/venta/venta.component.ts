@@ -7,8 +7,6 @@ import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
 import { MenuComponent } from '../../menu/menu.component';
-import { finalize } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-venta',
@@ -50,7 +48,6 @@ export class VentaComponent implements DoCheck {
   ngOnInit() {
     this.generarIdFactura();
     this.buildForms();
-    this.listarProductos();
   }
 
   /**
@@ -253,17 +250,7 @@ export class VentaComponent implements DoCheck {
       this.calcularValores();
     }
   }
-
-  /**
-   * Este metodo se encarga de listar los productos disponibles en la base de datos
-   * y asignarlos a la variable productos.
-   */
-  protected listarProductos():void {
-    this.productoService.getProductos().subscribe(
-      data => { this.productos = data; }
-    );
-  }
-
+  
   /**
    * Este metodo se encarga de seleccionar un producto de la lista de productos
    * cuando se ingresa un codigo de producto en el formulario
