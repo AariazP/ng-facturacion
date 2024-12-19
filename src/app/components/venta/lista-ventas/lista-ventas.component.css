@@ -53,6 +53,9 @@ td button.editar, td button.check{
   
 }
 
+.temporal{
+  margin: 20px 20px;
+}
 
 .ocultar{
   display: none;
@@ -171,10 +174,6 @@ div.pup-up span{
   border: 1px solid #a2a2a2;
   padding: 2px;
   cursor: pointer;
-}
-
-.temporal{
-  padding: 20px;
 }
 
 .table-container .pup-up.oculto{

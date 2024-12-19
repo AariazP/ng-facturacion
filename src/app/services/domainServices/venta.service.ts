@@ -99,7 +99,7 @@ export class VentaService {
   private mostrarCambio(total: number) {
     this.alert.simpleSuccessAlert(
       'El cambio es: $ ' + Math.floor(this.dinero - total).toLocaleString('en-US')
-    );    
+    ); 
   }
 
   /**

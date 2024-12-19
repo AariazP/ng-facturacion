@@ -7,6 +7,8 @@ import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
 import { MenuComponent } from '../../menu/menu.component';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-venta',
@@ -122,7 +124,7 @@ export class VentaComponent implements DoCheck {
     this.ventaService.crearVenta(venta, this.total).then(() => {
     this.finalizarVenta()});
   }
-
+  
   /**
    * Este metodo limpia los campos del formulario y genera un nuevo id de factura
    */
