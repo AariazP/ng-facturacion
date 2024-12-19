@@ -45,11 +45,11 @@ export class PrincipalComponent {
       link: '/app/caja'
     },
     {
-      title: 'Facturación',
-      description: 'Aquí podrá ver las facturas que se han generado.',
-      imageSrc: 'https://img.icons8.com/fluency/96/cash-receipt.png',
-      imageAlt: 'cash-receipt',
-      link: '/app/facturacion'
+      title: 'Configuración',
+      description: 'AEn esta sección podrá editar cierta información del negocio',
+      imageSrc: 'https://img.icons8.com/fluency/96/settings.png',
+      imageAlt: 'settings',
+      link: '/app/configuracion'
     },
     {
       title: 'Facturación Electrónica',

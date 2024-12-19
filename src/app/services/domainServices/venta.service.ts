@@ -40,8 +40,8 @@ export class VentaService {
       venta.cambio = this.dinero - total;
       this.guardarVenta(venta, total);
       return resolve(true);
-    })});
-  }
+    })});
+  }
 
   /**
    * Este metodo se encarga de validar el dinero ingresado por el usuario
@@ -99,7 +99,7 @@ export class VentaService {
   private mostrarCambio(total: number) {
     this.alert.simpleSuccessAlert(
       'El cambio es: $ ' + Math.floor(this.dinero - total).toLocaleString('en-US')
-    );    
+    ); 
   }
 
   /**
