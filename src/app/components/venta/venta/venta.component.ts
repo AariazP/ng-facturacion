@@ -29,6 +29,7 @@ export class VentaComponent implements DoCheck {
   protected stockProducto: number;
   protected hayStock = true;
   protected total = 0;
+  protected productosFiltrados: ProductoDTO[] = [];
   private formBuilder: FormBuilder = inject(FormBuilder);
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
@@ -49,6 +50,12 @@ export class VentaComponent implements DoCheck {
     this.generarIdFactura();
     this.buildForms();
     this.listarProductos();
+
+    // Detectar cambios en el campo de búsqueda de producto.
+    this.productosForm.get('nombreProducto')?.valueChanges.subscribe(() => {
+      this.filtrarProductos();
+    });
+
   }
 
   /**
@@ -373,7 +380,7 @@ export class VentaComponent implements DoCheck {
     });
   } 
 
-  
+
   /**
    * Este método se encarga de cerrar el menu y asi
    * evita que se genere un bug con la ventana emergente
@@ -383,5 +390,41 @@ export class VentaComponent implements DoCheck {
       this.menuComponent.toggleCollapse();
     }
   }
+
+/**
+ * Filtra los productos según el texto ingresado en el campo 'codigoProducto'.
+ */
+protected filtrarProductos(): void {
+  const idProducto = this.productosForm.get('codigoProducto')?.value?.toLowerCase() || '';
+  if (idProducto.trim() === '') {
+    this.productosFiltrados = [];
+    return;
+  }
+  this.productosFiltrados = this.productos.filter(producto => 
+    producto.codigo.toLowerCase().includes(idProducto) || producto.nombre.toLowerCase().includes(idProducto)
+  );
+}
+
+
+/**
+ * Oculta las sugerencias al perder el foco del campo.
+ */
+protected ocultarSugerencias(): void {
+  setTimeout(() => {
+    this.productosFiltrados = [];
+  }, 200); // Se retrasa para permitir el clic en las sugerencias.
+}
+
+/**
+ * Maneja la selección de un producto desde la lista de sugerencias.
+ * @param producto Producto seleccionado.
+ */
+protected seleccionarProductoDeLista(producto: ProductoDTO): void {
+  this.productosForm.patchValue({
+    codigoProducto: producto.codigo,
+  });
+  this.ocultarSugerencias();
+  this.asignarProducto(producto);
+}
 
 }

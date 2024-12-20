@@ -74,19 +74,31 @@
 
       <div [formGroup]="productosForm">
         <div class="row gy-3">
+
           <!-- Id producto -->
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-3 col-md-6 col-12 position-relative">
             <label for="codigoProducto" class="form-label">Id producto:</label>
-            <input type="text" list="productos" id="codigoProducto" (input)="seleccionarProducto()"
-              formControlName="codigoProducto" class="form-control" placeholder="Producto">
-            <span
+            <input type="text" id="codigoProducto" class="form-control" formControlName="codigoProducto" 
+              placeholder="Producto" (focus)="filtrarProductos()" (blur)="ocultarSugerencias()" (input)="seleccionarProducto()">
+  
+            <div class="popup" *ngIf="productosFiltrados.length > 0">
+              <ul class="list-group">
+                <li 
+                class="list-group-item" 
+                *ngFor="let producto of productosFiltrados" 
+                (click)="seleccionarProductoDeLista(producto)">
+                {{ producto.codigo }} - {{ producto.nombre }}
+                </li>
+              </ul>
+            </div>
+              <span
               *ngIf="productosForm.get('codigoProducto')!.invalid && (productosForm.get('codigoProducto')!.dirty || productosForm.get('codigoProducto')!.touched)">
               Por favor, ingrese un valor válido.
             </span>
           </div>
 
           <!-- Nombre producto -->
-          <div class="col-lg-2 col-md-6 col-12">
+          <div class="col-lg-3 col-md-6 col-12">
             <label for="nombreProducto" class="form-label">Nombre producto:</label>
             <input type="text" id="nombreProducto" class="form-control disabled-input" formControlName="nombreProducto"
               placeholder="Nombre del producto" [value]="productoSeleccionado?.nombre">
@@ -108,7 +120,7 @@
           </div>
 
           <!-- Cantidad -->
-          <div class="col-lg-2 col-md-6 col-12">
+          <div class="col-lg-1 col-md-6 col-12">
             <label for="cantidadProducto" class="form-label">Cantidad:</label>
             <input type="number" id="cantidadProducto" class="form-control" formControlName="cantidadProducto"
               placeholder="Cantidad del producto" min="1">
@@ -120,7 +132,7 @@
           </div>
 
           <!-- Stock -->
-          <div class="col-lg-3 col-md-12 col-12">
+          <div class="col-lg-2 col-md-12 col-12">
             <label for="stockProducto" class="form-label d-block">Stock:</label>
             <p id="stockProducto" *ngIf="this.productosForm.get('nombreProducto')?.value">*Tiene en stock: {{
               stockProducto }}</p>
@@ -128,7 +140,7 @@
 
           <!-- Botón Agregar -->
           <div class="col-12">
-            <button class="btn btn-primary w-100" id="azul" (click)="agregarProducto()">Agregar producto</button>
+            <button class="btn btn-primary w-100 BotonGeneral" id="azul" (click)="agregarProducto()">Agregar producto</button>
           </div>
         </div>
       </div>
