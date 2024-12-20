@@ -1,4 +1,4 @@
-import { Component, DoCheck, inject } from '@angular/core';
+import { Component, Directive, DoCheck, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { cantidadMayorQueCero } from 'src/app/validators/validatorFn';
 import { CrearVentaDTO } from 'src/app/dto/venta/CrearVentaDTO';
@@ -7,6 +7,7 @@ import { ClienteDTO } from 'src/app/dto/cliente/ClienteDTO';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 import { VentaService } from 'src/app/services/domainServices/venta.service';
 import { MenuComponent } from '../../menu/menu.component';
+import { ClienteService } from 'src/app/services/domainServices/cliente.service';
 
 @Component({
   selector: 'app-venta',
@@ -30,7 +31,9 @@ export class VentaComponent implements DoCheck {
   protected hayStock = true;
   protected total = 0;
   protected productosFiltrados: ProductoDTO[] = [];
+  protected clientesFiltrados: ClienteDTO[] = [];
   private formBuilder: FormBuilder = inject(FormBuilder);
+  private clienteService: ClienteService = inject(ClienteService);
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
@@ -50,12 +53,12 @@ export class VentaComponent implements DoCheck {
     this.generarIdFactura();
     this.buildForms();
     this.listarProductos();
+    this.listarClientes();
 
     // Detectar cambios en el campo de búsqueda de producto.
     this.productosForm.get('nombreProducto')?.valueChanges.subscribe(() => {
       this.filtrarProductos();
     });
-
   }
 
   /**
@@ -109,6 +112,16 @@ export class VentaComponent implements DoCheck {
       data => { this.productos = data.content; }
     );
   }
+
+     /**
+   * Este metodo se encarga de listar los clientes disponibles en la base de datos
+   * y asignarlos a la variable clientes.
+   */
+     protected listarClientes():void {
+      this.clienteService.getClientes(0).subscribe(
+        data => { this.clientes = data.content; }
+      );
+    }
 
   /**
    * Este metodo devuelve un objeto de tipo CrearVentaDTO con los datos del formulario
@@ -312,6 +325,25 @@ export class VentaComponent implements DoCheck {
     });
   }
 
+    /**
+   * Este metodo se encarga de asignar un cliente a la variable clienteSeleccionado
+   * @param cliente El producto a asignar
+   * @returns void
+   */
+    asignarCliente(cliente: ClienteDTO): void {
+    
+      if (!cliente) {
+        this.formulario.get('cedulaCliente')?.setErrors({ clienteNoEncontrado: true });
+        this.clienteSeleccionado = null
+        return;
+      }
+      this.clienteSeleccionado = cliente;
+      this.formulario.patchValue({
+        nombre: cliente.nombre,
+        direccion: cliente.direccion
+      });
+    }
+
   /**
    * Este metodo se encarga de validar los campos del formulario
    * y asignar los valores de los campos al formulario
@@ -405,14 +437,28 @@ protected filtrarProductos(): void {
   );
 }
 
+/**
+ * Filtra los clientes según el texto ingresado en el campo 'cedulaCliente'.
+ */
+protected filtrarClientes(): void {
+  const ccCliente = this.formulario.get('cliente')?.value?.toLowerCase() || '';
+  if (ccCliente.trim() === '') {
+    this.clientesFiltrados = [];
+    return;
+  }
+  this.clientesFiltrados = this.clientes.filter(cliente => 
+    cliente.cedula.toLowerCase().includes(ccCliente) || cliente.nombre.toLowerCase().includes(ccCliente)
+  );
+
+}
+
 
 /**
  * Oculta las sugerencias al perder el foco del campo.
  */
 protected ocultarSugerencias(): void {
-  setTimeout(() => {
     this.productosFiltrados = [];
-  }, 200); // Se retrasa para permitir el clic en las sugerencias.
+    this.clientesFiltrados = [];
 }
 
 /**
@@ -425,6 +471,18 @@ protected seleccionarProductoDeLista(producto: ProductoDTO): void {
   });
   this.ocultarSugerencias();
   this.asignarProducto(producto);
+}
+
+/**
+ * Maneja la selección de un cliente desde la lista de sugerencias.
+ * @param cliente Cliente seleccionado.
+ */
+protected seleccionarClienteDeLista(cliente: ClienteDTO): void {
+  this.formulario.patchValue({
+    cliente: cliente.cedula,
+  });
+  this.ocultarSugerencias();
+  this.asignarCliente(cliente);
 }
 
 }

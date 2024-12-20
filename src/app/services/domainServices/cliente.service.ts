@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClientesService } from "../http-services/httpClientes.service";
-import { catchError, Observable, of } from "rxjs";
+import { catchError, Observable, of, throwError } from "rxjs";
 import { AlertService } from "src/app/utils/alert.service";
 import { CrearClienteDTO } from "src/app/dto/cliente/CrearClienteDTO";
 import { ClienteDTO } from "src/app/dto/cliente/ClienteDTO";
@@ -57,6 +57,16 @@ export class ClienteService {
       });
     });
   }
+
+  getClientes(page: number): Observable<Page<ClienteDTO>> {
+    return this.clienteService.obtenerClientes(page).pipe(
+      catchError((error) => {
+        this.alertService.simpleErrorAlert(error.error.mensaje);
+        return throwError(error); // Importar throwError desde 'rxjs'
+      })
+    );
+  }
+  
 
   async eliminarClienteId(id: number): Promise<void> {
     return new Promise((resolve, reject) => {

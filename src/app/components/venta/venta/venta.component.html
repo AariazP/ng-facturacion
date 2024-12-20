@@ -20,21 +20,35 @@
           </span>
         </div>
 
-        <!-- Cédula del cliente -->
-        <div class="col-lg-2 col-md-6 col-12">
-          <label for="cliente" class="form-label">Cédula del cliente:</label>
-          <input class="form-control" type="text" list="cliente" formControlName="cliente"
-            (input)="seleccionarCliente()" placeholder="Cédula del cliente">
-          <datalist id="cliente">
-            @for(cliente of clientes; track cliente.cedula) {
-            <option [value]="cliente.cedula">{{ cliente.nombre }}</option>
-            }
-          </datalist>
-          <span
-            *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
-            Por favor, ingrese un valor válido.
-          </span>
-        </div>
+<!-- Cédula del cliente -->
+<div class="col-lg-2 col-md-6 col-12 position-relative">
+  <label for="cliente" class="form-label">Cédula del cliente:</label>
+  <input 
+    class="form-control" 
+    type="text" 
+    formControlName="cliente" 
+    id="cedulaCliente"
+    (input)="filtrarClientes()" 
+    placeholder="Cédula del cliente">
+  
+  <!-- Lista flotante -->
+  <div class="popup position-absolute w-100" *ngIf="clientesFiltrados.length > 0">
+    <ul class="list-group">
+      <li 
+        class="list-group-item" 
+        *ngFor="let cliente of clientesFiltrados" 
+        (click)="seleccionarClienteDeLista(cliente)">
+        {{ cliente.cedula }} - {{ cliente.nombre }}
+      </li>
+    </ul>
+  </div>
+
+  <span
+    *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
+    Por favor, ingrese un valor válido.
+  </span>
+</div>
+
 
         <!-- Nombre -->
         <div class="col-lg-2 col-md-6 col-12">
@@ -73,15 +87,15 @@
       <label>Producto a agregar:</label>
 
       <div [formGroup]="productosForm">
-        <div class="row gy-3">
+        <div class="row gy-3">   
 
           <!-- Id producto -->
           <div class="col-lg-3 col-md-6 col-12 position-relative">
             <label for="codigoProducto" class="form-label">Id producto:</label>
             <input type="text" id="codigoProducto" class="form-control" formControlName="codigoProducto" 
               placeholder="Producto" (focus)="filtrarProductos()" (blur)="ocultarSugerencias()" (input)="seleccionarProducto()">
-  
-            <div class="popup" *ngIf="productosFiltrados.length > 0">
+
+            <div class="popup position-absolute w-100" *ngIf="productosFiltrados.length > 0">
               <ul class="list-group">
                 <li 
                 class="list-group-item" 
