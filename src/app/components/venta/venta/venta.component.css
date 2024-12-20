@@ -144,6 +144,7 @@ tr:nth-child(even) {
 
 .eliminar button {
   background-color: transparent;
+  color: #c82333;
 }
 
 td.eliminar, th.eliminar{
@@ -154,6 +155,7 @@ td.eliminar, th.eliminar{
 
 .eliminar button:hover {
   background-color: #c82333;
+  color: #fff;
 }
 
 .sin-datos-tabla {
@@ -250,3 +252,4 @@ p.impuesto-usado {
   max-height: 400px;
   overflow-y: scroll;
 }
+
