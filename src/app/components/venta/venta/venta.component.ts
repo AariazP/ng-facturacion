@@ -54,11 +54,6 @@ export class VentaComponent implements DoCheck {
     this.buildForms();
     this.listarProductos();
     this.listarClientes();
-
-    // Detectar cambios en el campo de búsqueda de producto.
-    this.productosForm.get('nombreProducto')?.valueChanges.subscribe(() => {
-      this.filtrarProductos();
-    });
   }
 
   /**
