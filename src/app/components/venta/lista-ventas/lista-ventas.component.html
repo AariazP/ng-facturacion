@@ -56,7 +56,7 @@
                 <td class="eliminar">
                   <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-primary ms-2" (click)="mostrarPrevisualizacion(venta)" data-bs-toggle="modal" data-bs-target="#previsualizacionFacturaModal">
-                      Previsualizar Factura
+                      Generar Facturas
                     </button>
                     <button type="button" class="btn btn-danger ms-2" (click)="eliminarVenta(venta.id)">
                       ❌ Eliminar Venta
@@ -108,7 +108,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" (click)="confirmarGenerarFactura(ventaSeleccionada?.id)" data-bs-dismiss="modal">Generar Factura</button>
+          <button type="button" class="btn btn-success">Factura electrónica</button>
+          <button type="button" class="btn btn-success" (click)="confirmarGenerarFactura(ventaSeleccionada?.id)" data-bs-dismiss="modal">Factura física</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
