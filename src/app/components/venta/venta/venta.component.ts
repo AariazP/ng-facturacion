@@ -98,25 +98,64 @@ export class VentaComponent implements DoCheck {
     return true;
   }
 
-   /**
-   * Este metodo se encarga de listar los productos disponibles en la base de datos
-   * y asignarlos a la variable productos.
-   */
-   protected listarProductos():void {
-    this.productoService.getProductos(0).subscribe(
-      data => { this.productos = data.content; }
-    );
-  }
+/**
+ * Este método se encarga de listar todos los productos disponibles en la base de datos,
+ * haciendo solicitudes hasta que no se reciban más productos.
+ */
+protected listarProductos(): void {
+  let page = 0; 
+  this.productos = []; 
 
-     /**
-   * Este metodo se encarga de listar los clientes disponibles en la base de datos
-   * y asignarlos a la variable clientes.
-   */
-     protected listarClientes():void {
-      this.clienteService.getClientes(0).subscribe(
-        data => { this.clientes = data.content; }
-      );
-    }
+  const obtenerProductosRecursivamente = (paginaActual: number): void => {
+    this.productoService.getProductos(paginaActual).subscribe({
+      next: (data) => {
+        // Si hay productos en la página actual, se agregan a la lista de productos
+        if (data.content.length > 0) {
+          this.productos = [...this.productos, ...data.content];
+          obtenerProductosRecursivamente(paginaActual + 1); // Llama a la siguiente página
+        } else {
+          console.log('Todos los productos han sido cargados:', this.productos.length);
+        }
+      },
+      error: (err) => {
+        console.error('Error al listar productos:', err);
+      }
+    });
+  };
+
+  // Comienza a obtener productos desde la primera página
+  obtenerProductosRecursivamente(page);
+}
+
+
+/**
+ * Este método se encarga de listar todos los clientes disponibles en la base de datos,
+ * haciendo solicitudes hasta que no se reciban más productos.
+ */
+protected listarClientes(): void {
+  let page = 0; 
+  this.clientes = []; 
+
+  const obtenerClientesRecursivamente = (paginaActual: number): void => {
+    this.clienteService.getClientes(paginaActual).subscribe({
+      next: (data) => {
+        // Si hay productos en la página actual, se agregan a la lista de productos
+        if (data.content.length > 0) {
+          this.clientes = [...this.clientes, ...data.content];
+          obtenerClientesRecursivamente(paginaActual + 1); // Llama a la siguiente página
+        } else {
+          console.log('Todos los clientes han sido cargados:', this.clientes.length);
+        }
+      },
+      error: (err) => {
+        console.error('Error al listar clientes:', err);
+      }
+    });
+  };
+
+  // Comienza a obtener productos desde la primera página
+  obtenerClientesRecursivamente(page);
+}
 
   /**
    * Este metodo devuelve un objeto de tipo CrearVentaDTO con los datos del formulario
@@ -480,4 +519,16 @@ protected seleccionarClienteDeLista(cliente: ClienteDTO): void {
   this.asignarCliente(cliente);
 }
 
+/**
+ * Dependiendo si hay algun cambio en la base de datos 
+ * este metodo actualiza la listaProductos en localStorage
+ */
+protected actualizarListaProductos(): void {
+  /**const listaProductos = JSON.parse(localStorage.getItem('listaProductos'));
+  if (listaProductos) {
+    this.productos = listaProductos;
+    }
+  }**/
+
+}
 }

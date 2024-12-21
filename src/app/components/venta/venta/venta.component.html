@@ -12,7 +12,7 @@
 
       <div class="row gy-3 align-items-center">
         <!-- No. Venta -->
-        <div class="col-lg-2 col-md-6 col-12">
+        <div class="col-lg-1 col-md-6 col-12">
           <label for="numFactura" class="form-label">No. Venta:</label>
           <input class="form-control disabled-input" type="text" formControlName="numFactura" placeholder="Número de Factura">
           <span *ngIf="formulario.get('numFactura')?.errors && formulario.get('numFactura')?.touched">
@@ -20,38 +20,38 @@
           </span>
         </div>
 
-<!-- Cédula del cliente -->
-<div class="col-lg-2 col-md-6 col-12 position-relative">
-  <label for="cliente" class="form-label">Cédula del cliente:</label>
-  <input 
-    class="form-control" 
-    type="text" 
-    formControlName="cliente" 
-    id="cedulaCliente"
-    (input)="filtrarClientes()" 
-    placeholder="Cédula del cliente">
+        <!-- Cédula del cliente -->
+        <div class="col-lg-3 col-md-6 col-12 position-relative">
+          <label for="cliente" class="form-label">Cédula del cliente:</label>
+          <input 
+            class="form-control" 
+            type="text" 
+            formControlName="cliente" 
+            id="cedulaCliente"
+            (input)="filtrarClientes()" 
+            placeholder="Cédula del cliente">
   
-  <!-- Lista flotante -->
-  <div class="popup position-absolute w-100" *ngIf="clientesFiltrados.length > 0">
-    <ul class="list-group">
-      <li 
-        class="list-group-item" 
-        *ngFor="let cliente of clientesFiltrados" 
-        (click)="seleccionarClienteDeLista(cliente)">
-        {{ cliente.cedula }} - {{ cliente.nombre }}
-      </li>
-    </ul>
-  </div>
+          <!-- Lista flotante -->
+          <div class="popup position-absolute w-100" *ngIf="clientesFiltrados.length > 0">
+            <ul class="list-group">
+              <li 
+                class="list-group-item" 
+                *ngFor="let cliente of clientesFiltrados" 
+                (click)="seleccionarClienteDeLista(cliente)">
+                {{ cliente.cedula }} - {{ cliente.nombre }}
+              </li>
+            </ul>
+          </div>
 
-  <span
-    *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
-    Por favor, ingrese un valor válido.
-  </span>
-</div>
+          <span
+            *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
+            Por favor, ingrese un valor válido.
+          </span>
+      </div>
 
 
         <!-- Nombre -->
-        <div class="col-lg-2 col-md-6 col-12">
+        <div class="col-lg-4 col-md-6 col-12">
           <label for="nombre" class="form-label">Nombre:</label>
           <input class="form-control disabled-input" type="text" formControlName="nombre" placeholder="Nombre"
             [value]="clienteSeleccionado?.nombre">
@@ -62,7 +62,7 @@
         </div>
 
         <!-- Dirección -->
-        <div class="col-lg-2 col-md-6 col-12">
+        <div class="col-lg-4 col-md-6 col-12">
           <label for="direccion" class="form-label">Dirección:</label>
           <input class="form-control disabled-input" type="text" formControlName="direccion" placeholder="Dirección"
             [value]="clienteSeleccionado?.direccion">
@@ -117,7 +117,7 @@
           </div>
 
           <!-- Nombre producto -->
-          <div class="col-lg-3 col-md-6 col-12">
+          <div class="col-lg-4 col-md-6 col-12">
             <label for="nombreProducto" class="form-label">Nombre producto:</label>
             <input type="text" id="nombreProducto" class="form-control disabled-input" formControlName="nombreProducto"
               placeholder="Nombre del producto" [value]="productoSeleccionado?.nombre">

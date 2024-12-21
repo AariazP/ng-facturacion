@@ -48,6 +48,10 @@ export class HttpProductoService {
     return this.http.get<boolean>(`${this.URL_API}/productos/verificar-activo/${codigo}`); 
   }
 
+  public verificarCambios():Observable<boolean> {
+    return this.http.get<boolean>(`${this.URL_API}/productos/verificar-cambios/`); 
+  }
+
   public fueEliminado(value: string) {
     return this.http.get<boolean>(`${this.URL_API}/productos/fue-eliminado/${value}`);
   }

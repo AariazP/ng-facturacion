@@ -43,6 +43,17 @@ export class ProductoService {
         }); 
     }
 
+        /**
+     * Este método se encarga de verificar si hay cambios
+     * respecto a lo que sw tenía en la base de datos
+     */
+        public verificarCambios() {
+            if(this.httpProductoService.verificarCambios()){
+                return true;
+            }
+            return false;
+        }
+
     /**
      * Este método se encarga de verificar si un producto tiene suficiente cantidad
      * @param cantidad Cantidad de producto a verificar
