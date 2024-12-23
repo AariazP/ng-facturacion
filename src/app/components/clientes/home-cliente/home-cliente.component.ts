@@ -10,7 +10,8 @@ import { ClienteService } from 'src/app/services/domainServices/cliente.service'
 })
 export class HomeClienteComponent {
 
-  protected clientes: ClienteDTO[]; 
+  protected clientes: ClienteDTO[];
+  private clientesTodos!: ClienteDTO[];
   protected personaEditar: ClienteDTO;
   protected filtroClientes: ClienteDTO [];
   protected modoOculto: boolean = true;
@@ -31,6 +32,7 @@ export class HomeClienteComponent {
 
   ngOnInit() {
    this.obtenerClientes(this.paginaActual);
+   this.obteneClientesTodos();
    this.updateClienteCount();
   }
   
@@ -42,6 +44,14 @@ export class HomeClienteComponent {
   private updateClienteCount():void {
     this.totalClientes = this.filtroClientes.length;
   }
+
+  /**
+   * Este metodo se encarga de guardar en la variable clientesTodos
+   * todos los productos que se encuentran en LocalStorage con la variable productos
+   */
+    obteneClientesTodos() {
+      this.clientesTodos = JSON.parse(localStorage.getItem('clientes') || '[]');
+    }
 
   /**
    * Obtiene los clientes del servicio y los asigna a la variable clientes
@@ -78,7 +88,7 @@ export class HomeClienteComponent {
     const inputElement = event.target as HTMLInputElement;
     const busqueda = inputElement.value.trim().toLowerCase();
   
-    this.filtroClientes = this.clientes.filter((cliente: ClienteDTO) =>
+    this.filtroClientes = this.clientesTodos.filter((cliente: ClienteDTO) =>
       this.coincideBusqueda(cliente, busqueda)
     );
   

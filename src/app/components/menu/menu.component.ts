@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/app/env/env';
+import { ClienteService } from 'src/app/services/domainServices/cliente.service';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class MenuComponent {
   private router: Router = inject(Router);
   protected nombreNegocio: string = environment.nombreNegocio;
   private productoService: ProductoService = inject(ProductoService);
+  private clienteService: ClienteService= inject(ClienteService);
 
   /**
    * Metodo que se encarga de colapsar el menu
@@ -29,6 +31,7 @@ export class MenuComponent {
    */
   ngOnInit(): void {
     this.productoService.getTodosProductos();
+    this.clienteService.getTodosClientes();
     this.router.navigate(['/app/principal']);
   }
 

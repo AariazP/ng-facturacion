@@ -11,6 +11,7 @@ export class HomeProductoComponent {
 
 
   private productos: ProductoDTO[];
+  private productosTodos!: ProductoDTO[];
   protected productosEditar!: ProductoDTO;
   protected filtroProductos: ProductoDTO[];
   protected modoOculto: boolean = true;
@@ -20,7 +21,6 @@ export class HomeProductoComponent {
   private productoAlert: ProductoAlertService = inject(ProductoAlertService);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
-  private productosTodos!: ProductoDTO[];
 
   constructor() {
     this.productos = [];
@@ -29,14 +29,18 @@ export class HomeProductoComponent {
 
   ngOnInit() {
     this.obtenerProductos(0);
+    this.obtenerProductosTodos();    
     this.updateProductoCount();
-    this.productoService.getTodosProductos().subscribe({
-      next: (response) => {
-        this.productosTodos = response;
-        console.log(this.productosTodos);
-      }
-    });
   }
+
+  /**
+   * Este metodo se encarga de guardar en la variable productosTodos
+   * todos los productos que se encuentran en LocalStorage con la variable productos
+   */
+  obtenerProductosTodos() {
+    this.productosTodos = JSON.parse(localStorage.getItem('productos') || '[]');
+  }
+
 
   /**
    * Este método se encarga de actualizar el contador de productos
@@ -51,7 +55,7 @@ export class HomeProductoComponent {
   private obtenerProductos(page:number) {
     this.productoService.getProductos(page).subscribe(data => {
       this.productos = data.content;
-      this.filtroProductos = data.content;
+      this.filtroProductos = data.content.sort((a: any, b: any) => a.cantidad - b.cantidad);
       this.totalPaginas = data.totalPages;
       this.updateProductoCount();
     });
@@ -77,9 +81,9 @@ export class HomeProductoComponent {
   buscar(evento: Event): void {
     const input = (evento.target as HTMLInputElement).value.toLowerCase();
   
-    this.filtroProductos = this.productos.filter((producto: ProductoDTO) =>
+    this.filtroProductos = this.productosTodos.filter((producto: ProductoDTO) =>
       this.coincideConBusqueda(producto, input)
-    );
+    ).sort((a: any, b: any) => a.cantidad - b.cantidad);
   
     this.updateProductoCount();
   }

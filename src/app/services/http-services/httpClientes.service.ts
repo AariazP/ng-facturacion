@@ -45,4 +45,12 @@ export class HttpClientesService {
     return this.http.get<void>(`${this.URL_API}/clientes/recuperar-cliente/${cedula}`);
   }
 
+  public verificarCambios():Observable<boolean> {
+    return this.http.get<boolean>(`${this.URL_API}/clientes/verificar-cambios`); 
+  }
+
+  getTodosLosClientes(): Observable<ClienteDTO[]> {
+    return this.http.get<ClienteDTO[]>(`${this.URL_API}/clientes/todos`);
+  }
+
 }
