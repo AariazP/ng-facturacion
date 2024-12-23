@@ -21,6 +21,8 @@ import { PrincipalComponent } from './page/principal/principal.component';
 import { VentaComponent } from './components/venta/venta/venta.component';
 import { ListaVentasComponent } from './components/venta/lista-ventas/listaVentas.component';
 import { ProductoAlertService } from './utils/product-alert/productoAlert.service';
+import { CajaComponent } from './page/caja/caja.component';
+import { ConfiguracionComponent } from './page/configuracion/configuracion.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { ProductoAlertService } from './utils/product-alert/productoAlert.servic
     ProductoComponent,
     FacturaComponent,
     MenuComponent,
+    CajaComponent,
     HomeClienteComponent,
     Cod404Component,
     NuevoComponent,
@@ -40,6 +43,7 @@ import { ProductoAlertService } from './utils/product-alert/productoAlert.servic
     CardComponent,
     PrincipalComponent,
     VentaComponent,
+    ConfiguracionComponent,
     ListaVentasComponent
   ],
   imports: [

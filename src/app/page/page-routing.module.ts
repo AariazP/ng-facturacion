@@ -52,7 +52,7 @@ const routes: Routes = [
     {
       path: 'caja',
       canActivate: [AuthGuard],
-      component: ConfiguracionComponent
+      component: CajaComponent
     },
     {
       path: 'configuracion',
