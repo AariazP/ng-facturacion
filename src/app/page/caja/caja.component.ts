@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuComponent } from 'src/app/components/menu/menu.component';
+import { VentaDTO } from 'src/app/dto/venta/VentaDTO';
+import { CajaService } from 'src/app/services/domainServices/caja.service';
+import { AlertService } from 'src/app/utils/alert.service';
 
 @Component({
   selector: 'app-caja',
@@ -16,11 +19,14 @@ export class CajaComponent {
   modalTitle: string = '';
   actionButtonText: string = '';
   currentAction: 'ingreso' | 'egreso' = 'ingreso';
+    protected ventas: VentaDTO[];
 
   valorFormateado: string = ''; // Para almacenar el valor con formato
-  
+  private cajaService: CajaService = inject(CajaService);
 
-  constructor(private menuComponent: MenuComponent) {}
+  constructor(private menuComponent: MenuComponent, private alert: AlertService) {
+    this.ventas = [];
+  }
 
   formatearValor(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -39,13 +45,19 @@ export class CajaComponent {
     if (!this.menuComponent.estadoMenu){
       this.menuComponent.toggleCollapse();
     }
-    console.log('el menu esta', this.menuComponent.estadoMenu);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cargarDatos();
-    this.actualizarTotalEfectivo();
+    try {
+      await this.obtenerVentas();
+      this.totalVentas = this.sumarVentasDelDia(this.ventas);
+      this.actualizarTotalEfectivo();
+    } catch (error) {
+      console.error('Error durante la inicialización:', error);
+    }
   }
+  
 
   mostrarModal(action: 'ingreso' | 'egreso') {
     this.limpiarCampos(); // Limpia los campos antes de mostrar el modal
@@ -87,7 +99,6 @@ export class CajaComponent {
       }
       this.actualizarTotalEfectivo();
       this.guardarDatos();
-      console.log(`Valor ${this.currentAction === 'ingreso' ? 'ingresado' : 'egresado'}: ${valorNumerico}, Motivo: ${motivoInput}`);
       this.ocultarModal(); // Oculta el modal después de guardar
     } else {
       alert('Por favor, ingrese un valor válido.');
@@ -117,19 +128,66 @@ export class CajaComponent {
     this.movimientos = JSON.parse(localStorage.getItem('movimientos') || '[]');
   }
 
-  limpiarDatos() {
-    localStorage.removeItem('totalVentas');
-    localStorage.removeItem('totalExterno');
-    localStorage.removeItem('totalEfectivo');
-    localStorage.removeItem('ingresos');
-    localStorage.removeItem('egresos');
-    localStorage.removeItem('movimientos');
-    this.totalVentas = 0;
-    this.totalExterno = 0;
-    this.totalEfectivo = 0;
-    this.ingresos = 0;
-    this.egresos = 0;
-    this.movimientos = [];
-    console.log('Datos limpiados');
+  obtenerVentas(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let page = 0;
+      this.ventas = [];
+  
+      const obtenerVentasRecursivamente = (paginaActual: number): void => {
+        this.cajaService.getVentas(paginaActual).subscribe({
+          next: (data) => {
+            if (data.content.length > 0) {
+              // Agrega las ventas a la lista
+              this.ventas = [...this.ventas, ...data.content];
+              obtenerVentasRecursivamente(paginaActual + 1); // Llama a la siguiente página
+            } else {
+              console.log('Todas las ventas han sido cargadas:', this.ventas.length);
+              resolve(); // Resuelve la promesa cuando termina de cargar
+            }
+          },
+          error: (err) => {
+            console.error('Error al listar ventas:', err);
+            reject(err); // Rechaza la promesa si ocurre un error
+          }
+        });
+      };
+  
+      // Comienza a obtener ventas desde la primera página
+      obtenerVentasRecursivamente(page);
+    });
   }
+  
+
+  sumarVentasDelDia(ventas: VentaDTO[]): number {
+
+    const fechaActual = new Date().toISOString().split('T')[0];
+  
+    const ventasDelDia = ventas.filter(venta => venta.fecha.startsWith(fechaActual));
+  
+    const totalVentas = ventasDelDia.reduce((suma, venta) => suma + venta.total, 0);
+  
+    return totalVentas;
+  }
+  
+
+  limpiarDatos() {
+    this.cajaService.preguntarLimpiarCaja().then((result) => {
+      if (result) {
+        localStorage.removeItem('totalVentas');
+        localStorage.removeItem('totalExterno');
+        localStorage.removeItem('totalEfectivo');
+        localStorage.removeItem('ingresos');
+        localStorage.removeItem('egresos');
+        localStorage.removeItem('movimientos');
+        this.totalVentas = 0;
+        this.totalExterno = 0;
+        this.totalEfectivo = 0;
+        this.ingresos = 0;
+        this.egresos = 0;
+        this.movimientos = [];
+        console.log('Datos limpiados');
+      }
+    });
+  }
+  
 }
