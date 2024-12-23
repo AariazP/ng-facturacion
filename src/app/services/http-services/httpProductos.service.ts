@@ -11,7 +11,6 @@ import { Page } from 'src/app/dto/pageable/Page';
 })
 export class HttpProductoService {
   
-  
   private URL_API: string = environment.ApiUrl;
   private http: HttpClient = inject(HttpClient);
 
@@ -49,7 +48,7 @@ export class HttpProductoService {
   }
 
   public verificarCambios():Observable<boolean> {
-    return this.http.get<boolean>(`${this.URL_API}/productos/verificar-cambios/`); 
+    return this.http.get<boolean>(`${this.URL_API}/productos/verificar-cambios`); 
   }
 
   public fueEliminado(value: string) {
@@ -61,5 +60,9 @@ export class HttpProductoService {
 
   obtenerProductoPorCodigo(codigo: string): Observable<ProductoDTO> {
     return this.http.get<ProductoDTO>(`${this.URL_API}/productos/obtener-producto/${codigo}`);
+  }
+
+  getTodosLosProductos(): Observable<ProductoDTO[]> {
+    return this.http.get<ProductoDTO[]>(`${this.URL_API}/productos/todos`);
   }
 }

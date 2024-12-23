@@ -20,6 +20,7 @@ export class HomeProductoComponent {
   private productoAlert: ProductoAlertService = inject(ProductoAlertService);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
+  private productosTodos!: ProductoDTO[];
 
   constructor() {
     this.productos = [];
@@ -29,6 +30,12 @@ export class HomeProductoComponent {
   ngOnInit() {
     this.obtenerProductos(0);
     this.updateProductoCount();
+    this.productoService.getTodosProductos().subscribe({
+      next: (response) => {
+        this.productosTodos = response;
+        console.log(this.productosTodos);
+      }
+    });
   }
 
   /**

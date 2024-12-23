@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpProductoService } from "../http-services/httpProductos.service";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { AlertService } from "src/app/utils/alert.service";
 import { ProductoDTO } from "src/app/dto/producto/ProductoDTO";
 import { ActualizarProductoDTO } from "src/app/dto/producto/ActualizarProductoDTO";
@@ -22,6 +22,54 @@ export class ProductoService {
     public getProductos(page:number): Observable<Page<ProductoDTO>> {
         return this.httpProductoService.getProductos(page);
     }
+
+    /**
+    * Este método se encarga de obtener los productos de la base de datos
+    * @returns un observable de tipo ProductoDTO
+    */
+  public getTodosProductos(): Observable<ProductoDTO[]> {
+    this.httpProductoService.verificarCambios().subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.httpProductoService.getTodosLosProductos().subscribe({
+            next: (resp) => {
+              this.guardarLocal(resp);
+            },
+          });
+        } else {
+            this.obtenerProductoLocal
+        }
+      },
+    });
+    return of(this.obtenerProductoLocal())
+  }
+
+  guardarLocal(resp: ProductoDTO[]) {
+    localStorage.setItem('productos', JSON.stringify(resp));
+  }
+
+  /**
+   * Este metodo obtiene los productos del LocalStorage
+   * devuelve una lista de ProductoDTO
+   */
+  obtenerProductoLocal(): ProductoDTO[] {
+    const productos = localStorage.getItem('productos');
+
+    if (!productos) {
+      // Si no hay productos almacenados, devuelve un arreglo vacío
+      return [];
+    }
+    // Si hay productos, intenta parsearlos
+    try {
+      return JSON.parse(productos);
+    } catch (error) {
+      console.error(
+        'Error al parsear los productos desde localStorage:',
+        error
+      );
+      return []; // Devuelve un arreglo vacío si hay un error de formato
+    }
+  }
 
     /**
      * Este método se encarga de verificar si un producto está activo
