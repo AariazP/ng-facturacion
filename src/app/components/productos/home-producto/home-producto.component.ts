@@ -21,6 +21,7 @@ export class HomeProductoComponent {
   private productoAlert: ProductoAlertService = inject(ProductoAlertService);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
+  protected paginas: number[] = [];
 
   constructor() {
     this.productos = [];
@@ -29,7 +30,7 @@ export class HomeProductoComponent {
 
   ngOnInit() {
     this.obtenerProductos(0);
-    this.obtenerProductosTodos();    
+    this.obtenerProductosTodos();
     this.updateProductoCount();
   }
 
@@ -52,12 +53,13 @@ export class HomeProductoComponent {
   /**
    * Este método se encarga de obtener los productos de la base de datos
    */
-  private obtenerProductos(page:number) {
+  private obtenerProductos(page: number) {
     this.productoService.getProductos(page).subscribe(data => {
       this.productos = data.content;
       this.filtroProductos = data.content.sort((a: any, b: any) => a.cantidad - b.cantidad);
       this.totalPaginas = data.totalPages;
       this.updateProductoCount();
+      this.generarPaginas();
     });
   }
   /**
@@ -70,7 +72,7 @@ export class HomeProductoComponent {
       try {
         await this.productoService.eliminarProductoCodigo(codigo);
         this.obtenerProductos(0);
-      } catch (error) {}
+      } catch (error) { }
     }
   }
 
@@ -80,11 +82,11 @@ export class HomeProductoComponent {
    */
   buscar(evento: Event): void {
     const input = (evento.target as HTMLInputElement).value.toLowerCase();
-  
+
     this.filtroProductos = this.productosTodos.filter((producto: ProductoDTO) =>
       this.coincideConBusqueda(producto, input)
     ).sort((a: any, b: any) => a.cantidad - b.cantidad);
-  
+
     this.updateProductoCount();
   }
   /**
@@ -100,7 +102,7 @@ export class HomeProductoComponent {
       nombre.toLowerCase().includes(texto)
     );
   }
-  
+
   /**
    * Este método se encarga de cambiar el modo de edición de un producto
    * y mostrar el formulario de edición a través de un modal
@@ -121,20 +123,31 @@ export class HomeProductoComponent {
   }
 
   paginaAnterior() {
-    if (this.paginaActual > 0) {  
+    if (this.paginaActual > 0) {
       this.paginaActual--;
       this.cargarVentas();
     }
   }
 
   paginaSiguiente() {
-    if (this.paginaActual < this.totalPaginas - 1) {  
+    if (this.paginaActual < this.totalPaginas - 1) {
       this.paginaActual++;
       this.cargarVentas();
     }
   }
 
   cargarVentas() {
-    this.obtenerProductos(this.paginaActual);  
+    this.obtenerProductos(this.paginaActual);
+  }
+
+  // Función para generar el array de páginas según el total de páginas
+  generarPaginas() {
+    this.paginas = Array.from({ length: this.totalPaginas }, (_, index) => index);
+  }
+
+  // Función para ir a una página específica
+  irPagina(pagina: number) {
+    this.paginaActual = pagina;
+    this.cargarVentas();
   }
 }

@@ -121,18 +121,18 @@
       <ul class="pagination justify-content-center mt-3">
         <!-- Página anterior -->
         <li class="page-item" [class.disabled]="paginaActual === 0">
-          <a class="page-link" (click)="paginaAnterior()" tabindex="-1" aria-disabled="true">Anterior</a>
+          <button  class="page-link" (click)="paginaAnterior()" tabindex="-1" aria-disabled="true">Anterior</button>
         </li>
     
     <!-- Mostrar las páginas -->
     <li class="page-item" *ngFor="let page of paginas; let i = index" 
         [class.active]="paginaActual === i">
-      <a class="page-link" (click)="irPagina(i)">{{ i + 1 }}</a>
+      <button  class="page-link" (click)="irPagina(i)">{{ i + 1 }}</button>
     </li>
 
         <!-- Página siguiente -->
         <li class="page-item" [class.disabled]="paginaActual === totalPaginas - 1">
-          <a class="page-link" (click)="paginaSiguiente()">Siguiente</a>
+          <button  class="page-link" (click)="paginaSiguiente()">Siguiente</button>
         </li>
       </ul>
     </nav>

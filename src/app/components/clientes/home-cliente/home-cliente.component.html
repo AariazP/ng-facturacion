@@ -15,7 +15,7 @@
     </div>
   </div>
 
-<h6 class="totalClientes">Se han encontrado {{ totalClientes }} clientes.</h6>
+  <h6 class="totalClientes">Se han encontrado {{ totalClientes }} clientes.</h6>
 
   <div class="table-container">
     <div class="separador">
@@ -30,22 +30,22 @@
               <th class="d-none d-md-table-cell">Activo</th>
               <th class="d-none d-md-table-cell">FechaCreacion</th>
               <th class="eliminar">Acciones</th>
-          </tr>
+            </tr>
           </thead>
           <tbody>
             @for(cliente of filtroClientes; track cliente.id){
-              <tr>
-                <td>{{ cliente.cedula }}</td>
-                <td>{{ cliente.nombre }}</td>
-                <td>{{ cliente.direccion }}</td>
-                <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
-                <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
-                <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
-                <td class="eliminar">
-                  <button (click)="eliminarPorId(cliente.id)">❌</button>
-                  <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
-                </td>
-              </tr>
+            <tr>
+              <td>{{ cliente.cedula }}</td>
+              <td>{{ cliente.nombre }}</td>
+              <td>{{ cliente.direccion }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
+              <td class="eliminar">
+                <button (click)="eliminarPorId(cliente.id)">❌</button>
+                <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
+              </td>
+            </tr>
             }
           </tbody>
         </table>
@@ -55,23 +55,31 @@
     <div class="pup-up" [ngClass]="{ 'oculto': modoOculto }">
       <div class="pop-up-container">
         <span class="cerrar" (click)="editarModoOcuto()">❌</span>
-        <app-editar-cliente class="editar" [personaEditar]="personaEditar" (modoOculto)="editarModoOcuto()"></app-editar-cliente>
+        <app-editar-cliente class="editar" [personaEditar]="personaEditar"
+          (modoOculto)="editarModoOcuto()"></app-editar-cliente>
       </div>
     </div>
   </div>
+
   <div class="d-flex justify-content-center align-items-center mt-3">
-    <button class="btn btn-primary rounded-circle mx-2" 
-            (click)="paginaAnterior()" 
-            [disabled]="paginaActual === 0">
-      &lt;
-    </button>
-    <span class="fw-bold mx-2">
-      {{ paginaActual + 1 }} / {{ totalPaginas}}
-    </span>
-    <button class="btn btn-primary rounded-circle mx-2" 
-            (click)="paginaSiguiente()" 
-            [disabled]="paginaActual === totalPaginas - 1">
-      &gt;
-    </button>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center mt-3">
+        <!-- Página anterior -->
+        <li class="page-item" [class.disabled]="paginaActual === 0">
+          <button class="page-link" (click)="paginaAnterior()" tabindex="-1" aria-disabled="true">Anterior</button>
+        </li>
+
+        <!-- Mostrar las páginas -->
+        <li class="page-item" *ngFor="let page of paginas; let i = index" [class.active]="paginaActual === i">
+          <button class="page-link" (click)="irPagina(i)">{{ i + 1 }}</button>
+        </li>
+
+        <!-- Página siguiente -->
+        <li class="page-item" [class.disabled]="paginaActual === totalPaginas - 1">
+          <button class="page-link" (click)="paginaSiguiente()">Siguiente</button>
+        </li>
+      </ul>
+    </nav>
   </div>
+
 </div>

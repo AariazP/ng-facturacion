@@ -27,6 +27,7 @@ export class FacturacionElectronicaComponent {
   private menuComponent: MenuComponent = inject(MenuComponent);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
+  protected paginas: number[] = [];
 
   constructor() {
     this.ventas = [];
@@ -57,6 +58,7 @@ export class FacturacionElectronicaComponent {
       this.totalPaginas = data.totalPages;
       this.ventas = data.content;
       this.ventasFiltradas = data.content;
+      this.generarPaginas();
     })
   }
 
@@ -191,9 +193,15 @@ export class FacturacionElectronicaComponent {
   cargarVentas() {
     this.obtenerVentas(this.paginaActual);  
   }
+  
+  // Función para generar el array de páginas según el total de páginas
+  generarPaginas() {
+    this.paginas = Array.from({ length: this.totalPaginas }, (_, index) => index);
+  }
 
   // Función para ir a una página específica
   irPagina(pagina: number) {
     this.paginaActual = pagina;
+    this.cargarVentas();
   }
 }

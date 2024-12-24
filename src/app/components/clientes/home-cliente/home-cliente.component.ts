@@ -13,15 +13,16 @@ export class HomeClienteComponent {
   protected clientes: ClienteDTO[];
   private clientesTodos!: ClienteDTO[];
   protected personaEditar: ClienteDTO;
-  protected filtroClientes: ClienteDTO [];
+  protected filtroClientes: ClienteDTO[];
   protected modoOculto: boolean = true;
   /* La variable totalClientes se utiliza para mostrar el total de clientes en la tabla
   No es igual a la longitud de filtroClientes porque filtroClientes se actualiza con la búsqueda */
-  protected totalClientes: number; 
+  protected totalClientes: number;
   private alertClient: ClienteAlertService = inject(ClienteAlertService);
   private clienteService: ClienteService = inject(ClienteService);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
+  protected paginas: number[] = [];
 
   constructor() {
     this.personaEditar = new ClienteDTO();
@@ -31,17 +32,17 @@ export class HomeClienteComponent {
   }
 
   ngOnInit() {
-   this.obtenerClientes(this.paginaActual);
-   this.obteneClientesTodos();
-   this.updateClienteCount();
+    this.obtenerClientes(this.paginaActual);
+    this.obteneClientesTodos();
+    this.updateClienteCount();
   }
-  
+
   /**
    * Actualiza el total de clientes en la tabla
    * Se llama cada vez que se actualiza filtroClientes que es el arreglo que se muestra en la tabla
    * cuando se realiza una búsqueda
    */
-  private updateClienteCount():void {
+  private updateClienteCount(): void {
     this.totalClientes = this.filtroClientes.length;
   }
 
@@ -49,19 +50,20 @@ export class HomeClienteComponent {
    * Este metodo se encarga de guardar en la variable clientesTodos
    * todos los productos que se encuentran en LocalStorage con la variable productos
    */
-    obteneClientesTodos() {
-      this.clientesTodos = JSON.parse(localStorage.getItem('clientes') || '[]');
-    }
+  obteneClientesTodos() {
+    this.clientesTodos = JSON.parse(localStorage.getItem('clientes') || '[]');
+  }
 
   /**
    * Obtiene los clientes del servicio y los asigna a la variable clientes
    */
-  private obtenerClientes(page:number): void {
+  private obtenerClientes(page: number): void {
     this.clienteService.obtenerClientes(page).then((page) => {
       this.clientes = page.content;
       this.filtroClientes = page.content;
       this.totalPaginas = page.totalPages;
       this.updateClienteCount();
+      this.generarPaginas();
     });
   }
 
@@ -75,26 +77,26 @@ export class HomeClienteComponent {
     if (result) {
       try {
         await this.clienteService.eliminarClienteId(id);
-        this.obtenerClientes(this.paginaActual); 
-      } catch (error) {}
+        this.obtenerClientes(this.paginaActual);
+      } catch (error) { }
     }
   }
 
   /**
    * Busca un cliente por su cedula, nombre o id
    * @param cedula 
-   */  
+   */
   protected buscar(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const busqueda = inputElement.value.trim().toLowerCase();
-  
+
     this.filtroClientes = this.clientesTodos.filter((cliente: ClienteDTO) =>
       this.coincideBusqueda(cliente, busqueda)
     );
-  
+
     this.updateClienteCount();
   }
-  
+
   /**
    * Este método verifica si un cliente coincide con la búsqueda
    * @param cliente DTO del cliente
@@ -108,7 +110,7 @@ export class HomeClienteComponent {
       cliente.nombre.toLowerCase().includes(busqueda)
     );
   }
-  
+
 
   /**
    * Cambia el modo de edición de la tabla
@@ -123,26 +125,37 @@ export class HomeClienteComponent {
   /**
    * Cambia del modo de edición al modo oculto
    */
-  protected editarModoOcuto(){
+  protected editarModoOcuto() {
     this.modoOculto = !this.modoOculto;
     this.obtenerClientes(this.paginaActual);
   }
 
   paginaAnterior() {
-    if (this.paginaActual > 0) {  
+    if (this.paginaActual > 0) {
       this.paginaActual--;
       this.cargarVentas();
     }
   }
 
   paginaSiguiente() {
-    if (this.paginaActual < this.totalPaginas - 1) {  
+    if (this.paginaActual < this.totalPaginas - 1) {
       this.paginaActual++;
       this.cargarVentas();
     }
   }
 
   cargarVentas() {
-    this.obtenerClientes(this.paginaActual);  
+    this.obtenerClientes(this.paginaActual);
+  }
+
+  // Función para generar el array de páginas según el total de páginas
+  generarPaginas() {
+    this.paginas = Array.from({ length: this.totalPaginas }, (_, index) => index);
+  }
+
+  // Función para ir a una página específica
+  irPagina(pagina: number) {
+    this.paginaActual = pagina;
+    this.cargarVentas();
   }
 }

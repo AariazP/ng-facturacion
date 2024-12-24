@@ -33,7 +33,6 @@ export class ListaVentasComponent {
     this.ventas = [];
     this.ventasFiltradas = [];
     this.ventaSeleccionada = null;
-    this.generarPaginas();
   }
 
   ngOnInit() {
