@@ -24,6 +24,7 @@ import { ProductoAlertService } from './utils/product-alert/productoAlert.servic
 import { CajaComponent } from './page/caja/caja.component';
 import { ConfiguracionComponent } from './page/configuracion/configuracion.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +52,7 @@ import { ConfiguracionComponent } from './page/configuracion/configuracion.compo
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
     // PageModule
   ],
   providers: [ListaVentasComponent, ProductoAlertService],
