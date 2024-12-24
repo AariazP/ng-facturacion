@@ -13,10 +13,11 @@ export const environment = {
 
   //Este es el nombre de la tienda
   nombreNegocio: 'Remates la 7a',
-  direccionNegocio: 'Quimbaya Quindío Cra. 7 N.14-11, NIT: 890.107.487-3',
+  direccionNegocio: 'Quimbaya Quindío Cra. 7 N.14-11',
   gerenteNegocio: 'Alcides Duque',
   fechaExpedicion: '2024/12/10',
   telefonos: '7537193/XXXXXXXX',
-  resolucionDian: '123456789 de Jun 15/2024',
-
+  resolucionDian: '123456789',
+  nit: '890.107.487-3',
+  correo: 'remates7a@gmail.com'
 };

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/app/env/env';
+import { CajaComponent } from 'src/app/page/caja/caja.component';
 import { ClienteService } from 'src/app/services/domainServices/cliente.service';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
 
@@ -43,5 +44,4 @@ export class MenuComponent {
     localStorage.removeItem('id');
     this.router.navigate(['/login']);
   }
-
 }

@@ -9,6 +9,7 @@ import { AlertService } from 'src/app/utils/alert.service';
   templateUrl: './caja.component.html',
   styleUrls: ['./caja.component.css']
 })
+
 export class CajaComponent {
   totalVentas: number = 0;
   totalExterno: number = 0;
