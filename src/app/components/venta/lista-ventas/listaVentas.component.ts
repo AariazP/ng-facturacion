@@ -27,11 +27,13 @@ export class ListaVentasComponent {
   private menuComponent: MenuComponent = inject(MenuComponent);
   protected paginaActual: number = 0;
   protected totalPaginas!: number;
+  protected paginas: number[] = [];
 
   constructor() {
     this.ventas = [];
     this.ventasFiltradas = [];
     this.ventaSeleccionada = null;
+    this.generarPaginas();
   }
 
   ngOnInit() {
@@ -57,6 +59,7 @@ export class ListaVentasComponent {
       this.totalPaginas = data.totalPages;
       this.ventas = data.content;
       this.ventasFiltradas = data.content;
+      this.generarPaginas();
     })
   }
 
@@ -175,20 +178,31 @@ export class ListaVentasComponent {
   }
 
   paginaAnterior() {
-    if (this.paginaActual > 0) {  
+    if (this.paginaActual > 0) {
       this.paginaActual--;
       this.cargarVentas();
     }
   }
 
   paginaSiguiente() {
-    if (this.paginaActual < this.totalPaginas - 1) {  
+    if (this.paginaActual < this.totalPaginas - 1) {
       this.paginaActual++;
       this.cargarVentas();
     }
   }
 
   cargarVentas() {
-    this.obtenerVentas(this.paginaActual);  
+    this.obtenerVentas(this.paginaActual);
+  }
+
+  // Función para generar el array de páginas según el total de páginas
+  generarPaginas() {
+    this.paginas = Array.from({ length: this.totalPaginas }, (_, index) => index);
+  }
+
+  // Función para ir a una página específica
+  irPagina(pagina: number) {
+    this.paginaActual = pagina;
+    this.cargarVentas();
   }
 }

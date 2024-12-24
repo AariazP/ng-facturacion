@@ -191,4 +191,9 @@ export class FacturacionElectronicaComponent {
   cargarVentas() {
     this.obtenerVentas(this.paginaActual);  
   }
+
+  // Función para ir a una página específica
+  irPagina(pagina: number) {
+    this.paginaActual = pagina;
+  }
 }
