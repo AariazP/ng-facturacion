@@ -225,3 +225,23 @@ button#nuevo {
   font-size: 16px;
   margin-bottom: 10px;
 }
+
+
+.pagination {
+  flex-wrap: wrap; /* Permite que las páginas se ajusten en pantallas pequeñas */
+}
+
+.page-item {
+  margin-top: 2px; /* Agrega separación entre los botones */
+}
+
+.page-link {
+  min-width: 40px; /* Tamaño mínimo para los botones */
+  text-align: center; /* Centrar texto en los botones */
+}
+
+@media (max-width: 576px) {
+  .pagination {
+    justify-content: center; /* Asegura que todo se centre en pantallas pequeñas */
+  }
+}
