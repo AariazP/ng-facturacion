@@ -17,4 +17,14 @@ export class ConfiguracionService {
       throw new Error(`La variable de entorno "${key}" no existe en el archivo environment.`);
     }
   }
+
+  public setVariable<K extends keyof typeof environment>(key: K, value: typeof environment[K]): void {
+    if (environment.hasOwnProperty(key)) {
+      environment[key] = value; // Aquí TypeScript sabe que el tipo es compatible
+    } else {
+      throw new Error(`La variable de entorno "${key}" no existe en el archivo environment.`);
+    }
+  }
+  
+  
 }

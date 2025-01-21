@@ -15,7 +15,7 @@ export class HttpProductoService {
   private http: HttpClient = inject(HttpClient);
 
   public getProductos(page:number): Observable<Page<ProductoDTO>> {
-    return this.http.get<Page<ProductoDTO>>(`${this.URL_API}/productos?page=${page}`);
+    return this.http.get<Page<ProductoDTO>>(`${this.URL_API}/productos?page=${page}&size=15`);
   }
 
   public getTipoImpuesto(): Observable<string[]>  {

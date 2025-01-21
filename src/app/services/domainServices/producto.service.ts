@@ -11,7 +11,7 @@ import { Page } from "src/app/dto/pageable/Page";
     providedIn: 'root'
 })
 export class ProductoService {
-    
+
     private httpProductoService: HttpProductoService = inject(HttpProductoService);
     private alert: AlertService = inject(AlertService);
 
@@ -19,7 +19,7 @@ export class ProductoService {
      * Este método se encarga de obtener los productos de la base de datos
      * @returns un observable de tipo ProductoDTO
      */
-    public getProductos(page:number): Observable<Page<ProductoDTO>> {
+    public getProductos(page: number): Observable<Page<ProductoDTO>> {
         return this.httpProductoService.getProductos(page);
     }
 
@@ -29,19 +29,19 @@ export class ProductoService {
     */
     public getTodosProductos(): Observable<ProductoDTO[]> {
         this.httpProductoService.verificarCambios().subscribe({
-        next: (resp) => {
-        if (resp) {
-            this.httpProductoService.getTodosLosProductos().subscribe({
             next: (resp) => {
-                this.guardarLocal(resp);
+                if (resp) {
+                    this.httpProductoService.getTodosLosProductos().subscribe({
+                        next: (resp) => {
+                            this.guardarLocal(resp);
+                        },
+                    });
+                } else {
+                    this.obtenerProductoLocal
+                }
             },
-            });
-        } else {
-            this.obtenerProductoLocal
-        }
-        },
-    });
-    return of(this.obtenerProductoLocal())
+        });
+        return of(this.obtenerProductoLocal())
     }
 
     guardarLocal(resp: ProductoDTO[]) {
@@ -53,22 +53,22 @@ export class ProductoService {
     * devuelve una lista de ProductoDTO
     */
     obtenerProductoLocal(): ProductoDTO[] {
-    const productos = localStorage.getItem('productos');
+        const productos = localStorage.getItem('productos');
 
-    if (!productos) {
-      // Si no hay productos almacenados, devuelve un arreglo vacío
-        return [];
-    }
-    // Si hay productos, intenta parsearlos
-    try {
-        return JSON.parse(productos);
-    } catch (error) {
-        console.error(
-        'Error al parsear los productos desde localStorage:',
-        error
-        );
-      return []; // Devuelve un arreglo vacío si hay un error de formato
-    }
+        if (!productos) {
+            // Si no hay productos almacenados, devuelve un arreglo vacío
+            return [];
+        }
+        // Si hay productos, intenta parsearlos
+        try {
+            return JSON.parse(productos);
+        } catch (error) {
+            console.error(
+                'Error al parsear los productos desde localStorage:',
+                error
+            );
+            return []; // Devuelve un arreglo vacío si hay un error de formato
+        }
     }
 
     /**
@@ -88,19 +88,19 @@ export class ProductoService {
                     reject(false);
                 }
             });
-        }); 
+        });
     }
 
-        /**
-     * Este método se encarga de verificar si hay cambios
-     * respecto a lo que sw tenía en la base de datos
-     */
-        public verificarCambios() {
-            if(this.httpProductoService.verificarCambios()){
-                return true;
-            }
-            return false;
+    /**
+ * Este método se encarga de verificar si hay cambios
+ * respecto a lo que sw tenía en la base de datos
+ */
+    public verificarCambios() {
+        if (this.httpProductoService.verificarCambios()) {
+            return true;
         }
+        return false;
+    }
 
     /**
      * Este método se encarga de verificar si un producto tiene suficiente cantidad
@@ -166,8 +166,9 @@ export class ProductoService {
      */
     public guardarProducto(producto: CrearProductoDTO): void {
         this.httpProductoService.enviarDatos(producto).subscribe({
-            next: () => {this.alert.simpleSuccessAlert('Producto guardado correctamente');},
-            error: (error) => {this.alert.simpleErrorAlert(error.error.mensaje);
+            next: () => { this.alert.simpleSuccessAlert('Producto guardado correctamente'); },
+            error: (error) => {
+                this.alert.simpleErrorAlert(error.error.mensaje);
                 console.log(error);
             }
         });
@@ -180,7 +181,7 @@ export class ProductoService {
     public getTipoImpuesto(): Observable<string[]> {
         return this.httpProductoService.getTipoImpuesto();
     }
-    
+
     /**
      * Este método se encarga de verificar si un producto existe
      * y si fue eliminado anteriormente

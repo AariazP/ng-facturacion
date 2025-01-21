@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/app/env/env';
 import { ConfiguracionService } from 'src/app/services/domainServices/configuracion.service';
+import { AlertService } from 'src/app/utils/alert.service';
 
 @Component({
   selector: 'app-facturacion',
@@ -8,7 +10,7 @@ import { ConfiguracionService } from 'src/app/services/domainServices/configurac
   styleUrls: ['./configuracion.component.css']
 })
 export class ConfiguracionComponent implements OnInit {
-  
+
   placeholders: { [key: string]: string } = {};
   protected formulario!: FormGroup;
   private IVA!: string | number;
@@ -21,8 +23,9 @@ export class ConfiguracionComponent implements OnInit {
   private resolucionDian!: string | number;
   private correo!: string | number;
   private configuracionService: ConfiguracionService = inject(ConfiguracionService);
+  private alertService: AlertService = inject(AlertService);
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.createForm();  // Crear el formulario
@@ -54,7 +57,7 @@ export class ConfiguracionComponent implements OnInit {
       this.IVA = this.configuracionService.getVariable('IVA');
       this.NIT = this.configuracionService.getVariable('nit');
       this.correo = this.configuracionService.getVariable('correo');
-  
+
       // Inicialización de placeholders
       this.placeholders = {
         razonSocial: String(this.gerenteNegocio),
@@ -75,12 +78,45 @@ export class ConfiguracionComponent implements OnInit {
     }
   }
 
-    onSubmit(): void {
-      if (this.formulario.valid) {
-        console.log(this.formulario.value);
-      } else {
-        console.log('Formulario no válido');
+  onSubmit(): void {
+    const valoresActuales = this.formulario.value;
+  
+    // Mapa entre las claves del formulario y las claves del environment
+    const keyMap: { [key: string]: keyof typeof environment } = {
+      razonSocial: 'gerenteNegocio',
+      nit: 'nit',
+      resolucionDIAN: 'resolucionDian',
+      fechaExpedicionDIAN: 'fechaExpedicion',
+      direccion: 'direccionNegocio',
+      telefono: 'telefonos',
+      correoElectronico: 'correo',
+      iva: 'IVA',
+    };
+  
+    for (const key in valoresActuales) {
+      if (valoresActuales.hasOwnProperty(key)) {
+        const control = this.formulario.get(key);
+  
+        // Verificar si el valor cambió, es válido, y la clave está en el mapa
+        if (
+          String(valoresActuales[key]) !== this.placeholders[key] && // Cambió
+          control && // Existe el control
+          control.valid && // Es válido
+          keyMap[key] // Existe en el mapa
+        ) {
+          try {
+            // Llamar al método setVariable del servicio
+            this.configuracionService.setVariable(
+              keyMap[key], // Clave traducida
+              valoresActuales[key] // Nuevo valor
+            );
+            this.alertService.simpleSuccessAlert(`"${key}" actualizado correctamente`);
+          } catch (error) {
+            console.error(`Error al actualizar "${key}": ${error}`);
+          }
+        }
       }
     }
-  
+  }
+
 }
