@@ -29,13 +29,18 @@
     .details p {
       margin: 5px 0;
     }
+    .divider {
+      border-top: 1px dashed #aaa; /* Guiones en lugar de puntos */
+      margin: 20px 0; /* Espaciado arriba y abajo */
+      border-width: 2px; /* Grosor de los guiones */
+    }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
     table th, table td {
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
       padding: 4px;
       text-align: left;
     }
@@ -108,6 +113,8 @@
       <p>Fecha de la venta: {{fechaVenta}}</p>
       <p>Fecha de la factura: {{fecha}}</p>
     </div>
+
+    <hr>
   
     <!-- Detalles -->
     <div class="details">
@@ -116,6 +123,8 @@
       <p>Dirección: {{direccion}}</p>
       <p>Correo: {{correo}}</p>
     </div>
+
+    <div class="divider"></div>
 
     <table>
       <thead>
@@ -128,7 +137,9 @@
 
     <!-- Impuestos -->
     <div class="taxes">
-      <p>Forma de pago: CONTADO</p>
+
+      <div class="divider"></div>
+
       <p><strong>Detalle de Impuestos:</strong></p>
     </div>
 
@@ -155,13 +166,18 @@
           <td></td>
           <td>{{iva}}</td>
         </tr>
-        <tr>
+        <tr class="divider">
           <td><strong>TOTAL</strong></td>
           <td></td>
           <td><strong>{{total}}</strong></td>
         </tr>
+        <tr class="divider"></tr>
       </tbody>
     </table>
+
+    <p>Forma de pago: CONTADO</p>
+
+    <hr>
 
     <!-- Código QR -->
     <div class="qr-code">
@@ -173,6 +189,9 @@
     <div class="footer">
       <p>CUFE:</p>
       <p class="cufe">{{cufe}}</p>
+      <br>
+      <p>A esta factura de venta aplican las normas relativas a la letra de cambio (articulo 5 Ley 1231 de 2008). Con esta el Comprador declara haber recibido real y materialmente las mercancias o prestación de servicios descritos en este título - Valor.</p>
+      <br>
       <p>Desarrollador de software del Sistema P.O.S</p>
       <p>Teléfono: 3128739355</p>
     </div>
