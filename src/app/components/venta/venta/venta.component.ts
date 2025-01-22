@@ -33,12 +33,15 @@ export class VentaComponent implements DoCheck {
   protected productosFiltrados: ProductoDTO[] = [];
   protected clientesFiltrados: ClienteDTO[] = [];
   protected aplicarDescuento: boolean = false;
-  protected valorDescuento: number | null = null;
+  protected valorDescuento: string | null = null;
   private formBuilder: FormBuilder = inject(FormBuilder);
   private clienteService: ClienteService = inject(ClienteService);
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
+  private descuento!: number;
+  private totalReal!: number;
+  protected descuentoAplicado: boolean = false;
   valorFormateado: string = ''; // Para almacenar el valor con formato de dinero 
 
   constructor() {
@@ -46,6 +49,7 @@ export class VentaComponent implements DoCheck {
     this.productos = [];
     this.listProductos = [];
     this.stockProducto = 0;
+    this.descuento = 0;
   }
 
   ngDoCheck() {
@@ -57,16 +61,7 @@ export class VentaComponent implements DoCheck {
     this.buildForms();
     this.listarProductos();
     this.listarClientes();
-  }
-
-  /**
-    * Método que se ejecuta cuando cambia el estado del checkbox.
-    * Si se desmarca, se reinicia el valor del descuento.
-    */
-  onCheckboxChange(): void {
-    if (!this.aplicarDescuento) {
-      this.valorDescuento = null; // Reinicia el descuento cuando el checkbox se desmarca
-    }
+    this.valorDescuento = null;
   }
 
   /**
@@ -74,7 +69,7 @@ export class VentaComponent implements DoCheck {
    * Verifica si el descuento está activado y si el valor ingresado es válido.
    */
   applyDiscountValue(): void {
-    if (this.aplicarDescuento && this.valorDescuento !== null && this.valorDescuento > 0) {
+    if (this.aplicarDescuento && this.valorDescuento !== null && +this.valorDescuento > 0) {
       console.log(`Descuento aplicado: ${this.valorDescuento}`);
       alert(`¡Se ha aplicado un descuento de ${this.valorDescuento}!`);
     } else {
@@ -86,15 +81,35 @@ export class VentaComponent implements DoCheck {
     const input = event.target as HTMLInputElement;
     const valorSinFormato = input.value.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
     const valorNumerico = parseInt(valorSinFormato, 10);
+    this.descuento = 0;
 
     if (!isNaN(valorNumerico)) {
       this.valorFormateado = valorNumerico.toLocaleString('en-US'); // Formato con comas
-      console.log(this.valorFormateado);
-    } else {
-      this.valorFormateado = '';
-    }
+      this.valorDescuento = this.valorFormateado;
+      input.value = this.valorFormateado;
+      if(this.valorDescuento != ''){
+        this.descuento = valorNumerico;
+      }
+    } 
+    console.log('Descuento:', this.descuento);
   }
 
+  public reducirTotal(){
+    this.total = this.totalReal
+    if(this.total - this.descuento < 0){
+      this.ventaService.mostrarErrorTotalNegativo();
+    }else{
+      this.aplicarDescuento = false;
+      this.total = this.total - this.descuento;
+      this.descuentoAplicado = true;
+    }
+    
+  }
+
+  public cancelarDescuento(){
+    this.total = this.totalReal;
+    this.descuentoAplicado = false;
+  }
   /**
    * Este metodo se encarga de construir los formularios de la vista
    */
@@ -204,6 +219,7 @@ export class VentaComponent implements DoCheck {
     let venta = new CrearVentaDTO();
     venta.cliente = this.formulario.get('cliente')!.value;
     venta.usuario = Number(localStorage.getItem('id'));
+    venta.descuento = this.descuento;
     return venta
   }
 
@@ -345,7 +361,8 @@ export class VentaComponent implements DoCheck {
   private calcularValores(): void {
     this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
-    this.total = this.subtotal;
+    this.total = this.subtotal - this.descuento;
+    this.totalReal = this.total;
   }
 
   /**

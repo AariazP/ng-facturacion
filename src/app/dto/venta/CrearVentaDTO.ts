@@ -7,6 +7,7 @@ export class CrearVentaDTO {
     usuario!: number;
     dineroRecibido!: number;
     cambio!: number;
+    descuento!: number;
 
     constructor() {
         this.listDetalleVenta = [];

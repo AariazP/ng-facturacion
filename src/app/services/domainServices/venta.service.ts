@@ -35,9 +35,10 @@ export class VentaService {
   public crearVenta(venta: CrearVentaDTO, total: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
     this.alert.simpleInputAlert().then((result) => {
-      if (!this.validarDinero(result, total, this.dinero)) return resolve(false);
+      if (!this.validarDinero(result, total)) return resolve(false);
       if (!this.verificarExistenciaCliente(venta.cliente)) return resolve(false);
-      venta.dineroRecibido = total;
+      venta.dineroRecibido = result-venta.descuento;
+      console.log(venta.dineroRecibido);
       venta.cambio = this.dinero - total;
       this.guardarVenta(venta, total);
     })});
@@ -51,7 +52,7 @@ export class VentaService {
    * @param dinero es el dinero ingresado por el usuario
    * @returns un booleano que indica si el dinero es valido
    */
-  private validarDinero(result: number, total: number, dinero: number): boolean {
+  private validarDinero(result: number, total: number): boolean {
 
     let isValid = true;
 
@@ -199,6 +200,10 @@ export class VentaService {
 
   preguntarEliminarVenta() {
     return this.alert.confirmAlert('¿Está seguro que desea eliminar la venta?', 'Esta acción no se puede deshacer');
+  }
+
+  mostrarErrorTotalNegativo() {
+    this.alert.simpleErrorAlert('El total de la venta no puede ser negativo');
   }
 
 }

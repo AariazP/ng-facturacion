@@ -18,6 +18,7 @@ export class ImprimirFacturaDTO{
     total!: number;
     cambio!: number;
     base!: number;
+    descuento!: number;
     cufe!: string;
     iva!: number;
     dineroRecibido!: number;
@@ -32,6 +33,7 @@ export class ImprimirFacturaDTO{
         factura.correo = venta.correoCliente;
         factura.dineroRecibido = venta.dineroRecibido;
         factura.cambio = venta.cambio;
+        factura.descuento = venta.descuento;
         ImprimirFacturaDTO.agregarProductos(venta, factura);
         factura.total = venta.total;
         factura.base = venta.total - venta.total*this.iva;

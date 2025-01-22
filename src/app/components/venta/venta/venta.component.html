@@ -201,8 +201,7 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="applyDiscountCheckbox" [(ngModel)]="aplicarDescuento"
-                  (change)="onCheckboxChange()" />
+                <input class="form-check-input" type="checkbox" id="applyDiscountCheckbox" [(ngModel)]="aplicarDescuento"/>
                 <label class="form-check-label ms-2" for="applyDiscountCheckbox">
                   Aplicar descuento
                 </label>
@@ -214,6 +213,12 @@
               <input type="text" class="form-control" id="discountValue"  [value]="valorFormateado" (input)="formatearValor($event)"  [(ngModel)]="valorDescuento"
                 placeholder="Ingrese el valor del descuento" />
             </div>
+            @if(aplicarDescuento){
+              <button class="btn btn-primary w-100 BotonGeneral" id="azul" (click)="reducirTotal()">Aplicar descuento</button>
+            }
+            @if(descuentoAplicado){
+              <button class="btn btn-danger w-100 BotonCancelar" (click)="cancelarDescuento()">Cancelar descuento</button>
+            }
           </div>
         </div>
 
@@ -222,7 +227,7 @@
               <!-- <p><span>Subtotal: </span> {{subtotal | currency }}  </p> -->
               <p><span>IVA ({{porcentajeIva}}%):</span> ${{igv | number: '1.0-0' }}</p>
               <div *ngIf="aplicarDescuento">
-                <p><span>Descuento:</span> ${{valorDescuento | number: '1.0-0' }}</p>
+                <p><span>Descuento:</span> ${{valorDescuento}}</p>
               </div>
               <p><span>Total a pagar:</span> ${{total | number: '1.0-0' }}</p>
             </div>

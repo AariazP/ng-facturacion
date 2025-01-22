@@ -92,6 +92,7 @@ export class FacturaService {
             .replace('{{correo}}', data.correo)
             .replace('{{direccion}}', data.direccion)
             .replace('{{base}}', formatoDinero(data.base))
+            .replace('{{descuento}}', formatoDinero(data.descuento))
             .replace('{{iva}}', formatoDinero(data.iva))
             .replace('{{efectivo}}', formatoDinero(data.dineroRecibido))
             .replace('{{total}}', formatoDinero(data.total))

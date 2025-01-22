@@ -12,5 +12,6 @@ export class FullVentaDTO {
     usuario!:number;
     dineroRecibido!:number;
     cambio!:number;
+    descuento!:number;
     detalleVentaList!: FullDetalleDTO[];
 }
