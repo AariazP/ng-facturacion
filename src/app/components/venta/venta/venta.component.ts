@@ -39,7 +39,7 @@ export class VentaComponent implements DoCheck {
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
-  valorFormateado: string = ''; // Para almacenar el valor con formato
+  valorFormateado: string = ''; // Para almacenar el valor con formato de dinero 
 
   constructor() {
     this.clientes = [];
