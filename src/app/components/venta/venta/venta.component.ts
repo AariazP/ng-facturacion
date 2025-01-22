@@ -32,11 +32,14 @@ export class VentaComponent implements DoCheck {
   protected total = 0;
   protected productosFiltrados: ProductoDTO[] = [];
   protected clientesFiltrados: ClienteDTO[] = [];
+  protected aplicarDescuento: boolean = false;
+  protected valorDescuento: number | null = null;
   private formBuilder: FormBuilder = inject(FormBuilder);
   private clienteService: ClienteService = inject(ClienteService);
   private productoService: ProductoService = inject(ProductoService);
   private ventaService: VentaService = inject(VentaService);
   private menuComponent: MenuComponent = inject(MenuComponent);
+  valorFormateado: string = ''; // Para almacenar el valor con formato
 
   constructor() {
     this.clientes = [];
@@ -54,6 +57,42 @@ export class VentaComponent implements DoCheck {
     this.buildForms();
     this.listarProductos();
     this.listarClientes();
+  }
+
+  /**
+    * Método que se ejecuta cuando cambia el estado del checkbox.
+    * Si se desmarca, se reinicia el valor del descuento.
+    */
+  onCheckboxChange(): void {
+    if (!this.aplicarDescuento) {
+      this.valorDescuento = null; // Reinicia el descuento cuando el checkbox se desmarca
+    }
+  }
+
+  /**
+   * Método que se ejecuta al hacer clic en el botón "Aplicar".
+   * Verifica si el descuento está activado y si el valor ingresado es válido.
+   */
+  applyDiscountValue(): void {
+    if (this.aplicarDescuento && this.valorDescuento !== null && this.valorDescuento > 0) {
+      console.log(`Descuento aplicado: ${this.valorDescuento}`);
+      alert(`¡Se ha aplicado un descuento de ${this.valorDescuento}!`);
+    } else {
+      alert('Ingrese un valor válido para el descuento.');
+    }
+  }
+
+  formatearValor(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const valorSinFormato = input.value.replace(/[^\d]/g, ''); // Elimina caracteres no numéricos
+    const valorNumerico = parseInt(valorSinFormato, 10);
+
+    if (!isNaN(valorNumerico)) {
+      this.valorFormateado = valorNumerico.toLocaleString('en-US'); // Formato con comas
+      console.log(this.valorFormateado);
+    } else {
+      this.valorFormateado = '';
+    }
   }
 
   /**
@@ -98,64 +137,64 @@ export class VentaComponent implements DoCheck {
     return true;
   }
 
-/**
- * Este método se encarga de listar todos los productos disponibles en la base de datos,
- * haciendo solicitudes hasta que no se reciban más productos.
- */
-protected listarProductos(): void {
-  let page = 0; 
-  this.productos = []; 
+  /**
+   * Este método se encarga de listar todos los productos disponibles en la base de datos,
+   * haciendo solicitudes hasta que no se reciban más productos.
+   */
+  protected listarProductos(): void {
+    let page = 0;
+    this.productos = [];
 
-  const obtenerProductosRecursivamente = (paginaActual: number): void => {
-    this.productoService.getProductos(paginaActual).subscribe({
-      next: (data) => {
-        // Si hay productos en la página actual, se agregan a la lista de productos
-        if (data.content.length > 0) {
-          this.productos = [...this.productos, ...data.content];
-          obtenerProductosRecursivamente(paginaActual + 1); // Llama a la siguiente página
-        } else {
-          console.log('Todos los productos han sido cargados:', this.productos.length);
+    const obtenerProductosRecursivamente = (paginaActual: number): void => {
+      this.productoService.getProductos(paginaActual).subscribe({
+        next: (data) => {
+          // Si hay productos en la página actual, se agregan a la lista de productos
+          if (data.content.length > 0) {
+            this.productos = [...this.productos, ...data.content];
+            obtenerProductosRecursivamente(paginaActual + 1); // Llama a la siguiente página
+          } else {
+            console.log('Todos los productos han sido cargados:', this.productos.length);
+          }
+        },
+        error: (err) => {
+          console.error('Error al listar productos:', err);
         }
-      },
-      error: (err) => {
-        console.error('Error al listar productos:', err);
-      }
-    });
-  };
+      });
+    };
 
-  // Comienza a obtener productos desde la primera página
-  obtenerProductosRecursivamente(page);
-}
+    // Comienza a obtener productos desde la primera página
+    obtenerProductosRecursivamente(page);
+  }
 
 
-/**
- * Este método se encarga de listar todos los clientes disponibles en la base de datos,
- * haciendo solicitudes hasta que no se reciban más productos.
- */
-protected listarClientes(): void {
-  let page = 0; 
-  this.clientes = []; 
+  /**
+   * Este método se encarga de listar todos los clientes disponibles en la base de datos,
+   * haciendo solicitudes hasta que no se reciban más productos.
+   */
+  protected listarClientes(): void {
+    let page = 0;
+    this.clientes = [];
 
-  const obtenerClientesRecursivamente = (paginaActual: number): void => {
-    this.clienteService.getClientes(paginaActual).subscribe({
-      next: (data) => {
-        // Si hay productos en la página actual, se agregan a la lista de productos
-        if (data.content.length > 0) {
-          this.clientes = [...this.clientes, ...data.content];
-          obtenerClientesRecursivamente(paginaActual + 1); // Llama a la siguiente página
-        } else {
-          console.log('Todos los clientes han sido cargados:', this.clientes.length);
+    const obtenerClientesRecursivamente = (paginaActual: number): void => {
+      this.clienteService.getClientes(paginaActual).subscribe({
+        next: (data) => {
+          // Si hay productos en la página actual, se agregan a la lista de productos
+          if (data.content.length > 0) {
+            this.clientes = [...this.clientes, ...data.content];
+            obtenerClientesRecursivamente(paginaActual + 1); // Llama a la siguiente página
+          } else {
+            console.log('Todos los clientes han sido cargados:', this.clientes.length);
+          }
+        },
+        error: (err) => {
+          console.error('Error al listar clientes:', err);
         }
-      },
-      error: (err) => {
-        console.error('Error al listar clientes:', err);
-      }
-    });
-  };
+      });
+    };
 
-  // Comienza a obtener productos desde la primera página
-  obtenerClientesRecursivamente(page);
-}
+    // Comienza a obtener productos desde la primera página
+    obtenerClientesRecursivamente(page);
+  }
 
   /**
    * Este metodo devuelve un objeto de tipo CrearVentaDTO con los datos del formulario
@@ -184,9 +223,10 @@ protected listarClientes(): void {
   private procesarVenta(venta: CrearVentaDTO): void {
     this.calcularValores();
     this.ventaService.crearVenta(venta, this.total).then(() => {
-    this.finalizarVenta()});
+      this.finalizarVenta()
+    });
   }
-  
+
   /**
    * Este metodo limpia los campos del formulario y genera un nuevo id de factura
    */
@@ -210,7 +250,7 @@ protected listarClientes(): void {
   /**
    * Este metodo se encarga de obtener el id de la factura
    */
-  protected generarIdFactura():void {
+  protected generarIdFactura(): void {
     this.ventaService.generarIdVenta().subscribe(
       (resp: number) => {
         this.formulario.patchValue({
@@ -243,7 +283,7 @@ protected listarClientes(): void {
   /**
    * Este metodo se encarga de cambiar el modo de visualización de la vista
    */
-  protected cambiarModoOculto():void {
+  protected cambiarModoOculto(): void {
     this.modoOculto = !this.modoOculto;
   }
   /**
@@ -253,47 +293,47 @@ protected listarClientes(): void {
    */
   public async agregarProducto(): Promise<void> {
     if (!this.productosForm.valid) {
-        Object.values(this.productosForm.controls).forEach(control => control.markAsTouched());
-        return;
+      Object.values(this.productosForm.controls).forEach(control => control.markAsTouched());
+      return;
     }
 
     const cantidad = +this.productosForm.get('cantidadProducto')?.value;
     const codigo = this.productosForm.get('codigoProducto')?.value;
 
     try {
-        const productoActivo = await this.productoService.verificarProductoActivo(codigo);
-        const cantidadValida = await this.productoService.verificarProductoCantidad(cantidad, codigo);
+      const productoActivo = await this.productoService.verificarProductoActivo(codigo);
+      const cantidadValida = await this.productoService.verificarProductoCantidad(cantidad, codigo);
 
-        if (!productoActivo || !cantidadValida) {
-            this.hayStock = false;
-            return;
-        }
+      if (!productoActivo || !cantidadValida) {
+        this.hayStock = false;
+        return;
+      }
 
-        const precio = this.productosForm.get('precioProducto')?.value;
-        const nombre = this.productosForm.get('nombreProducto')?.value;
-        const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
+      const precio = this.productosForm.get('precioProducto')?.value;
+      const nombre = this.productosForm.get('nombreProducto')?.value;
+      const productoExistente = this.listProductos.find(prod => prod.codigo === codigo);
 
-        if (productoExistente) {
-            productoExistente.cantidad += cantidad;
-        } else {
-            const producto = ProductoDTO.crearProductoDTO(codigo, nombre, precio, cantidad);
-            this.listProductos.push(producto);
-        }
+      if (productoExistente) {
+        productoExistente.cantidad += cantidad;
+      } else {
+        const producto = ProductoDTO.crearProductoDTO(codigo, nombre, precio, cantidad);
+        this.listProductos.push(producto);
+      }
 
-        this.resetForms();
-        this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-        this.calcularValores();
+      this.resetForms();
+      this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
+      this.calcularValores();
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-}
+  }
 
 
   /**
    * Este metodo se encarga de resetear los campos del formulario de productos
    * y el producto seleccionado
    */
-  private resetForms():void {
+  private resetForms(): void {
     this.productosForm.reset();
     this.productoSeleccionado = null;
     this.productosForm.get('cantidadProducto')?.setValue(1);
@@ -302,7 +342,7 @@ protected listarClientes(): void {
   /**
    * Este metodo se encarga de calcular el subtotal, igv y total de la factura
    */
-  private calcularValores():void {
+  private calcularValores(): void {
     this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
     this.total = this.subtotal;
@@ -319,7 +359,7 @@ protected listarClientes(): void {
       this.calcularValores();
     }
   }
-  
+
   /**
    * Este metodo se encarga de seleccionar un producto de la lista de productos
    * cuando se ingresa un codigo de producto en el formulario
@@ -336,7 +376,7 @@ protected listarClientes(): void {
     this.productoService.obtenerProductoPorCodigo(idProducto).subscribe(
       producto => this.asignarProducto(producto)
     );
-    
+
   }
 
   /**
@@ -345,7 +385,7 @@ protected listarClientes(): void {
    * @returns void
    */
   asignarProducto(producto: ProductoDTO): void {
-    
+
     if (!producto) {
       this.productosForm.get('codigoProducto')?.setErrors({ productoNoEncontrado: true });
       this.productoSeleccionado = null
@@ -359,30 +399,30 @@ protected listarClientes(): void {
     });
   }
 
-    /**
-   * Este metodo se encarga de asignar un cliente a la variable clienteSeleccionado
-   * @param cliente El producto a asignar
-   * @returns void
-   */
-    asignarCliente(cliente: ClienteDTO): void {
-    
-      if (!cliente) {
-        this.formulario.get('cedulaCliente')?.setErrors({ clienteNoEncontrado: true });
-        this.clienteSeleccionado = null
-        return;
-      }
-      this.clienteSeleccionado = cliente;
-      this.formulario.patchValue({
-        nombre: cliente.nombre,
-        direccion: cliente.direccion
-      });
+  /**
+ * Este metodo se encarga de asignar un cliente a la variable clienteSeleccionado
+ * @param cliente El producto a asignar
+ * @returns void
+ */
+  asignarCliente(cliente: ClienteDTO): void {
+
+    if (!cliente) {
+      this.formulario.get('cedulaCliente')?.setErrors({ clienteNoEncontrado: true });
+      this.clienteSeleccionado = null
+      return;
     }
+    this.clienteSeleccionado = cliente;
+    this.formulario.patchValue({
+      nombre: cliente.nombre,
+      direccion: cliente.direccion
+    });
+  }
 
   /**
    * Este metodo se encarga de validar los campos del formulario
    * y asignar los valores de los campos al formulario
    */
-  private validarFormularios():void {
+  private validarFormularios(): void {
     // Validar cliente
     this.actualizarFormulario(
       this.formulario,
@@ -419,7 +459,7 @@ protected listarClientes(): void {
     objetoSeleccionado: any | null,
     camposMap: { [key: string]: string },
     camposValidar: string[]
-  ):void {
+  ): void {
     if (objetoSeleccionado) {
       // Actualizar los campos con los valores del objeto seleccionado
       const valores = Object.keys(camposMap).reduce((acc, key) => {
@@ -444,7 +484,7 @@ protected listarClientes(): void {
     camposValidar.forEach(campo => {
       formulario.get(campo)?.updateValueAndValidity();
     });
-  } 
+  }
 
 
   /**
@@ -452,83 +492,83 @@ protected listarClientes(): void {
    * evita que se genere un bug con la ventana emergente
    */
   cerrarMenu() {
-    if (!this.menuComponent.estadoMenu){
+    if (!this.menuComponent.estadoMenu) {
       this.menuComponent.toggleCollapse();
     }
   }
 
-/**
- * Filtra los productos según el texto ingresado en el campo 'codigoProducto'.
- */
-protected filtrarProductos(): void {
-  const idProducto = this.productosForm.get('codigoProducto')?.value?.toLowerCase() || '';
-  if (idProducto.trim() === '') {
-    this.productosFiltrados = [];
-    return;
-  }
-  this.productosFiltrados = this.productos.filter(producto => 
-    producto.codigo.toLowerCase().includes(idProducto) || producto.nombre.toLowerCase().includes(idProducto)
-  );
-}
-
-/**
- * Filtra los clientes según el texto ingresado en el campo 'cedulaCliente'.
- */
-protected filtrarClientes(): void {
-  const ccCliente = this.formulario.get('cliente')?.value?.toLowerCase() || '';
-  if (ccCliente.trim() === '') {
-    this.clientesFiltrados = [];
-    return;
-  }
-  this.clientesFiltrados = this.clientes.filter(cliente => 
-    cliente.cedula.toLowerCase().includes(ccCliente) || cliente.nombre.toLowerCase().includes(ccCliente)
-  );
-
-}
-
-
-/**
- * Oculta las sugerencias al perder el foco del campo.
- */
-protected ocultarSugerencias(): void {
-    this.productosFiltrados = [];
-    this.clientesFiltrados = [];
-}
-
-/**
- * Maneja la selección de un producto desde la lista de sugerencias.
- * @param producto Producto seleccionado.
- */
-protected seleccionarProductoDeLista(producto: ProductoDTO): void {
-  this.productosForm.patchValue({
-    codigoProducto: producto.codigo,
-  });
-  this.ocultarSugerencias();
-  this.asignarProducto(producto);
-}
-
-/**
- * Maneja la selección de un cliente desde la lista de sugerencias.
- * @param cliente Cliente seleccionado.
- */
-protected seleccionarClienteDeLista(cliente: ClienteDTO): void {
-  this.formulario.patchValue({
-    cliente: cliente.cedula,
-  });
-  this.ocultarSugerencias();
-  this.asignarCliente(cliente);
-}
-
-/**
- * Dependiendo si hay algun cambio en la base de datos 
- * este metodo actualiza la listaProductos en localStorage
- */
-protected actualizarListaProductos(): void {
-  /**const listaProductos = JSON.parse(localStorage.getItem('listaProductos'));
-  if (listaProductos) {
-    this.productos = listaProductos;
+  /**
+   * Filtra los productos según el texto ingresado en el campo 'codigoProducto'.
+   */
+  protected filtrarProductos(): void {
+    const idProducto = this.productosForm.get('codigoProducto')?.value?.toLowerCase() || '';
+    if (idProducto.trim() === '') {
+      this.productosFiltrados = [];
+      return;
     }
-  }**/
+    this.productosFiltrados = this.productos.filter(producto =>
+      producto.codigo.toLowerCase().includes(idProducto) || producto.nombre.toLowerCase().includes(idProducto)
+    );
+  }
 
-}
+  /**
+   * Filtra los clientes según el texto ingresado en el campo 'cedulaCliente'.
+   */
+  protected filtrarClientes(): void {
+    const ccCliente = this.formulario.get('cliente')?.value?.toLowerCase() || '';
+    if (ccCliente.trim() === '') {
+      this.clientesFiltrados = [];
+      return;
+    }
+    this.clientesFiltrados = this.clientes.filter(cliente =>
+      cliente.cedula.toLowerCase().includes(ccCliente) || cliente.nombre.toLowerCase().includes(ccCliente)
+    );
+
+  }
+
+
+  /**
+   * Oculta las sugerencias al perder el foco del campo.
+   */
+  protected ocultarSugerencias(): void {
+    this.productosFiltrados = [];
+    this.clientesFiltrados = [];
+  }
+
+  /**
+   * Maneja la selección de un producto desde la lista de sugerencias.
+   * @param producto Producto seleccionado.
+   */
+  protected seleccionarProductoDeLista(producto: ProductoDTO): void {
+    this.productosForm.patchValue({
+      codigoProducto: producto.codigo,
+    });
+    this.ocultarSugerencias();
+    this.asignarProducto(producto);
+  }
+
+  /**
+   * Maneja la selección de un cliente desde la lista de sugerencias.
+   * @param cliente Cliente seleccionado.
+   */
+  protected seleccionarClienteDeLista(cliente: ClienteDTO): void {
+    this.formulario.patchValue({
+      cliente: cliente.cedula,
+    });
+    this.ocultarSugerencias();
+    this.asignarCliente(cliente);
+  }
+
+  /**
+   * Dependiendo si hay algun cambio en la base de datos 
+   * este metodo actualiza la listaProductos en localStorage
+   */
+  protected actualizarListaProductos(): void {
+    /**const listaProductos = JSON.parse(localStorage.getItem('listaProductos'));
+    if (listaProductos) {
+      this.productos = listaProductos;
+      }
+    }**/
+
+  }
 }

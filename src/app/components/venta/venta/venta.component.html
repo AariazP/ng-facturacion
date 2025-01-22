@@ -14,7 +14,8 @@
         <!-- No. Venta -->
         <div class="col-lg-1 col-md-6 col-12">
           <label for="numFactura" class="form-label">No. Venta:</label>
-          <input class="form-control disabled-input" type="text" formControlName="numFactura" placeholder="Número de Factura">
+          <input class="form-control disabled-input" type="text" formControlName="numFactura"
+            placeholder="Número de Factura">
           <span *ngIf="formulario.get('numFactura')?.errors && formulario.get('numFactura')?.touched">
             Por favor, ingrese solo texto en el campo de nombre.
           </span>
@@ -23,20 +24,13 @@
         <!-- Cédula del cliente -->
         <div class="col-lg-3 col-md-6 col-12 position-relative">
           <label for="cliente" class="form-label">Cédula del cliente:</label>
-          <input 
-            class="form-control" 
-            type="text" 
-            formControlName="cliente" 
-            id="cedulaCliente"
-            (input)="filtrarClientes()" 
-            placeholder="Cédula del cliente">
-  
+          <input class="form-control" type="text" formControlName="cliente" id="cedulaCliente"
+            (input)="filtrarClientes()" placeholder="Cédula del cliente">
+
           <!-- Lista flotante -->
           <div class="popup position-absolute w-100" *ngIf="clientesFiltrados.length > 0">
             <ul class="list-group">
-              <li 
-                class="list-group-item" 
-                *ngFor="let cliente of clientesFiltrados" 
+              <li class="list-group-item" *ngFor="let cliente of clientesFiltrados"
                 (click)="seleccionarClienteDeLista(cliente)">
                 {{ cliente.cedula }} - {{ cliente.nombre }}
               </li>
@@ -47,7 +41,7 @@
             *ngIf="formulario.get('cliente')?.invalid && (formulario.get('cliente')?.dirty || formulario.get('cliente')?.touched)">
             Por favor, ingrese un valor válido.
           </span>
-      </div>
+        </div>
 
 
         <!-- Nombre -->
@@ -87,30 +81,23 @@
       <label>Producto a agregar:</label>
 
       <div [formGroup]="productosForm">
-        <div class="row gy-3">   
+        <div class="row gy-3">
 
           <!-- Id producto -->
           <div class="col-lg-3 col-md-6 col-12 position-relative">
             <label for="codigoProducto" class="form-label">Id producto:</label>
-            <input
-              class="form-control"
-              type="text"
-              formControlName="codigoProducto"
-              id="codigoProducto"
-              placeholder="Producto" 
-              (input)="filtrarProductos()">
-              
+            <input class="form-control" type="text" formControlName="codigoProducto" id="codigoProducto"
+              placeholder="Producto" (input)="filtrarProductos()">
+
             <div class="popup position-absolute w-100" *ngIf="productosFiltrados.length > 0">
               <ul class="list-group">
-                <li 
-                class="list-group-item" 
-                *ngFor="let producto of productosFiltrados" 
-                (click)="seleccionarProductoDeLista(producto)">
-                {{ producto.codigo }} - {{ producto.nombre }}
+                <li class="list-group-item" *ngFor="let producto of productosFiltrados"
+                  (click)="seleccionarProductoDeLista(producto)">
+                  {{ producto.codigo }} - {{ producto.nombre }}
                 </li>
               </ul>
             </div>
-              <span
+            <span
               *ngIf="productosForm.get('codigoProducto')!.invalid && (productosForm.get('codigoProducto')!.dirty || productosForm.get('codigoProducto')!.touched)">
               Por favor, ingrese un valor válido.
             </span>
@@ -159,7 +146,8 @@
 
           <!-- Botón Agregar -->
           <div class="col-12">
-            <button class="btn btn-primary w-100 BotonGeneral" id="azul" (click)="agregarProducto()">Agregar producto</button>
+            <button class="btn btn-primary w-100 BotonGeneral" id="azul" (click)="agregarProducto()">Agregar
+              producto</button>
           </div>
         </div>
       </div>
@@ -179,7 +167,7 @@
                   <th class="eliminar">Acciones</th>
                 </tr>
               </thead>
-              
+
               <tbody>
                 @for(producto of listProductos;track producto.codigo){
                 <tr>
@@ -206,44 +194,69 @@
       </div>
     </div>
 
+    <div class="container mt-4">
+      <div class="row">
+        <!-- Columna del checkbox -->
+        <div class="col-md-6 d-flex">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="applyDiscountCheckbox" [(ngModel)]="aplicarDescuento"
+                  (change)="onCheckboxChange()" />
+                <label class="form-check-label ms-2" for="applyDiscountCheckbox">
+                  Aplicar descuento
+                </label>
+              </div>
+            </div>
 
-    <div class="alinear-derecha">
-      <div class="valores-a-pagar">
-        <!-- <p><span>Subtotal: </span> {{subtotal | currency }}  </p> -->
-        <p><span>IVA ({{porcentajeIva}}%):</span> ${{igv | number: '1.0-0' }}</p>
-        <p><span>Total a pagar:</span> ${{total | number: '1.0-0' }}</p>
+            <!-- Columna del cuadro de texto -->
+            <div class="col-md-8 mt-3 mt-md-0" *ngIf="aplicarDescuento">
+              <input type="text" class="form-control" id="discountValue"  [value]="valorFormateado" (input)="formatearValor($event)"  [(ngModel)]="valorDescuento"
+                placeholder="Ingrese el valor del descuento" />
+            </div>
+          </div>
+        </div>
 
+          <div class="col-md-6 alinear-derecha">
+            <div class="valores-a-pagar">
+              <!-- <p><span>Subtotal: </span> {{subtotal | currency }}  </p> -->
+              <p><span>IVA ({{porcentajeIva}}%):</span> ${{igv | number: '1.0-0' }}</p>
+              <div *ngIf="aplicarDescuento">
+                <p><span>Descuento:</span> ${{valorDescuento | number: '1.0-0' }}</p>
+              </div>
+              <p><span>Total a pagar:</span> ${{total | number: '1.0-0' }}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="col-lg text-right">
+        <button type="submit" class="btn-primary BotonGeneral" id="verde" (click)="onSubmit()">Vender</button>
+      </div>
+
+      <div class="nuevo-usuario" [ngClass]="{ 'oculto': modoOculto }">
+        <span class="cerrar" (click)="cambiarModoOculto()">❌</span>
+        <app-nuevo></app-nuevo>
       </div>
     </div>
 
-    <div class="col-lg text-right">
-      <button type="submit" class="btn-primary BotonGeneral" id="verde" (click)="onSubmit()" >Vender</button>
-    </div>
-
-    <div class="nuevo-usuario" [ngClass]="{ 'oculto': modoOculto }">
-      <span class="cerrar" (click)="cambiarModoOculto()">❌</span>
-      <app-nuevo></app-nuevo>
-    </div>
-  </div>
 
 
-  
-
-
-
-  <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel"
-    aria-hidden="true" #modal (shown.bs.modal)="cerrarMenu()">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="agregarUsuarioModalLabel">Agregar Nuevo Cliente</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body StyleModal">
-          <app-nuevo></app-nuevo>
+    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel"
+      aria-hidden="true" #modal (shown.bs.modal)="cerrarMenu()">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="agregarUsuarioModalLabel">Agregar Nuevo Cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body StyleModal">
+            <app-nuevo></app-nuevo>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
