@@ -1,61 +1,87 @@
-
-
-
-<div class="table-container">
-  <p class="rojo">
-    Tabla de clientes
-  </p>
-
-  <div class="buscar">
-    <label for="">Buscar: </label>
-    <input type="text" (keyup)="buscar($event)">
-    
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="rojo">
+        Gestion de Clientes
+      </h1>
+    </div>
+    <div class="col-8 col-sm-8 col-md-9 col-lg-10 col-xl-10 col-xxl-10">
+      <div class="buscar">
+        <input type="text" id="buscar" (keyup)="buscar($event)" placeholder="  Buscar cliente...">
+      </div>
+    </div>
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+      <button id="nuevo" class="btn btn-primary" routerLink="/app/cliente/nuevo">Nuevo</button>
+    </div>
   </div>
 
-  <button id="nuevo" routerLink="/app/cliente/nuevo" >Nuevo +</button>
+  <h6 class="totalClientes">Se han encontrado {{ totalClientes }} clientes.</h6>
+
+  <div class="table-container">
+    <div class="separador">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>CC</th>
+              <th>Nombre</th>
+              <th>Direccion</th>
+              <th class="d-none d-md-table-cell">Correo</th>
+              <th class="d-none d-md-table-cell">Activo</th>
+              <th class="d-none d-md-table-cell">FechaCreacion</th>
+              <th class="eliminar">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(cliente of filtroClientes; track cliente.id){
+            <tr>
+              <td>{{ cliente.cedula }}</td>
+              <td>{{ cliente.nombre }}</td>
+              <td>{{ cliente.direccion }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.correo }}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.activo == true ? "Si":"No"}}</td>
+              <td class="d-none d-md-table-cell">{{ cliente.fechaCreacion | date }}</td>
+              <td class="eliminar">
+                <button (click)="eliminarPorId(cliente.id)">❌</button>
+                <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pup-up" [ngClass]="{ 'oculto': modoOculto }">
+      <div class="pop-up-container">
+        <span class="cerrar" (click)="editarModoOcuto()">❌</span>
+        <app-editar-cliente class="editar" [personaEditar]="personaEditar"
+          (modoOculto)="editarModoOcuto()"></app-editar-cliente>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center mt-3 flex-wrap">
+    <nav aria-label="Page navigation" class="w-100">
+      <ul class="pagination justify-content-center mt-3 flex-wrap">
+        <!-- Página anterior -->
+        <li class="page-item" [class.disabled]="paginaActual === 0">
+          <button class="page-link" (click)="paginaAnterior()" tabindex="-1" aria-disabled="true">
+            Anterior
+          </button>
+        </li>
   
-  <div class="separador">
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Dni</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Correo</th>
-            <th>Activo</th>
-            <th>FechaCreacion</th>
-            <th class="eliminar">Acciones</th>
-          </tr>
-        </thead>
-        
-
-        <tbody>
-          <tr *ngFor="let cliente of filtroClientes">
-            <td>{{ cliente.idCliente }}</td>
-            <td>{{ cliente.rucDni }}</td>
-            <td >{{ cliente.nombre }}</td>
-            <td>{{ cliente.direccion }}</td>
-            <td>{{ cliente.correo }}</td>
-            <td>{{ cliente.activo }}</td>
-            <td>{{ cliente.fechaCreacion }}</td>
-            <td class="eliminar">
-              <button (click)="eliminarPorId(cliente.idCliente)">❌</button>
-              <button class="editar" (click)="toggleModoEdicion(cliente)">✏️</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="pup-up" [ngClass]="{ 'oculto': modoOculto }">
-    <div class="pop-up-container">
-      <span class="cerrar" (click)="editarModoOcuto()">❌</span>
-      <app-editar-cliente class="editar" [personaEditar]="personaEditar" (modoOculto)="editarModoOcuto()"></app-editar-cliente>
-      
-    </div>
+        <!-- Mostrar las páginas -->
+        <li class="page-item" *ngFor="let page of paginas; let i = index" [class.active]="paginaActual === i">
+          <button class="page-link" (click)="irPagina(i)">{{ i + 1 }}</button>
+        </li>
+  
+        <!-- Página siguiente -->
+        <li class="page-item" [class.disabled]="paginaActual === totalPaginas - 1">
+          <button class="page-link" (click)="paginaSiguiente()">Siguiente</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 
 </div>

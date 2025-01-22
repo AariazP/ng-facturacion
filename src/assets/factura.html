@@ -1,0 +1,197 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: 9px; /* Tamaño de fuente reducido */
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+    .header, .footer {
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .details {
+      margin: 10px 0;
+    }
+    .details p {
+      margin: 5px 0;
+    }
+    .divider {
+      border-top: 1px dashed #aaa; /* Guiones en lugar de puntos */
+      margin: 20px 0; /* Espaciado arriba y abajo */
+      border-width: 2px; /* Grosor de los guiones */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      border: 0px solid #ccc;
+      padding: 4px;
+      text-align: left;
+    }
+    table th {
+      background-color: #f4f4f4;
+    }
+    /* Ancho de las columnas */
+    table th:nth-child(1), table td:nth-child(1) {
+      width: 70%; /* Columna grande */
+    }
+    table th:nth-child(2), table td:nth-child(2) {
+      width: 10%; /* Columna pequeña */
+      text-align: center;
+    }
+    table th:nth-child(3), table td:nth-child(3) {
+      width: 20%; /* Columna mediana */
+      text-align: right;
+    }
+    .taxes, .total {
+      margin: 10px 0;
+    }
+    .total strong {
+      font-size: 10px;
+    }
+    .qr-code {
+      text-align: center;
+      margin: 10px 0;
+    }
+    .qr-code img {
+      width: 80px; /* Tamaño reducido */
+      height: 80px; /* Tamaño reducido */
+    }
+    @media print {
+      body {
+        margin: 0;
+      }
+      .container {
+        border: none;
+      }
+    }
+
+    .footer {
+        margin-top: 20px;
+        text-align: center;
+    }
+      
+    .footer p {
+        margin: 5px 0;
+        word-break: break-word;
+    }
+      
+    .cufe {
+        text-align: center;
+        margin: 0 auto;
+        max-width: 95%;
+    }
+      
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Encabezado -->
+    <div class="header">
+      <h1>{{nombreNegocio}}</h1>
+      <p>{{direccionNegocio}}</p>
+      <p>Gerente: {{gerenteNegocio}}</p>
+      <p>Fecha de expedición: {{fechaExpedicion}}</p>
+      <p>Teléfonos: {{telefonos}}</p>
+      <p>Resolución DIAN: {{resolucionDIAN}}</p>
+      <p>Fecha de la venta: {{fechaVenta}}</p>
+      <p>Fecha de la factura: {{fecha}}</p>
+    </div>
+
+    <hr>
+  
+    <!-- Detalles -->
+    <div class="details">
+      <p>Cliente: {{cliente}}</p>
+      <p>Nit/CC: {{cc}}</p>
+      <p>Dirección: {{direccion}}</p>
+      <p>Correo: {{correo}}</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <table>
+      <thead>
+        <tr><th>Producto</th><th>Cant.</th><th>Vr. Total</th></tr>
+      </thead>
+      <tbody>
+        {{productos}}
+      </tbody>
+    </table>
+
+    <!-- Impuestos -->
+    <div class="taxes">
+
+      <div class="divider"></div>
+
+      <p><strong>Detalle de Impuestos:</strong></p>
+    </div>
+
+     <!-- Tabla de Impuestos -->
+     <table>
+      <tbody>
+        <tr>
+          <td>EFECTIVO</td>
+          <td></td>
+          <td> {{efectivo}}</td>
+        </tr>
+        <tr>
+          <td>Cambio</td>
+          <td></td>
+          <td>{{cambio}}</td>
+        </tr>
+        <tr>
+          <td>Descuento</td>
+          <td></td>
+          <td>{{descuento}}</td>
+        </tr>
+        <tr>
+          <td>Base</td>
+          <td></td>
+          <td>{{base}}</td>
+        </tr>
+        <tr>
+          <td>IVA 19%</td>
+          <td></td>
+          <td>{{iva}}</td>
+        </tr>
+        <tr class="divider">
+          <td><strong>TOTAL</strong></td>
+          <td></td>
+          <td><strong>{{total}}</strong></td>
+        </tr>
+        <tr class="divider"></tr>
+      </tbody>
+    </table>
+    <!-- forma de pago -->
+    <p>Forma de pago: CONTADO</p>
+
+    <hr>
+
+    <!-- Pie de página -->
+    <div class="footer">
+      <br>
+      <p>A esta factura de venta aplican las normas relativas a la letra de cambio (articulo 5 Ley 1231 de 2008). Con esta el Comprador declara haber recibido real y materialmente las mercancias o prestación de servicios descritos en este título - Valor.</p>
+      <br>
+      <p>Desarrollador de software del Sistema P.O.S</p>
+      <p>Teléfono: 3128739355</p>
+    </div>
+  </div>
+</body>
+</html>

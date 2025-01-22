@@ -1,44 +1,99 @@
-<div class="contenido-menu">
-<div class="menu-container">
-  <p class="facturacion">Facturación</p>
-  <ul>
-    <details >
-      <summary  >Catálogos</summary>
-      <li>
-        <button
-          routerLinkActive="underline"
-          [routerLinkActiveOptions]="{ exact: true }"
-          routerLink="/app/cliente" 
-          >
-          📁 Cliente
+<div class="wrapper">
+  <aside id="sidebar">
+      <div class="h-100">
+          <div class="sidebar-logo">
+              <a href="#">Sistema POS</a>
+          </div>
+          <ul class="sidebar-nav">
+              <li class="sidebar-header">
+                  Funciones del sistema
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/principal" class="sidebar-link">
+                    <img src="https://img.icons8.com/3d-fluency/94/shop.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                    Principal
+                </a>
+            </li>
+            
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/cliente" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=qDNClnB7Z4Ky&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Clientes</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/producto" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=8chNl15hy6jY&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Productos</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/venta" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=MnYyIWSrPXYw&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Vender</a>
+              </li>
+              <li class="sidebar-item">
+              <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/lista-ventas" class="sidebar-link">
+                <img src="https://img.icons8.com/?size=100&id=MoTw0quaSX5m&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                Historial Ventas</a>
+              </li>
+              <li class="sidebar-item">
+              <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/facturacion-electronica" class="sidebar-link">
+                <img src="https://img.icons8.com/?size=100&id=hu1lFtHTQdQV&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                Factura electrónica</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/caja" class="sidebar-link">
+                  <img src="https://img.icons8.com/?size=100&id=xemEUfeHCaTj&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Caja</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" routerLink="/app/configuracion" class="sidebar-link">
+                  <img src="https://img.icons8.com/fluency/96/settings.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Configuración</a>
+              </li>
+              <li class="sidebar-header">
+                  Desarrollado por
+              </li>
+              <li class="sidebar-item">
+                  <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#about"
+                      aria-expanded="false" aria-controls="pages">
+                      <i class="fa-regular fa-file-lines pe-2"></i>
+                      <img src="https://img.icons8.com/?size=100&id=N5H8YRvduAGy&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                      Sobre Nosotros
+                  </a>
+                  <ul id="about" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                      <li class="sidebar-item">
+                          <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" href="https://danielbuitrago.netlify.app/" class="sidebar-link" target="_blank">
+                          <img src="https://img.icons8.com/3d-fluency/94/hard-working.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                            Daniel</a>
+                      </li>
+                      <li class="sidebar-item">
+                        <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }" href="https://alejandroarias.netlify.app/#/" class="sidebar-link" target="_blank">
+                            <img src="https://img.icons8.com/3d-fluency/94/hard-working.png" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                            Alejandro</a>
+                      </li>
+                  </ul>
+              </li>
+              <li class="sidebar-item">
+                <a (click)="salir()" class="sidebar-link sidebar-item-red">
+                  <img src="https://img.icons8.com/?size=100&id=QCDCTmelsd7x&format=png&color=000000" style="width: 25px; height: 25px;" alt="Home" class="sidebar-icon" />
+                  Salir</a>
+              </li>
+          </ul>
+      </div>
+  </aside>
+  
+  <div class="main">
+    <div>
+      <nav class="navbar navbar-expand px-3 border-bottom">
+        <button type="button" data-bs-theme="light" (click)="toggleCollapse()">
+          <span class="navbar-toggler-icon"></span>
         </button>
-      </li>
-      <li>
-        <button routerLink="/app/producto" routerLinkActive="underline">
-          🛒 Producto
-        </button>
-      </li>
-    </details>
-
-    <details >
-      <summary>Documentos</summary>
-        <li>
-          <button routerLink="/app/factura" routerLinkActive="underline">
-          📝 Factura
-          </button>
-        </li>
-        <li>
-          <button routerLink="/app/lista-factura" routerLinkActive="underline">
-          📋 Ver facturas
-          </button>
-        </li>
-    </details>
-
-
-  </ul>
-
+          <h2 class="empresa">{{nombreNegocio}}</h2>
+        </nav>
+      <main>
+          <div>
+            <router-outlet></router-outlet>
+          </div>
+      </main>
+  </div>
 </div>
-<button class="salir" (click)="salir()">✖️ Salir</button>
-
-</div>
-<router-outlet></router-outlet>

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProductoService } from 'src/app/service/productos.service';
-import { Router } from '@angular/router';
-import { soloTexto, validarCorreo, validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { validarDecimalConDosDecimales } from '../../../validators/validatorFn';
+import { ActualizarProductoDTO } from '../../../dto/producto/ActualizarProductoDTO';
+import { AlertService } from 'src/app/utils/alert.service';
+import { ProductoService } from 'src/app/services/domainServices/producto.service';
 @Component({
   selector: 'app-editar-producto',
   templateUrl: './editar-producto.component.html',
@@ -14,62 +15,44 @@ export class EditarProductoComponent {
   
   @Input() productosEditar: any = {};
   @Output() modoOculto = new EventEmitter();
-  personaForm: FormGroup;
+  private fb: FormBuilder = inject(FormBuilder);
+  private productoService: ProductoService = inject(ProductoService);
+  private alert: AlertService = inject(AlertService);
+  protected personaForm!: FormGroup;
 
-
-  constructor(private fb: FormBuilder, private productoService: ProductoService) {
+  ngOnInit(): void {
     this.personaForm = this.fb.group({
       idProducto: '',
       codigo: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]*')]],
-      nombre: ['', [Validators.required, soloTexto()]],
+      nombre: ['', [Validators.required]],
       precio: ['', [Validators.required, validarDecimalConDosDecimales()]],
-      stock: ['', [Validators.required, validarDecimalConDosDecimales()]],
+      cantidad: ['', [Validators.required, validarDecimalConDosDecimales()]],
       activo: [1],
       fechaCreacion: ['', [Validators.required]],
     });
-
-    console.log("constructor", this.productosEditar);
-    
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productosEditar'] && this.productosEditar) {
       this.personaForm.patchValue(this.productosEditar);
     }
-    console.log("onchange", this.productosEditar);
   }
   
-
-  guardar(): void {
-
-    const valoresFormulario = this.personaForm.value;
-    console.log("Persona ", this.productosEditar?.nombre);
-    console.log("Persona editada", valoresFormulario);
-    
-    if (this.personaForm.valid) {
-      
-      console.log('El formulario es válido. Enviar solicitud...');
-    } else {
-      
+  /**
+   * Este método se encarga de guardar el producto en la base de datos
+   * @returns 
+   */
+  protected guardar(): void {
+    const { codigo, nombre, precio, cantidad, activo } = this.personaForm.value;
+    let productoActualizar = ActualizarProductoDTO.crearProducto(codigo, nombre, precio, cantidad, activo);
+    if (!this.personaForm.valid) {
       Object.values(this.personaForm.controls).forEach(control => {
         control.markAsTouched();
       });
       return;
-    }
-    
-    this.productoService.actualizar(valoresFormulario).subscribe(
-      response => {
-        console.log('Persona editada correctamente:', response);
-        alert('Producto editado correctamente');
-        this.modoOculto.emit();
-        // window.location.reload();
-      
-      },
-      error => {
-        console.error('Error al editar producto:', error);
-        alert('Error al editar producto: los campos no cumplen con los formatos requeridos');	
-      }
-    )
+    } 
+    this.productoService.actualizar(productoActualizar);
   }
 
 }

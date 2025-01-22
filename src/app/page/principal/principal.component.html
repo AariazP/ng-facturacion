@@ -1,0 +1,23 @@
+<div class="background">
+  <div class=" text-center content">
+
+    <div class="titulo">
+      <h1>Bienvenido al sistema integrado</h1>
+      <h1>de ventas de {{nombreNegocio}}</h1>
+      <p>Recuerde que siempre puede explorar el menú completo haciendo click en la parte superior izquierda</p>
+    </div>
+
+    <div class="row mt-5 tarjetas">
+      <div class="col-lg-3 col-md-6" *ngFor="let card of cards">
+        <app-card 
+          [title]="card.title"
+          [description]="card.description" 
+          [imageSrc]="card.imageSrc" 
+          [imageAlt]="card.imageAlt"
+          [link]="card.link">
+        </app-card>
+      </div>
+    </div>
+    
+    </div>
+</div>

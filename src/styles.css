@@ -18,7 +18,7 @@
 }
 .rutas{
   background-color: #fff;
-  height: calc(100vh - 40px);
+  /*height: calc(100vh - 40px);*/
   margin: 20px 20px;
   border-radius: 20px;
 } 
@@ -26,10 +26,11 @@
 app-menu{
   background-color: rgb(235, 235, 235);
   /* border: 10px solid teal; */
-
+/*
   display: grid;
+  
   grid-template-columns: 200px  0  1fr;
   height: 100vh;
-  
+  */
 }
 

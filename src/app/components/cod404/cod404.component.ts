@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/app/env/env';
 
 @Component({
   selector: 'app-cod404',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./cod404.component.css']
 })
 export class Cod404Component {
-  imageUrl: string = '../../assets/404-status-code.png';
+  protected imageUrl: string = environment.imageUrl;
 }

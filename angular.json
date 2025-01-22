@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": ["raf", "core-js", "dompurify", "html2canvas", "rgbcolor", "sweetalert2", "numeral"],
             "outputPath": "dist/facturacion",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -30,17 +31,20 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "900kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -65,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "facturacion:build:production"
+              "buildTarget": "facturacion:build:production"
             },
             "development": {
-              "browserTarget": "facturacion:build:development"
+              "buildTarget": "facturacion:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "facturacion:build"
+            "buildTarget": "facturacion:build"
           }
         },
         "test": {
@@ -99,5 +103,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "309494b7-e7ea-40db-9b0a-c8a4f888f4b5"
   }
 }

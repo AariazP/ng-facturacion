@@ -5,7 +5,7 @@ export function soloTexto(): ValidatorFn {
     const textoIngresado: string = control.value || ''; 
     const regex = /^[a-zA-Z\s]*$/; 
 
-    if (!textoIngresado.match(regex)) {
+    if (textoIngresado && !textoIngresado.match(regex)) {
       return { 'soloTexto': { message: 'Este campo solo permite texto.' } }; 
     }
 
@@ -13,13 +13,12 @@ export function soloTexto(): ValidatorFn {
   };
 }
 
-
 export function validarCorreo(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const correoIngresado: string = control.value;
+    const correoIngresado: string = control.value || ''; 
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
 
-    if (!correoIngresado.match(regex)) {
+    if (correoIngresado && !correoIngresado.match(regex)) {
       return { 'correoInvalido': true }; 
     }
 
@@ -27,19 +26,17 @@ export function validarCorreo(): ValidatorFn {
   };
 }
 
-
 export function validarDecimalConDosDecimales(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const valorIngresado: string = control.value;
+    const valorIngresado: string = control.value || '';
 
     if (!valorIngresado) {
       return null; 
     }
 
-    const regex = /^\d+/; 
+    const regex = /^\d+(\.\d{1,2})?$/;
 
-
-    if (regex.test(valorIngresado)) {
+    if (!regex.test(valorIngresado)) {
       return { 'decimalInvalido': true }; 
     }
 

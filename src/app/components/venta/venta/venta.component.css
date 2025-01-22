@@ -1,0 +1,294 @@
+/* Estilo general */
+body {
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo del formulario */
+.formulario {
+  background: #fff;
+  border-radius: 8px;
+  margin: 20px 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[list] {
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  margin: 5px 0 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input.disabled-input {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.BotonGeneral{
+  border-radius: 10px;
+  width: 100%;
+  height: 35px;
+  background-color: rgb(67, 164, 255);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.BotonCancelar{
+  border-radius: 10px;
+  width: 100%;
+  height: 35px;
+  background-color: rgb(243, 39, 39);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 5px 30px;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button#verde{
+  background-color: #28a745;
+}
+
+button#gris{
+  background-color: #979797;
+}
+
+button#azul{
+  background-color: rgb(67, 164, 255);
+}
+
+button#azul:hover {
+  background-color: #007bff;
+  transform: scale(1.05); 
+}
+
+button#gris:hover {
+  background-color: #575757;
+  transform: scale(1.05); 
+}
+
+button#verde:hover {
+  background-color: #17d641;
+  transform: scale(1.05); 
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Estilo del modal */
+.StyleModal{
+  margin-bottom: 10%;
+}
+
+/* Estilo de la tabla */
+.table-container {
+  width: 100%; 
+  height: 100%;
+  background-color: rgb(67, 164, 255);
+  border-radius: 10px;
+}
+.table-container .separador{
+  margin-top: 20px;
+}
+.separador div{
+  width: 100%;
+  display: flex;
+  /*justify-content: center;*/
+  /*border: 1px solid rgb(182, 182, 182) ;*/
+  border-radius: 10px;
+}
+table {
+  background-color: #ffffff;
+  width: 100%; 
+  /*border-collapse: collapse;*/
+  border-radius: 10px;
+}
+
+th, td {
+  border: none; 
+  padding: 8px; 
+  text-align: left; 
+}
+
+th {
+  background-color: #fff;
+  color: rgb(97, 97, 97); 
+}
+
+
+tr:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff; 
+}
+
+.eliminar button {
+  background-color: transparent;
+  color: #c82333;
+}
+
+td.eliminar, th.eliminar{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.eliminar button:hover {
+  background-color: #c82333;
+  color: #fff;
+}
+
+.sin-datos-tabla {
+  height: 250px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  color: #666;
+  background-color: #f9f9f9;
+}
+
+.sin-datos-tabla td {
+  padding: 0;
+}
+
+.sin-datos-mensaje {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-weight: bold;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Estilo de las notificaciones y mensajes */
+span {
+  color: #dc3545;
+  font-size: 0.9em;
+}
+
+p.impuesto-usado {
+  font-weight: bold;
+}
+
+.valores-a-pagar p {
+  margin-top: 25px;
+  font-size: 1.2em;
+}
+
+.valores-a-pagar span {
+  font-weight: bold;
+}
+
+.nuevo-usuario {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(175, 175, 175, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s;
+}
+
+.nuevo-usuario.oculto {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.nuevo-usuario:not(.oculto) {
+  visibility: visible;
+  opacity: 1;
+}
+
+.nuevo-usuario .cerrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 2em;
+  color: white;
+}
+
+.card{
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+}
+
+.alinear-derecha {
+  text-align: right;
+}
+
+#btn-vender{
+  background-color: #41804e;
+}
+
+.tabla{
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+
+
+.popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}

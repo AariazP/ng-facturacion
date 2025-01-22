@@ -1,8 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService} from 'src/app/service/login.service';
+import { UsuarioLoginDTO } from 'src/app/dto/usuario/UsuarioLoginDTO';
+import { environment } from 'src/app/env/env';
+import { HttpLoginService} from 'src/app/services/http-services/httpLogin.service';
+import { AlertService } from 'src/app/utils/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -12,81 +14,54 @@ import { LoginService} from 'src/app/service/login.service';
 export class LoginComponent {
   mensajeLogin: string = '';
 
-  loginForm!: FormGroup ;
+  loginForm!: FormGroup;
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private httploginService: HttpLoginService = inject(HttpLoginService);
+  private router: Router = inject(Router);
+  private alert: AlertService = inject(AlertService);
+  public nombreNegocio: string = environment.nombreNegocio;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private loginService: LoginService,
-    private router : Router
-  ) {
-
-    if(localStorage.getItem('token')){
-      this.router.navigate(['/app/cliente']);
+  ngOnInit(): void {
+    this.buildForm();
+    if(localStorage.getItem('id') != null){
+      this.router.navigate(['/app/principal']);
     }
   }
 
-  ngOnInit(): void {
+  /**
+   * Este método se encarga de construir el formulario de login
+   */
+  private buildForm(): void {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-
-
   }
 
-  login(): void {
-    if (this.loginForm.invalid) {
-      return;
-    }
+  /**
+   * Este método se encarga de abrir la página principal
+   */
+  protected abrir(){
+    this.router.navigate(['/app/principal']);
+  }
 
+  /**
+   * Este método se encarga de realizar el login
+   */
+  protected login(): void {
+    if (this.loginForm.invalid) return;
     const { username, password } = this.loginForm.value;
-    
-    this.loginService.login(username, password)
-      .subscribe(
-        response => {
-          console.log('Inicio de sesión exitoso', response);
-          const { code, data } = response;
+    let usuarioLogin = UsuarioLoginDTO.crearUsuarioLogin(username, password);
 
-          console.log(code, data, response.data);
-
-          switch (response.code) {
-            case 403:
-              this.mensajeLogin = response.data;
-              break;
-            case 200:
-              this.mensajeLogin = response.data;
-              this.router.navigate(['/app/cliente']);
-              console.log("se r")
-              break;
-            case 401:
-              this.mensajeLogin = response.data;
-              break;
-            case 400:
-              this.mensajeLogin = response.data;
-              break;
-            case 500:
-              this.mensajeLogin = response.data;
-              break;
-            default:
-              console.log('Error en inicio de sesión');
-              break;
-          }
-
-
-        },
-        error => {
-          console.error('Error en inicio de sesión', error);
-          if (error instanceof HttpErrorResponse) {
-            console.error('Estado:', error.status);
-            console.error('Texto:', error.statusText);
-            // Muestra el mensaje de error al usuario
-            alert(error.error);
-          }
-        }
-      );
-
-
-
+    this.httploginService.login(usuarioLogin)
+      .subscribe({
+        next: response => {
+          localStorage.setItem('id', response.id+""); 
+          this.mensajeLogin = response+"";
+          this.router.navigate(['/app/principal']);
+          },
+        error: (error) => {this.alert.simpleErrorAlert(error.error.mensaje);}
+      });
   }
 
 }
