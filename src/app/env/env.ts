@@ -2,7 +2,7 @@ export const environment = {
 
 
   // Esta es la URL de la API que se va a consumir en el proyecto
-  ApiUrl: 'https://facturacion-h2nu.onrender.com',
+  ApiUrl: 'https://facturacion-i1qh.onrender.com',
   //ApiUrl: 'http://localhost:8086',
 
   // Este es el IVA que se va a aplicar a los productos
