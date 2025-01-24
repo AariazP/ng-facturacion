@@ -32,6 +32,7 @@ export class HomeClienteComponent {
   }
 
   ngOnInit() {
+    this.listarClientes();
     this.obtenerClientes(this.paginaActual);
     this.obteneClientesTodos();
     this.updateClienteCount();
@@ -53,6 +54,40 @@ export class HomeClienteComponent {
   obteneClientesTodos() {
     this.clientesTodos = JSON.parse(localStorage.getItem('clientes') || '[]');
   }
+
+  /**
+ * Este método se encarga de listar todos los clientes disponibles en la base de datos,
+ * haciendo solicitudes hasta que no se reciban más clientes.
+ */
+protected listarClientes(): void {
+  let page = 0;
+  this.clientes = [];
+
+  const obtenerClientesRecursivamente = (paginaActual: number): void => {
+    this.clienteService.getClientes(paginaActual).subscribe({
+      next: (data) => {
+        // Si hay clientes en la página actual, se agregan a la lista de clientes
+        if (data.content.length > 0) {
+          this.clientes = [...this.clientes, ...data.content];
+
+          // Guardar los clientes actualizados en localStorage
+          localStorage.setItem('clientes', JSON.stringify(this.clientes));
+
+          // Llama a la siguiente página
+          obtenerClientesRecursivamente(paginaActual + 1);
+        } else {
+          console.log('Todos los clientes han sido cargados:', this.clientes.length);
+        }
+      },
+      error: (err) => {
+        console.error('Error al listar clientes:', err);
+      }
+    });
+  };
+
+  // Comienza a obtener clientes desde la primera página
+  obtenerClientesRecursivamente(page);
+}
 
   /**
    * Obtiene los clientes del servicio y los asigna a la variable clientes

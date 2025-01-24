@@ -29,6 +29,7 @@ export class HomeProductoComponent {
   }
 
   ngOnInit() {
+    this.listarProductos();
     this.obtenerProductos(0);
     this.obtenerProductosTodos();
     this.updateProductoCount();
@@ -74,6 +75,40 @@ export class HomeProductoComponent {
         this.obtenerProductos(0);
       } catch (error) { }
     }
+  }
+
+  /**
+   * Este método se encarga de listar todos los productos disponibles en la base de datos,
+   * haciendo solicitudes hasta que no se reciban más productos.
+   */
+  protected listarProductos(): void {
+    let page = 0;
+    this.productos = [];
+  
+    const obtenerProductosRecursivamente = (paginaActual: number): void => {
+      this.productoService.getProductos(paginaActual).subscribe({
+        next: (data) => {
+          // Si hay productos en la página actual, se agregan a la lista de productos
+          if (data.content.length > 0) {
+            this.productos = [...this.productos, ...data.content];
+  
+            // Guardar los productos actualizados en localStorage
+            localStorage.setItem('productos', JSON.stringify(this.productos));
+  
+            // Llama a la siguiente página
+            obtenerProductosRecursivamente(paginaActual + 1);
+          } else {
+            console.log('Todos los productos han sido cargados:', this.productos.length);
+          }
+        },
+        error: (err) => {
+          console.error('Error al listar productos:', err);
+        }
+      });
+    };
+  
+    // Comienza a obtener productos desde la primera página
+    obtenerProductosRecursivamente(page);
   }
 
   /**
