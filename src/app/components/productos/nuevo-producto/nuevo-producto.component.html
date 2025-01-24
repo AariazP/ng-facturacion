@@ -43,58 +43,53 @@
         </span>
       </div>
 
-      <p class="datos">Precio:</p>
-
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          formControlName="precio"
-          placeholder="Precio"
-          [value]="valorFormateado"
-          (input)="formatearValor($event)"
-        >
-        <span
-          class="text-danger"
-          *ngIf="formulario.get('precio')!.invalid && (formulario.get('precio')?.dirty || formulario.get('precio')?.touched)"
-        >
-          Por favor, ingrese un valor válido.
-        </span>
+      <!-- Nuevo Componente -->
+      <p class="mb-2">Formas de venta del producto:</p>
+      <div class="table-responsive">
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let forma of formasDeVenta; let i = index">
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="formasDeVenta[i].nombre"
+                  placeholder="Nombre"
+                  required
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="formasDeVenta[i].precio"
+                  placeholder="Precio"
+                  required
+                >
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="formasDeVenta[i].cantidad"
+                  placeholder="Cantidad"
+                  required
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <button type="button" class="btn btn-secondary" (click)="agregarFila()">+</button>
+      <!-- Fin del nuevo componente -->
 
-      <p class="datos">Stock:</p>
-
-      <div class="form-group">
-        <input
-          type="number"
-          class="form-control"
-          formControlName="stock"
-          placeholder="Stock"
-        >
-        <span
-          class="text-danger"
-          *ngIf="formulario.get('stock')!.invalid && (formulario.get('stock')!.dirty || formulario.get('stock')!.touched)"
-        >
-          Por favor, ingrese un valor válido.
-        </span>
-      </div>
-
-      <div class="form-group">
-        <p class="datos">Está activo?</p>
-        <select
-          class="form-control"
-          formControlName="activo"
-        >
-          <option [selected]="true" value="1">Si</option>
-          <option value="0">No</option>
-        </select>
-        <span
-          class="text-danger"
-          *ngIf="formulario.get('activo')!.invalid && (formulario.get('activo')?.dirty || formulario.get('activo')?.touched)"
-        >
-          Por favor, ingrese una fecha válida.
-        </span>
-      </div>
       <div class="form-group">
         <p class="datos">Tipo de impuesto</p>
         <select

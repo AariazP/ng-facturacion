@@ -24,6 +24,7 @@ export class NuevoProductoComponent implements OnInit {
   private alert: AlertService = inject(AlertService);
   private productoService: ProductoService = inject(ProductoService);
   private productoAlertService: ProductoAlertService = inject(ProductoAlertService);
+  protected formasDeVenta = [{ nombre: '', precio: '', cantidad: 1 }];
 
 
   ngOnInit(): void {
@@ -39,6 +40,10 @@ export class NuevoProductoComponent implements OnInit {
     this.productoService.getTipoImpuesto().subscribe({
       next: (data) => { this.tipoImpuesto = data; }
     });
+  }
+
+  agregarFila() {
+    this.formasDeVenta.push({ nombre: '', precio: '', cantidad: 1 });
   }
 
 
