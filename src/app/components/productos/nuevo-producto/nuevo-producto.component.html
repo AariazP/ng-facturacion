@@ -14,16 +14,12 @@
           pattern="[a-zA-Z0-9]*"
           formControlName="codigo"
           placeholder="Código"
-          (input)="validarCodigo($event)"
         >
         <span
           class="text-danger"
           *ngIf="formulario.get('codigo') && formulario.get('codigo')!.errors && formulario.get('codigo')!.touched"
         >
           Por favor, ingrese un valor válido.
-        </span>
-        <span class="text-warning" *ngIf="existe">
-          Código de producto ya existe
         </span>
       </div>
 
@@ -43,51 +39,55 @@
         </span>
       </div>
 
-      <!-- Nuevo Componente -->
-      <p class="mb-2">Formas de venta del producto:</p>
-      <div class="table-responsive">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let forma of formasDeVenta; let i = index">
-              <td>
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="formasDeVenta[i].nombre"
-                  placeholder="Nombre"
-                  required
-                >
-              </td>
-              <td>
-                <input
-                  type="text"
-                  class="form-control"
-                  [(ngModel)]="formasDeVenta[i].precio"
-                  placeholder="Precio"
-                  required
-                >
-              </td>
-              <td>
-                <input
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="formasDeVenta[i].cantidad"
-                  placeholder="Cantidad"
-                  required
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <p class="datos">Precio de compra:</p>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="precioCompra"
+          placeholder="Precio de compra"
+        >
+        <span
+          class="text-danger"
+          *ngIf="formulario.get('precioCompra') && formulario.get('precioCompra')!.errors && formulario.get('precioCompra')!.touched"
+        >
+          Por favor, ingrese solo texto
+        </span>
       </div>
-      <button type="button" class="btn btn-secondary" (click)="agregarFila()">+</button>
+
+      <!-- Nuevo Componente -->
+      <h2 class="mt-4">Forma de venta</h2>
+      <div formArrayName="formasVenta">
+        <div *ngFor="let forma of formasVenta.controls; let i = index" [formGroupName]="i">
+          <div class="row">
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                placeholder="Nombre"
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="precio"
+                placeholder="Precio"
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                type="number"
+                class="form-control"
+                formControlName="cantidad"
+                placeholder="Cantidad"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary mt-2" (click)="agregarFila()">+</button>
       <!-- Fin del nuevo componente -->
 
       <div class="form-group">
@@ -96,12 +96,11 @@
           class="form-control"
           formControlName="impuesto"
         >
-          <option *ngFor="let impuesto of tipoImpuesto; let i = index" [selected]="i == 0" [value]="i">
+          <option *ngFor="let impuesto of tipoImpuesto; let i = index" [value]="i">
             {{impuesto}}
           </option>
         </select>
       </div>
-
 
       <button type="submit" class="btn btn-primary">
         Guardar Datos

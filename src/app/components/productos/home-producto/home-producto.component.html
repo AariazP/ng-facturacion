@@ -25,9 +25,7 @@
             <tr>
               <th>Código</th>
               <th>Nombre</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Activo</th>
+              <th>Precio de Compra</th>
               <th class="d-none d-md-table-cell">FechaCreacion</th>
               <th class="eliminar">Acciones</th>
             </tr>
@@ -39,9 +37,7 @@
             <tr *ngFor="let producto of filtroProductos; let i=index">
               <td>{{ producto.codigo }}</td>
               <td>{{ producto.nombre }}</td>
-              <td>$ {{ producto.precio | number:'1.0-0' }}</td>
-              <td [ngClass]="{'red': producto.cantidad < 5}">{{ producto.cantidad }}</td>
-              <td>{{ producto.activo == true ? "Sí": "No" }}</td>
+              <td>$ {{ producto.precioCompra | number:'1.0-0' }}</td>
               <td class="d-none d-md-table-cell">{{ producto.fechaCreacion | date }}</td>
               <td class="eliminar">
                 <button (click)="eliminarProductoCodigo(producto.codigo)">❌</button>

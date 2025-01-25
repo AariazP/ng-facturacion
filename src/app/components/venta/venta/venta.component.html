@@ -118,7 +118,7 @@
           <div class="col-lg-2 col-md-6 col-12">
             <label for="precioProducto" class="form-label">Precio:</label>
             <input type="number" id="precioProducto" class="form-control disabled-input"
-              formControlName="precioProducto" placeholder="Precio del producto" [value]="productoSeleccionado?.precio">
+              formControlName="precioProducto" placeholder="Precio del producto" [value]="productoSeleccionado?.precioCompra">
             <span
               *ngIf="productosForm.get('precioProducto')!.invalid && (productosForm.get('precioProducto')!.dirty || productosForm.get('precioProducto')!.touched)">
               Por favor, ingrese un valor válido.
@@ -173,7 +173,7 @@
                 <tr>
                   <td>{{ producto.codigo }}</td>
                   <td>{{ producto.nombre }}</td>
-                  <td>$ {{ producto.precio | number:'1.0-0' }}</td>
+                  <td>$ {{ producto.precioCompra | number:'1.0-0' }}</td>
                   <td>{{ producto.cantidad }}</td>
                   <td id="eliminar" class="eliminar">
                     <button class="btn-primary BotonGeneral" (click)="eliminarPorId(producto)">X</button>

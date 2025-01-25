@@ -2,7 +2,7 @@ export class ProductoDTO {
   
   codigo!: string;
   nombre!: string;
-  precio!: number;
+  precioCompra!: number;
   cantidad!: number;
   activo!: boolean;
   fechaCreacion!: Date;
@@ -11,7 +11,7 @@ export class ProductoDTO {
     let producto = new ProductoDTO();
     producto.codigo = codigo;
     producto.nombre = nombre;
-    producto.precio = precio;
+    producto.precioCompra = precio;
     producto.cantidad = cantidad;
     producto.activo = true;
     producto.fechaCreacion = new Date();

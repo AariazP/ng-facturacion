@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpProductoService } from 'src/app/services/http-services/httpProductos.service';
 import { CrearProductoDTO } from '../../../dto/producto/CrearProductoDTO';
 import { AlertService } from 'src/app/utils/alert.service';
 import { ProductoAlertService } from 'src/app/utils/product-alert/productoAlert.service';
 import { from, of, switchMap } from 'rxjs';
 import { ProductoService } from 'src/app/services/domainServices/producto.service';
+import { FormaVenta } from 'src/app/dto/formasVenta/FormaVenta';
 
 @Component({
   selector: 'app-nuevo-producto',
@@ -24,7 +25,6 @@ export class NuevoProductoComponent implements OnInit {
   private alert: AlertService = inject(AlertService);
   private productoService: ProductoService = inject(ProductoService);
   private productoAlertService: ProductoAlertService = inject(ProductoAlertService);
-  protected formasDeVenta = [{ nombre: '', precio: '', cantidad: 1 }];
 
 
   ngOnInit(): void {
@@ -43,7 +43,13 @@ export class NuevoProductoComponent implements OnInit {
   }
 
   agregarFila() {
-    this.formasDeVenta.push({ nombre: '', precio: '', cantidad: 1 });
+    this.formasVenta.push(
+      this.formBuilder.group({
+        nombre: [''],
+        precio: [''],
+        cantidad: [1]
+      })
+    );
   }
 
 
@@ -57,8 +63,13 @@ export class NuevoProductoComponent implements OnInit {
       precio: [''],
       stock: [''],
       impuesto: [''],
-      activo: [1],
+      precioCompra: [''],
+      formasVenta: this.formBuilder.array([])
     });
+  }
+
+  get formasVenta(): FormArray {
+    return this.formulario.get('formasVenta') as FormArray;
   }
 
   /**
@@ -66,14 +77,15 @@ export class NuevoProductoComponent implements OnInit {
    * @returns void
    */
   onSubmit(): void {
-
+    
     if (!this.formulario.valid) {
       Object.values(this.formulario.controls).forEach(control => { control.markAsTouched(); });
       return;
     }
-    const { codigo, nombre, precio, stock, activo } = this.formulario.value;
+    const { codigo, nombre, precioCompra } = this.formulario.value;
+    const formasVentaEntities = this.formasVenta.controls.map(forma =>FormaVenta.toEntity(forma as FormGroup));
     let impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
-    let producto = CrearProductoDTO.crearProductoDTO(codigo, nombre, precio, stock, impuesto, activo);
+    let producto = CrearProductoDTO.crearProductoDTO(codigo, nombre,impuesto, precioCompra, formasVentaEntities);
     this.productoService.guardarProducto(producto);
     this.formulario.reset();
   }

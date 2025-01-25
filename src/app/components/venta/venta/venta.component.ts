@@ -337,7 +337,7 @@ export class VentaComponent implements DoCheck {
       }
 
       this.resetForms();
-      this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
+      this.subtotal = this.listProductos.reduce((total, producto) => total + producto.precioCompra * producto.cantidad, 0);
       this.calcularValores();
     } catch (error) {
       console.error(error);
@@ -359,7 +359,7 @@ export class VentaComponent implements DoCheck {
    * Este metodo se encarga de calcular el subtotal, igv y total de la factura
    */
   private calcularValores(): void {
-    this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precio * producto.cantidad), 0);
+    this.subtotal = this.listProductos.reduce((total: number, producto: ProductoDTO) => total + (producto.precioCompra * producto.cantidad), 0);
     this.igv = this.subtotal * (this.porcentajeIva / 100);
     this.total = this.subtotal - this.descuento;
     this.totalReal = this.total;
@@ -412,7 +412,7 @@ export class VentaComponent implements DoCheck {
     this.productoSeleccionado = producto;
     this.productosForm.patchValue({
       nombreProducto: producto.nombre,
-      precioProducto: producto.precio
+      precioProducto: producto.precioCompra
     });
   }
 
