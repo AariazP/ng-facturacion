@@ -14,7 +14,16 @@
           pattern="[a-zA-Z0-9]*"
           formControlName="codigo"
           placeholder="Código"
+          (change)="validarCodigo( $event )"
+          (keyup)="validarCodigo( $event )"
         >
+
+        <span
+          class="text-danger"
+          *ngIf="formulario.get('codigoExistente') && formulario.get('codigoExistente')!.errors && formulario.get('codigoExistente')!.touched"
+        >
+          El código ya existe
+        </span>
         <span
           class="text-danger"
           *ngIf="formulario.get('codigo') && formulario.get('codigo')!.errors && formulario.get('codigo')!.touched"

@@ -5,7 +5,7 @@ export class CrearProductoDTO {
     
     codigo!: string;
     nombre!: string;
-    activo!: boolean;
+    activo!: string;
     impuesto!: string;
     precioCompra!: number;
     formasVenta!: FormaVenta[];
@@ -16,7 +16,7 @@ export class CrearProductoDTO {
       let producto = new CrearProductoDTO();
       producto.codigo = codigo;
       producto.nombre = nombre;
-      producto.activo = true;
+      producto.activo = "1";
       producto.impuesto = impuesto;
       producto.precioCompra = precioCompra;
       producto.formasVenta = formasVenta;

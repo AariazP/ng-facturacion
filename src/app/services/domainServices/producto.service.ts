@@ -169,7 +169,6 @@ export class ProductoService {
             next: () => { this.alert.simpleSuccessAlert('Producto guardado correctamente'); },
             error: (error) => {
                 this.alert.simpleErrorAlert(error.error.mensaje);
-                console.log(error);
             }
         });
     }

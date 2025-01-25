@@ -87,7 +87,6 @@ export class NuevoProductoComponent implements OnInit {
     let impuesto = this.tipoImpuesto[this.formulario.get('impuesto')!.value] == undefined ? '':this.tipoImpuesto[this.formulario.get('impuesto')!.value];
     let producto = CrearProductoDTO.crearProductoDTO(codigo, nombre,impuesto, precioCompra, formasVentaEntities);
     this.productoService.guardarProducto(producto);
-    this.formulario.reset();
   }
 
   /**
@@ -134,7 +133,6 @@ export class NuevoProductoComponent implements OnInit {
   public validarCodigo(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.existe = false;
-
     const delay = 300;
     setTimeout(() => {
       this.verificarCodigo(input.value);
@@ -203,6 +201,5 @@ export class NuevoProductoComponent implements OnInit {
       }
     }
   }
-
 
 }
